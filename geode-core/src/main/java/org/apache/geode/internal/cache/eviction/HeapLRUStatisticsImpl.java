@@ -19,8 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 public class HeapLRUStatisticsImpl implements HeapLRUEvictionStats, GFSStatsImplementor {
   private StatisticsType statType;
@@ -35,14 +33,13 @@ public class HeapLRUStatisticsImpl implements HeapLRUEvictionStats, GFSStatsImpl
     final String entryBytesDesc =
         "The amount of memory currently used by regions configured for eviction.";
     final String lruEvictionsDesc = "Number of total entry evictions triggered by LRU.";
-    final String
-        lruDestroysDesc =
+    final String lruDestroysDesc =
         "Number of entries destroyed in the region through both destroy cache operations and eviction.";
     final String lruEvaluationsDesc = "Number of entries evaluated during LRU operations.";
     final String lruGreedyReturnsDesc = "Number of non-LRU entries evicted during LRU operations";
 
     statType = factory.createType("HeapLRUStatistics", "Statistics related to heap based eviction",
-        new StatisticDescriptor[]{factory.createLongGauge("entryBytes", entryBytesDesc, "bytes"),
+        new StatisticDescriptor[] {factory.createLongGauge("entryBytes", entryBytesDesc, "bytes"),
             factory.createLongCounter("lruEvictions", lruEvictionsDesc, "entries"),
             factory.createLongCounter("lruDestroys", lruDestroysDesc, "entries"),
             factory.createLongCounter("lruEvaluations", lruEvaluationsDesc, "entries"),

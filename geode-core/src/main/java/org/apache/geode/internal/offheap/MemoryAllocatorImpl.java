@@ -95,7 +95,7 @@ public class MemoryAllocatorImpl implements MemoryAllocator {
   }
 
   private static MemoryAllocatorImpl create(OutOfOffHeapMemoryListener ooohml,
-                                            OffHeapStorageStats stats, int slabCount, long offHeapMemorySize, long maxSlabSize,
+      OffHeapStorageStats stats, int slabCount, long offHeapMemorySize, long maxSlabSize,
       Slab[] slabs, SlabFactory slabFactory) {
     MemoryAllocatorImpl result = singleton;
     boolean created = false;
@@ -159,13 +159,13 @@ public class MemoryAllocatorImpl implements MemoryAllocator {
   }
 
   static MemoryAllocatorImpl createForUnitTest(OutOfOffHeapMemoryListener ooohml,
-                                               OffHeapStorageStats stats, int slabCount, long offHeapMemorySize, long maxSlabSize,
+      OffHeapStorageStats stats, int slabCount, long offHeapMemorySize, long maxSlabSize,
       SlabFactory memChunkFactory) {
     return create(ooohml, stats, slabCount, offHeapMemorySize, maxSlabSize, null, memChunkFactory);
   }
 
   public static MemoryAllocatorImpl createForUnitTest(OutOfOffHeapMemoryListener oooml,
-                                                      OffHeapStorageStats stats, Slab[] slabs) {
+      OffHeapStorageStats stats, Slab[] slabs) {
     int slabCount = 0;
     long offHeapMemorySize = 0;
     long maxSlabSize = 0;

@@ -15,15 +15,13 @@
 
 package org.apache.geode.internal.statistics.platform;
 
+import org.apache.geode.internal.Assert;
+import org.apache.geode.internal.statistics.HostStatHelper;
+import org.apache.geode.internal.statistics.LocalStatisticsImpl;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.Assert;
-import org.apache.geode.internal.statistics.HostStatHelper;
-import org.apache.geode.internal.statistics.LocalStatisticsImpl;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * <P>
@@ -44,7 +42,7 @@ public class OSXProcessStats {
 
   private void initializeStats(StatisticsFactory factory) {
     myType = factory.createType("OSXProcessStats", "Statistics on a OS X process.",
-        new StatisticDescriptor[]{factory.createIntGauge("dummyStat", "Placeholder", "megabytes")
+        new StatisticDescriptor[] {factory.createIntGauge("dummyStat", "Placeholder", "megabytes")
         });
   }
 
@@ -54,6 +52,7 @@ public class OSXProcessStats {
 
   /**
    * Returns a <code>ProcessStats</code> that wraps OS X process <code>Statistics</code>.
+   *
    * @since GemFire 3.5
    */
   public static ProcessStats createProcessStats(final Statistics stats) {

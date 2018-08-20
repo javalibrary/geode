@@ -63,11 +63,13 @@ import org.apache.geode.internal.offheap.OffHeapHelper;
 import org.apache.geode.internal.util.BlobHelper;
 
 /**
- * This message is used as the request for a {@link org.apache.geode.cache.Region#get(Object)}operation.
+ * This message is used as the request for a
+ * {@link org.apache.geode.cache.Region#get(Object)}operation.
  * The reply is sent in a {@link org.apache.geode.internal.cache.partitioned.GetMessage}.
  *
  * Since the {@link org.apache.geode.cache.Region#get(Object)}operation is used <bold>very </bold>
  * frequently the performance of this class is critical.
+ *
  * @since GemFire 5.0
  */
 public class GetMessage extends PartitionMessageWithDirectReply {
@@ -96,13 +98,12 @@ public class GetMessage extends PartitionMessageWithDirectReply {
   /**
    * Empty constructor to satisfy {@link DataSerializer} requirements
    */
-  public GetMessage() {
-  }
+  public GetMessage() {}
 
   private GetMessage(InternalDistributedMember recipient, int regionId,
-                     DirectReplyProcessor processor, final Object key,
-                     final Object aCallbackArgument,
-                     ClientProxyMembershipID context, boolean returnTombstones) {
+      DirectReplyProcessor processor, final Object key,
+      final Object aCallbackArgument,
+      ClientProxyMembershipID context, boolean returnTombstones) {
     super(recipient, regionId, processor);
     this.key = key;
     this.cbArg = aCallbackArgument;
@@ -158,7 +159,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
 
   @Override
   protected boolean operateOnPartitionedRegion(final ClusterDistributionManager dm,
-                                               PartitionedRegion r, long startTime)
+      PartitionedRegion r, long startTime)
       throws ForceReattemptException {
     if (logger.isTraceEnabled(LogMarker.DM_VERBOSE)) {
       logger.trace(LogMarker.DM_VERBOSE, "GetMessage operateOnRegion: {}", r.getFullPath());
@@ -274,6 +275,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
 
   /**
    * Sends a PartitionedRegion {@link org.apache.geode.cache.Region#get(Object)} message
+   *
    * @param recipient the member that the get message is sent to
    * @param r the PartitionedRegion for which get was performed upon
    * @param key the object to which the value should be feteched
@@ -282,9 +284,9 @@ public class GetMessage extends PartitionMessageWithDirectReply {
    * @throws ForceReattemptException if the peer is no longer available
    */
   public static GetResponse send(InternalDistributedMember recipient, PartitionedRegion r,
-                                 final Object key, final Object aCallbackArgument,
-                                 ClientProxyMembershipID requestingClient,
-                                 boolean returnTombstones) throws ForceReattemptException {
+      final Object key, final Object aCallbackArgument,
+      ClientProxyMembershipID requestingClient,
+      boolean returnTombstones) throws ForceReattemptException {
     Assert.assertTrue(recipient != null, "PRDistribuedGetReplyMessage NULL reply message");
     GetResponse p = new GetResponse(r.getSystem(), Collections.singleton(recipient), key);
     GetMessage m = new GetMessage(recipient, r.getPRId(), p, key, aCallbackArgument,
@@ -300,11 +302,13 @@ public class GetMessage extends PartitionMessageWithDirectReply {
   }
 
   /**
-   * This message is used for the reply to a {@link org.apache.geode.cache.Region#get(Object)}operation
+   * This message is used for the reply to a
+   * {@link org.apache.geode.cache.Region#get(Object)}operation
    * This is the reply to a {@link GetMessage}.
    *
    * Since the {@link org.apache.geode.cache.Region#get(Object)}operation is used <bold>very </bold>
    * frequently the performance of this class is critical.
+   *
    * @since GemFire 5.0
    */
   public static class GetReplyMessage extends ReplyMessage {
@@ -344,8 +348,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
     /**
      * Empty constructor to conform to DataSerializable interface
      */
-    public GetReplyMessage() {
-    }
+    public GetReplyMessage() {}
 
     private GetReplyMessage(int processorId, RawValue val, VersionTag versionTag) {
       setProcessorId(processorId);
@@ -375,6 +378,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
      * Return the value from the get operation, serialize it bytes as late as possible to avoid
      * making un-neccesary byte[] copies. De-serialize those same bytes as late as possible to avoid
      * using precious threads (aka P2P readers).
+     *
      * @param recipient the origin VM that performed the get
      * @param processorId the processor on which the origin thread is waiting
      * @param val the raw value that will eventually be serialized
@@ -382,7 +386,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
      * @param versionTag the version of the object
      */
     public static void send(InternalDistributedMember recipient, int processorId, RawValue val,
-                            ReplySender replySender, VersionTag versionTag)
+        ReplySender replySender, VersionTag versionTag)
         throws ForceReattemptException {
       Assert.assertTrue(recipient != null, "PRDistribuedGetReplyMessage NULL reply message");
       GetReplyMessage m = new GetReplyMessage(processorId, val, versionTag);
@@ -392,6 +396,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
 
     /**
      * Processes this message. This method is invoked by the receiver of the message.
+     *
      * @param dm the distribution manager that is processing the message.
      */
     @Override
@@ -489,7 +494,9 @@ public class GetMessage extends PartitionMessageWithDirectReply {
   }
 
   /**
-   * A processor to capture the value returned by {@link org.apache.geode.internal.cache.partitioned.GetMessage.GetReplyMessage}
+   * A processor to capture the value returned by
+   * {@link org.apache.geode.internal.cache.partitioned.GetMessage.GetReplyMessage}
+   *
    * @since GemFire 5.0
    */
   public static class GetResponse extends PartitionResponse {
@@ -524,6 +531,7 @@ public class GetMessage extends PartitionMessageWithDirectReply {
     /**
      * De-seralize the value, if the value isn't already a byte array, this method should be called
      * in the context of the requesting thread for the best scalability
+     *
      * @return the value object
      * @see EntryEventImpl#deserialize(byte[])
      */

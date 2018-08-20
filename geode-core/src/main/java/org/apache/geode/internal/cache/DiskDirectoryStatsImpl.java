@@ -19,8 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * GemFire statistics about Disk Directories
@@ -53,12 +51,16 @@ public class DiskDirectoryStatsImpl implements DiskDirectoryStats, GFSStatsImple
     type = factory.createType(statName, statDescription,
         new StatisticDescriptor[] {factory.createLongGauge("diskSpace", diskSpaceDesc, "bytes"),
             factory.createLongGauge("maximumSpace", maxSpaceDesc, "bytes"),
-            factory.createLongGauge("volumeSize", "The total size in bytes of the disk volume", "bytes"),
-            factory.createLongGauge("volumeFreeSpace", "The total free space in bytes on the disk volume",
+            factory.createLongGauge("volumeSize", "The total size in bytes of the disk volume",
                 "bytes"),
-            factory.createLongCounter("volumeFreeSpaceChecks", "The total number of disk space checks",
+            factory.createLongGauge("volumeFreeSpace",
+                "The total free space in bytes on the disk volume",
+                "bytes"),
+            factory.createLongCounter("volumeFreeSpaceChecks",
+                "The total number of disk space checks",
                 "checks"),
-            factory.createLongCounter("volumeFreeSpaceTime", "The total time spent checking disk usage",
+            factory.createLongCounter("volumeFreeSpaceTime",
+                "The total time spent checking disk usage",
                 "nanoseconds")});
 
     // Initialize id fields

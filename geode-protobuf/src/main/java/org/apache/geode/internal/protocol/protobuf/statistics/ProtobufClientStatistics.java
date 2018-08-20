@@ -14,11 +14,11 @@
  */
 package org.apache.geode.internal.protocol.protobuf.statistics;
 
+import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.distributed.internal.InternalDistributedSystem;
 
 public class ProtobufClientStatistics implements ClientStatistics {
   public static final String PROTOBUF_CLIENT_STATISTICS = "ProtobufProtocolStats";

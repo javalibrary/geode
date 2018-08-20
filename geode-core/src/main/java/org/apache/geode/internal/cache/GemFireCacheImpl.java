@@ -866,7 +866,8 @@ public class GemFireCacheImpl implements InternalCache, InternalClientCache, Has
         this.securityService = SecurityServiceFactory.create();
       }
 
-      if (!this.isClient && PoolManager.getAll().isEmpty() && this.getSystem().getConfig().getJmxManager()) {
+      if (!this.isClient && PoolManager.getAll().isEmpty()
+          && this.getSystem().getConfig().getJmxManager()) {
         // We only support management on members of a distributed system
         // Should do this: if (!getSystem().isLoner()) {
         // but it causes quickstart.CqClientTest to hang
@@ -893,7 +894,8 @@ public class GemFireCacheImpl implements InternalCache, InternalClientCache, Has
       this.cqService = CqServiceProvider.create(this);
 
       // Create the CacheStatistics
-      this.cachePerfStats = StatsFactory.createCachePerfStatsImpl(system.getStatisticsFactory(),null);
+      this.cachePerfStats =
+          StatsFactory.createCachePerfStatsImpl(system.getStatisticsFactory(), null);
       CachePerfStatsImpl.enableClockStats = this.system.getConfig().getEnableTimeStatistics();
 
       this.transactionManager = new TXManagerImpl(this.cachePerfStats, this);

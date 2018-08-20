@@ -18,7 +18,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import org.apache.geode.InternalGemFireException;
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.internal.PureJavaMode;
 import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.internal.net.SocketCreator;
@@ -33,6 +32,7 @@ import org.apache.geode.internal.statistics.platform.SolarisProcessStats;
 import org.apache.geode.internal.statistics.platform.SolarisSystemStats;
 import org.apache.geode.internal.statistics.platform.WindowsProcessStats;
 import org.apache.geode.internal.statistics.platform.WindowsSystemStats;
+import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 
 /**
@@ -185,20 +185,25 @@ public class HostStatHelper {
    * Creates and returns a {@link Statistics} with the given pid and name. The resource's stats will
    * contain a snapshot of the current statistic values for the specified process.
    */
-  public static Statistics newProcess(StatisticsFactory statisticsFactory, OsStatisticsFactory factory, long pid, String name) {
+  public static Statistics newProcess(StatisticsFactory statisticsFactory,
+      OsStatisticsFactory factory, long pid, String name) {
     Statistics stats;
     switch (osCode) {
       case SOLARIS_CODE:
-        stats = factory.createOsStatistics(new SolarisProcessStats(statisticsFactory).getType(), name, pid, PROCESS_STAT_FLAG);
+        stats = factory.createOsStatistics(new SolarisProcessStats(statisticsFactory).getType(),
+            name, pid, PROCESS_STAT_FLAG);
         break;
       case LINUX_CODE:
-        stats = factory.createOsStatistics(new LinuxProcessStats(statisticsFactory).getType(), name, pid, PROCESS_STAT_FLAG);
+        stats = factory.createOsStatistics(new LinuxProcessStats(statisticsFactory).getType(), name,
+            pid, PROCESS_STAT_FLAG);
         break;
       case OSX_CODE:
-        stats = factory.createOsStatistics(new OSXProcessStats(statisticsFactory).getType(), name, pid, PROCESS_STAT_FLAG);
+        stats = factory.createOsStatistics(new OSXProcessStats(statisticsFactory).getType(), name,
+            pid, PROCESS_STAT_FLAG);
         break;
       case WINDOWS_CODE:
-        stats = factory.createOsStatistics(new WindowsProcessStats(statisticsFactory).getType(), name, pid, PROCESS_STAT_FLAG);
+        stats = factory.createOsStatistics(new WindowsProcessStats(statisticsFactory).getType(),
+            name, pid, PROCESS_STAT_FLAG);
         break;
       default:
         throw new InternalGemFireException(
@@ -244,19 +249,23 @@ public class HostStatHelper {
     Statistics stats;
     switch (osCode) {
       case SOLARIS_CODE:
-        stats = factory.createOsStatistics(new SolarisSystemStats(statisticsFactory).getType(), getHostSystemName(),
+        stats = factory.createOsStatistics(new SolarisSystemStats(statisticsFactory).getType(),
+            getHostSystemName(),
             getHostSystemId(), SYSTEM_STAT_FLAG);
         break;
       case LINUX_CODE:
-        stats = factory.createOsStatistics(new LinuxSystemStats(statisticsFactory).getType(), getHostSystemName(),
+        stats = factory.createOsStatistics(new LinuxSystemStats(statisticsFactory).getType(),
+            getHostSystemName(),
             getHostSystemId(), SYSTEM_STAT_FLAG);
         break;
       case WINDOWS_CODE:
-        stats = factory.createOsStatistics(new WindowsSystemStats(statisticsFactory).getType(), getHostSystemName(),
+        stats = factory.createOsStatistics(new WindowsSystemStats(statisticsFactory).getType(),
+            getHostSystemName(),
             getHostSystemId(), SYSTEM_STAT_FLAG);
         break;
       case OSX_CODE:
-        stats = factory.createOsStatistics(new OSXSystemStats(statisticsFactory).getType(), getHostSystemName(),
+        stats = factory.createOsStatistics(new OSXSystemStats(statisticsFactory).getType(),
+            getHostSystemName(),
             getHostSystemId(), SYSTEM_STAT_FLAG);
         break;
       default:

@@ -19,8 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * GemFire statistics about a {@link DiskRegion}.
@@ -90,10 +88,12 @@ public class DiskRegionStatsImpl implements DiskRegionStats, GFSStatsImplementor
         factory.createLongGauge("entriesOnlyOnDisk", numOverflowOnDiskDesc, "entries"),
         factory.createLongGauge("bytesOnlyOnDisk", numOverflowBytesOnDiskDesc, "bytes"),
         factory.createLongGauge("entriesInVM", numEntriesInVMDesc, "entries"),
-        factory.createIntGauge("writesInProgress", "current number of oplog writes that are in progress",
+        factory.createIntGauge("writesInProgress",
+            "current number of oplog writes that are in progress",
             "writes"),
         factory.createIntGauge("localInitializations", localInitializationsDesc, "initializations"),
-        factory.createIntGauge("remoteInitializations", remoteInitializationsDesc, "initializations"),});
+        factory.createIntGauge("remoteInitializations", remoteInitializationsDesc,
+            "initializations"),});
 
     // Initialize id fields
     writesId = type.nameToId("writes");

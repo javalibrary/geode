@@ -575,7 +575,8 @@ public class MemberMBeanBridge {
   }
 
   public void addVMStats() {
-    VMStatsContract vmStatsContract = system.getInternalDistributedSystemStats().getStatSampler().getVMStats();
+    VMStatsContract vmStatsContract =
+        system.getInternalDistributedSystemStats().getStatSampler().getVMStats();
     InternalDistributedSystemStats internalDistributedSystemStats =
         system.getInternalDistributedSystemStats();
     if (vmStatsContract != null && vmStatsContract instanceof VMStats50) {

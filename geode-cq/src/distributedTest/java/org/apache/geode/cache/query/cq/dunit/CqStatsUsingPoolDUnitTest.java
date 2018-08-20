@@ -195,8 +195,7 @@ public class CqStatsUsingPoolDUnitTest extends JUnit4CacheTestCase {
                 + " CQs active: " + cqServiceStats.numCqsActive() + " CQs stopped: "
                 + cqServiceStats.numCqsStopped() + " CQs closed: " + cqServiceStats.numCqsClosed()
                 + " CQs on Client: " + cqServiceStats.numCqsOnClient()
-                + " CQs on region /root/regionA : "
-               );
+                + " CQs on region /root/regionA : ");
 
 
         // Check for created count.

@@ -35,7 +35,6 @@ import org.apache.logging.log4j.Logger;
 
 import org.apache.geode.CancelCriterion;
 import org.apache.geode.CancelException;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.cache.CacheClosedException;
 import org.apache.geode.cache.NoSubscriptionServersAvailableException;
@@ -68,6 +67,7 @@ import org.apache.geode.internal.logging.LogService;
 import org.apache.geode.internal.logging.log4j.LocalizedMessage;
 import org.apache.geode.internal.monitoring.ThreadsMonitoring;
 import org.apache.geode.internal.statistics.DummyStatisticsFactory;
+import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatsFactory;
 
 /**
@@ -229,7 +229,8 @@ public class PoolImpl implements InternalPool {
     }
     this.cache = cache;
     this.securityLogWriter = this.internalDistributedSystem.getSecurityInternalLogWriter();
-    if (!this.internalDistributedSystem.getConfig().getStatisticSamplingEnabled() && this.statisticInterval > 0) {
+    if (!this.internalDistributedSystem.getConfig().getStatisticSamplingEnabled()
+        && this.statisticInterval > 0) {
       logger.info(LocalizedMessage.create(
           LocalizedStrings.PoolImpl_STATISTIC_SAMPLING_MUST_BE_ENABLED_FOR_SAMPLING_RATE_OF_0_TO_TAKE_AFFECT,
           this.statisticInterval));
@@ -244,19 +245,22 @@ public class PoolImpl implements InternalPool {
     }
     StatisticsFactory statFactory = null;
     if (this.gatewaySender != null) {
-      statFactory = new DummyStatisticsFactory(this.internalDistributedSystem.getStatisticsFactory());
+      statFactory =
+          new DummyStatisticsFactory(this.internalDistributedSystem.getStatisticsFactory());
     } else {
       statFactory = this.internalDistributedSystem.getInternalDistributedSystemStats();
     }
-    this.stats = this.startDisabled ? null :
-        StatsFactory.createPoolStatsImpl(statFactory, getName() + "->"
+    this.stats =
+        this.startDisabled ? null : StatsFactory.createPoolStatsImpl(statFactory, getName() + "->"
             + (isEmpty(serverGroup) ? "[any servers]" : "[" + getServerGroup() + "]"));
 
     source = getSourceImpl(((PoolFactoryImpl.PoolAttributes) attributes).locatorCallback);
-    endpointManager = new EndpointManagerImpl(name, this.internalDistributedSystem, this.cancelCriterion, this.stats);
-    connectionFactory = new ConnectionFactoryImpl(source, endpointManager, this.internalDistributedSystem,
-        socketBufferSize, socketConnectTimeout, readTimeout, proxyId, this.cancelCriterion,
-        usedByGateway, gatewaySender, pingInterval, multiuserSecureModeEnabled, this);
+    endpointManager = new EndpointManagerImpl(name, this.internalDistributedSystem,
+        this.cancelCriterion, this.stats);
+    connectionFactory =
+        new ConnectionFactoryImpl(source, endpointManager, this.internalDistributedSystem,
+            socketBufferSize, socketConnectTimeout, readTimeout, proxyId, this.cancelCriterion,
+            usedByGateway, gatewaySender, pingInterval, multiuserSecureModeEnabled, this);
     if (subscriptionEnabled) {
       queueManager = new QueueManagerImpl(this, endpointManager, source, connectionFactory,
           subscriptionRedundancyLevel, pingInterval, securityLogWriter, proxyId);
@@ -357,7 +361,8 @@ public class PoolImpl implements InternalPool {
     }
 
 
-    if (this.statisticInterval > 0 && this.internalDistributedSystem.getConfig().getStatisticSamplingEnabled()) {
+    if (this.statisticInterval > 0
+        && this.internalDistributedSystem.getConfig().getStatisticSamplingEnabled()) {
       backgroundProcessor.scheduleWithFixedDelay(new PublishClientStatsTask(), statisticInterval,
           statisticInterval, TimeUnit.MILLISECONDS);
     }

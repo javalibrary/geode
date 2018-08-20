@@ -1745,7 +1745,8 @@ public class MemoryThresholdsDUnitTest extends ClientServerTestCase {
     Cache cache = getCache();
     InternalDistributedSystem internalSystem =
         (InternalDistributedSystem) cache.getDistributedSystem();
-    final GemFireStatSampler sampler = internalSystem.getInternalDistributedSystemStats().getStatSampler();
+    final GemFireStatSampler sampler =
+        internalSystem.getInternalDistributedSystemStats().getStatSampler();
     sampler.waitForInitialization(10000); // fix: remove infinite wait
     final LocalStatListener l = new LocalStatListener() {
       public void statValueChanged(double value) {

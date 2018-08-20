@@ -19,12 +19,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.geode.cache.Region;
 import org.apache.geode.statistics.GFSStatsImplementor;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.cache.Region;
 
 /**
  * Represents a statistics type that can be archived to vsd. Loading of this class automatically
@@ -38,6 +38,7 @@ import org.apache.geode.cache.Region;
  * <p>
  *
  * To manipulate the statistic values, use (inc|dec|set|get)&lt;fieldName&gt; methods.
+ *
  * @since GemFire 5.0
  */
 public class PartitionedRegionStatsImpl implements PartitionedRegionStats, GFSStatsImplementor {
@@ -177,7 +178,7 @@ public class PartitionedRegionStatsImpl implements PartitionedRegionStats, GFSSt
     final boolean largerIsBetter = true;
     type = factory.createType("PartitionedRegionStats",
         "Statistics for operations and connections in the Partitioned Region",
-        new StatisticDescriptor[]{
+        new StatisticDescriptor[] {
 
             factory.createIntGauge("bucketCount", "Number of buckets in this node.", "buckets"),
             factory.createIntCounter("putsCompleted", "Number of puts completed.", "operations",
@@ -1038,6 +1039,7 @@ public class PartitionedRegionStatsImpl implements PartitionedRegionStats, GFSSt
 
   /**
    * Statistic to track the {@link Region#getEntry(Object)} call
+   *
    * @param startTime the time the getEntry operation started
    */
   @Override

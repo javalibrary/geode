@@ -20,11 +20,11 @@ import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.geode.admin.Statistic;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.admin.Statistic;
 
 /**
  *

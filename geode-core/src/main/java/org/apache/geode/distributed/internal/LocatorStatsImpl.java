@@ -70,12 +70,14 @@ public class LocatorStatsImpl implements LocatorStats {
     String serverThreadsDesc =
         "The number of location requests currently being processed by the thread pool.";
     type = factory.createType(statName, statDescription, new StatisticDescriptor[] {
-        factory.createIntGauge(KNOWN_LOCATORS, "Number of locators known to this locator", LOCATORS),
+        factory.createIntGauge(KNOWN_LOCATORS, "Number of locators known to this locator",
+            LOCATORS),
         factory.createLongCounter(REQUESTS_TO_LOCATOR,
             "Number of requests this locator has received from clients", "requests"),
         factory.createLongCounter(RESPONSES_FROM_LOCATOR,
             "Number of responses this locator has sent to clients", "responses"),
-        factory.createIntGauge(ENDPOINTS_KNOWN, "Number of servers this locator knows about", "servers"),
+        factory.createIntGauge(ENDPOINTS_KNOWN, "Number of servers this locator knows about",
+            "servers"),
         factory.createIntGauge(REQUESTS_IN_PROGRESS, serverThreadsDesc, "requests"),
         factory.createLongCounter(REQUEST_TIME, "Time spent processing server location requests",
             "nanoseconds"),

@@ -34,7 +34,7 @@ public class GatewayReceiverStatsJUnitTest extends MBeanStatsTestCase {
   private GatewayReceiverStats receiverStats;
 
   public void init() {
-    receiverStats = StatsFactory.createGatewayReceiverStatsImpl(null,"Test Sock Name");
+    receiverStats = StatsFactory.createGatewayReceiverStatsImpl(null, "Test Sock Name");
 
     bridge = new GatewayReceiverMBeanBridge();
     bridge.addGatewayReceiverStats(receiverStats);
@@ -59,7 +59,8 @@ public class GatewayReceiverStatsJUnitTest extends MBeanStatsTestCase {
     receiverStats.incProcessPutTime(startTime);
 
     ServerLoad load = new ServerLoad(1, 1, 1, 1);
-    receiverStats.setLoad(load.getConnectionLoad(),load.getLoadPerConnection(),load.getSubscriptionConnectionLoad(),load.getLoadPerSubscriptionConnection());
+    receiverStats.setLoad(load.getConnectionLoad(), load.getLoadPerConnection(),
+        load.getSubscriptionConnectionLoad(), load.getLoadPerSubscriptionConnection());
 
     sample();
 

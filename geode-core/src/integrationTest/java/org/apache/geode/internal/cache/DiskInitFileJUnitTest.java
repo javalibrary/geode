@@ -30,8 +30,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.internal.cache.persistence.DiskRegionView;
+import org.apache.geode.statistics.StatisticsFactory;
 
 public class DiskInitFileJUnitTest {
 

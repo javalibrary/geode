@@ -19,8 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 public class CountLRUStatisticsImpl implements CountLRUEvictionStats, GFSStatsImplementor {
   private StatisticsType statType;
@@ -41,14 +39,15 @@ public class CountLRUStatisticsImpl implements CountLRUEvictionStats, GFSStatsIm
     final String lruEvaluationsDesc = "Number of entries evaluated during LRU operations.";
     final String lruGreedyReturnsDesc = "Number of non-LRU entries evicted during LRU operations";
 
-    statType = factory.createType("LRUStatistics", "Statistics relates to entry cout based eviction",
-        new StatisticDescriptor[] {
-            factory.createLongGauge("entriesAllowed", entriesAllowedDesc, "entries"),
-            factory.createLongGauge("entryCount", regionEntryCountDesc, "entries"),
-            factory.createLongCounter("lruEvictions", lruEvictionsDesc, "entries"),
-            factory.createLongCounter("lruDestroys", lruDestroysDesc, "entries"),
-            factory.createLongCounter("lruEvaluations", lruEvaluationsDesc, "entries"),
-            factory.createLongCounter("lruGreedyReturns", lruGreedyReturnsDesc, "entries")});
+    statType =
+        factory.createType("LRUStatistics", "Statistics relates to entry cout based eviction",
+            new StatisticDescriptor[] {
+                factory.createLongGauge("entriesAllowed", entriesAllowedDesc, "entries"),
+                factory.createLongGauge("entryCount", regionEntryCountDesc, "entries"),
+                factory.createLongCounter("lruEvictions", lruEvictionsDesc, "entries"),
+                factory.createLongCounter("lruDestroys", lruDestroysDesc, "entries"),
+                factory.createLongCounter("lruEvaluations", lruEvaluationsDesc, "entries"),
+                factory.createLongCounter("lruGreedyReturns", lruGreedyReturnsDesc, "entries")});
 
     limitId = statType.nameToId("entriesAllowed");
     counterId = statType.nameToId("entryCount");

@@ -267,7 +267,8 @@ public abstract class AbstractGatewaySender implements InternalGatewaySender, Di
       this.stopper = new Stopper(cache.getCancelCriterion());
       this.senderAdvisor = GatewaySenderAdvisor.createGatewaySenderAdvisor(this);
       if (!this.isForInternalUse()) {
-        this.statistics = StatsFactory.createGatewaySenderStatsImpl(cache.getDistributedSystem().getStatisticsFactory(), id);
+        this.statistics = StatsFactory
+            .createGatewaySenderStatsImpl(cache.getDistributedSystem().getStatisticsFactory(), id);
       }
       initializeEventIdIndex();
     }
@@ -1253,7 +1254,8 @@ public abstract class AbstractGatewaySender implements InternalGatewaySender, Di
       final HasCachePerfStats statsHolder = new HasCachePerfStats() {
         @Override
         public CachePerfStats getCachePerfStats() {
-          return StatsFactory.createCachePerfStatsImpl(cache.getDistributedSystem().getStatisticsFactory(), META_DATA_REGION_NAME);
+          return StatsFactory.createCachePerfStatsImpl(
+              cache.getDistributedSystem().getStatisticsFactory(), META_DATA_REGION_NAME);
         }
       };
 

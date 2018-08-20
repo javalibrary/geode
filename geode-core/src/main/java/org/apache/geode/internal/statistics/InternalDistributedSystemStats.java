@@ -13,7 +13,6 @@ import org.apache.geode.distributed.internal.DistributionConfig;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.internal.cache.execute.FunctionServiceStats;
 import org.apache.geode.internal.cache.execute.FunctionStats;
-import org.apache.geode.internal.cache.execute.FunctionStats;
 import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.internal.statistics.platform.OsStatisticsFactory;
 import org.apache.geode.statistics.StatisticDescriptor;
@@ -38,8 +37,7 @@ public class InternalDistributedSystemStats
 
   // As the function execution stats can be lot in number, its better to put
   // them in a map so that it will be accessible immediately
-  private final ConcurrentHashMap<String, FunctionStats>
-      functionExecutionStatsMap =
+  private final ConcurrentHashMap<String, FunctionStats> functionExecutionStatsMap =
       new ConcurrentHashMap<>();
   private FunctionServiceStats functionServiceStats;
 
@@ -48,18 +46,18 @@ public class InternalDistributedSystemStats
   // StatisticsTypeFactory methods
   private StatisticsFactory statisticsTypeFactory;
 
-  //TODO, sorry another singleton... BLECH!!
-  private static final InternalDistributedSystemStats
-      singleton = new InternalDistributedSystemStats();
+  // TODO, sorry another singleton... BLECH!!
+  private static final InternalDistributedSystemStats singleton =
+      new InternalDistributedSystemStats();
 
-  private InternalDistributedSystemStats() {
-  }
+  private InternalDistributedSystemStats() {}
 
-  //TODO Udo: We need to fix the bootstrapping to have DS's and DM's created in order to get the statsfactory created
+  // TODO Udo: We need to fix the bootstrapping to have DS's and DM's created in order to get the
+  // statsfactory created
   public InternalDistributedSystemStats(boolean statsDisabled,
-                                        DistributionConfig distributionConfig,
-                                        InternalDistributedSystem internalDistributedSystem,
-                                        StatisticsTypeFactory statisticsTypeFactory) {
+      DistributionConfig distributionConfig,
+      InternalDistributedSystem internalDistributedSystem,
+      StatisticsTypeFactory statisticsTypeFactory) {
     this.statisticsTypeFactory = (StatisticsFactory) statisticsTypeFactory;
     this.statsDisabled = statsDisabled;
     this.functionServiceStats = new FunctionServiceStats(this, "FunctionExecution");
@@ -73,9 +71,9 @@ public class InternalDistributedSystemStats
   }
 
   public static InternalDistributedSystemStats createInstance(boolean statsDisabled,
-                                                              DistributionConfig distributionConfig,
-                                                              InternalDistributedSystem distributedSystem,
-                                                              MicrometerStatisticsFactoryImpl statisticsTypeFactory) {
+      DistributionConfig distributionConfig,
+      InternalDistributedSystem distributedSystem,
+      MicrometerStatisticsFactoryImpl statisticsTypeFactory) {
 
     singleton.statisticsTypeFactory = statisticsTypeFactory;
     singleton.statsDisabled = statsDisabled;
@@ -250,7 +248,8 @@ public class InternalDistributedSystemStats
   }
 
   @Override
-  public Statistics createOsStatistics(StatisticsType type, String textId, long numericId, int osStatFlags) {
+  public Statistics createOsStatistics(StatisticsType type, String textId, long numericId,
+      int osStatFlags) {
     if (this.statsDisabled) {
       return new DummyStatisticsImpl(type, textId, numericId);
     }
@@ -297,37 +296,37 @@ public class InternalDistributedSystemStats
 
   @Override
   public StatisticDescriptor createIntCounter(String name, String description, String units,
-                                              boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createIntCounter(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createLongCounter(String name, String description, String units,
-                                               boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createLongCounter(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createDoubleCounter(String name, String description, String units,
-                                                 boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createDoubleCounter(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createIntGauge(String name, String description, String units,
-                                            boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createIntGauge(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createLongGauge(String name, String description, String units,
-                                             boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createLongGauge(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createDoubleGauge(String name, String description, String units,
-                                               boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createDoubleGauge(name, description, units, largerBetter);
   }
 

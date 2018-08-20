@@ -29,7 +29,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.geode.InvalidDeltaException;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.CacheEvent;
@@ -79,6 +78,7 @@ import org.apache.geode.internal.cache.tier.sockets.Part;
 import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.internal.logging.LogService;
 import org.apache.geode.internal.logging.log4j.LocalizedMessage;
+import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatsFactory;
 
 /**
@@ -1252,7 +1252,7 @@ public class CqServiceImpl implements CqService {
           }
         }
         cqInfo.put(cQuery.getFilterID(), cqRegionEvent);
-        updateStats(cqRegionEvent,cQuery.getVsdStats());
+        updateStats(cqRegionEvent, cQuery.getVsdStats());
       }
       if (pf.isLocalProfile()) {
         frInfo.setLocalCqInfo(cqInfo);
@@ -1262,7 +1262,7 @@ public class CqServiceImpl implements CqService {
     }
   }
 
-  private void updateStats(Integer cqEvent,CqQueryVsdStats stats) {
+  private void updateStats(Integer cqEvent, CqQueryVsdStats stats) {
     if (cqEvent == null) {
       return;
     }

@@ -14,9 +14,9 @@
  */
 package org.apache.geode.internal.cache;
 
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.cache.EvictionAttributes;
 import org.apache.geode.internal.cache.eviction.EvictionController;
+import org.apache.geode.statistics.StatisticsFactory;
 
 public interface EvictableRegion extends RegionMapOwner {
 

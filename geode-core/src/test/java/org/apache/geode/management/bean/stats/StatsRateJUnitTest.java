@@ -19,10 +19,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.management.internal.beans.stats.MBeanStatsMonitor;
 import org.apache.geode.management.internal.beans.stats.StatType;
 import org.apache.geode.management.internal.beans.stats.StatsRate;
+import org.apache.geode.statistics.Statistics;
 
 public class StatsRateJUnitTest {
 

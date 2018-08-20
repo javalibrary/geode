@@ -16,7 +16,6 @@ package org.apache.geode.management.internal.beans;
 
 import java.util.List;
 
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.cache.wan.GatewayEventFilter;
 import org.apache.geode.cache.wan.GatewaySender;
 import org.apache.geode.cache.wan.GatewayTransportFilter;
@@ -31,6 +30,7 @@ import org.apache.geode.management.internal.beans.stats.StatType;
 import org.apache.geode.management.internal.beans.stats.StatsAverageLatency;
 import org.apache.geode.management.internal.beans.stats.StatsKey;
 import org.apache.geode.management.internal.beans.stats.StatsRate;
+import org.apache.geode.statistics.Statistics;
 
 public class GatewaySenderMBeanBridge {
 

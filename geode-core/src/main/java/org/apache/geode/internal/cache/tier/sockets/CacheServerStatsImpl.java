@@ -14,14 +14,13 @@
  */
 package org.apache.geode.internal.cache.tier.sockets;
 
+import org.apache.geode.distributed.internal.InternalDistributedSystem;
+import org.apache.geode.distributed.internal.PoolStatHelper;
 import org.apache.geode.statistics.GFSStatsImplementor;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.cache.server.ServerLoad;
-import org.apache.geode.distributed.internal.InternalDistributedSystem;
-import org.apache.geode.distributed.internal.PoolStatHelper;
 
 /**
  * Cache Server statistic definitions
@@ -226,7 +225,8 @@ public class CacheServerStatsImpl implements CacheServerStats, GFSStatsImplement
   protected StatisticsType statType;
 
   public CacheServerStatsImpl(String ownerName) {
-    this(InternalDistributedSystem.getAnyInstance().getStatisticsFactory(), ownerName, typeName, null);
+    this(InternalDistributedSystem.getAnyInstance().getStatisticsFactory(), ownerName, typeName,
+        null);
   }
 
   /**
@@ -234,8 +234,9 @@ public class CacheServerStatsImpl implements CacheServerStats, GFSStatsImplement
    * for local Statistics operations
    *
    */
-  public CacheServerStatsImpl(StatisticsFactory statisticsFactory, String ownerName, String typeName,
-                              StatisticDescriptor[] descriptors) {
+  public CacheServerStatsImpl(StatisticsFactory statisticsFactory, String ownerName,
+      String typeName,
+      StatisticDescriptor[] descriptors) {
     if (statisticsFactory == null) {
       // Create statistics later when needed
       return;
@@ -1048,7 +1049,8 @@ public class CacheServerStatsImpl implements CacheServerStats, GFSStatsImplement
   }
 
   @Override
-  public void setLoad(float connectionLoad, float loadPerConnection, float queueLoad, float loadPerQueue) {
+  public void setLoad(float connectionLoad, float loadPerConnection, float queueLoad,
+      float loadPerQueue) {
     this.stats.setDouble(connectionLoadId, connectionLoad);
     this.stats.setDouble(queueLoadId, queueLoad);
     this.stats.setDouble(loadPerConnectionId, loadPerConnection);

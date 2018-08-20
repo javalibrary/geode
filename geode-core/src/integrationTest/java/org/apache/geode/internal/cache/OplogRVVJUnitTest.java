@@ -35,13 +35,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.i18n.LogWriterI18n;
 import org.apache.geode.internal.cache.DiskInitFile.DiskRegionFlag;
 import org.apache.geode.internal.cache.DiskStoreImpl.OplogEntryIdSet;
 import org.apache.geode.internal.cache.persistence.DiskRecoveryStore;
 import org.apache.geode.internal.cache.persistence.DiskStoreID;
 import org.apache.geode.internal.cache.versions.DiskRegionVersionVector;
+import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatsFactory;
 
 public class OplogRVVJUnitTest {

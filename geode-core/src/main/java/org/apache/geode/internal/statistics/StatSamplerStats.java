@@ -18,7 +18,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
 
 /**
  * Statistics related to the statistic sampler.
@@ -33,7 +32,7 @@ public class StatSamplerStats {
   public static final String SAMPLE_CALLBACK_ERRORS = "sampleCallbackErrors"; // int
   public static final String SAMPLE_CALLBACK_DURATION = "sampleCallbackDuration"; // long
 
-  private  StatisticsType samplerType;
+  private StatisticsType samplerType;
   private int sampleCountId;
   private int sampleTimeId;
   private int delayDurationId;
@@ -42,7 +41,7 @@ public class StatSamplerStats {
   private int sampleCallbacksId;
   private int sampleCallbackErrorsId;
   private int sampleCallbackDurationId;
-  
+
   private void initializeStats(StatisticsFactory factory) {
     samplerType = factory.createType("StatSampler", "Stats on the statistic sampler.",
         new StatisticDescriptor[] {

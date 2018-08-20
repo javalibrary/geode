@@ -15,12 +15,10 @@
 
 package org.apache.geode.internal.statistics.platform;
 
+import org.apache.geode.internal.Assert;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.Assert;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * <P>
@@ -126,7 +124,8 @@ public class LinuxSystemStats {
             factory.createIntGauge("softirq",
                 "The percentage of the total available time that has been used servicing softirqs.",
                 "%"),
-            factory.createIntGauge("cpus", "The number of online cpus on the local machine.", "items"),
+            factory.createIntGauge("cpus", "The number of online cpus on the local machine.",
+                "items"),
             factory.createIntGauge("freeMemory",
                 "The number of megabytes of unused memory on the machine.", "megabytes", true),
             factory.createIntGauge("physicalMemory",
@@ -163,7 +162,8 @@ public class LinuxSystemStats {
                 "The total number of network bytes received (excluding loopback)", "bytes", false),
             factory.createLongCounter("recvErrors", "The total number of network receive errors",
                 "errors", false),
-            factory.createLongCounter("recvDrops", "The total number network receives dropped", "packets",
+            factory.createLongCounter("recvDrops", "The total number network receives dropped",
+                "packets",
                 false),
             factory.createLongCounter("xmitPackets",
                 "The total number of network packets transmitted (excluding loopback)", "packets",
@@ -175,7 +175,8 @@ public class LinuxSystemStats {
                 "errors", false),
             factory.createLongCounter("xmitDrops", "The total number of network transmits dropped",
                 "packets", false),
-            factory.createLongCounter("xmitCollisions", "The total number of network transmit collisions",
+            factory.createLongCounter("xmitCollisions",
+                "The total number of network transmit collisions",
                 "collisions", false),
             factory.createLongCounter("contextSwitches",
                 "The total number of context switches from one thread to another on the computer.  Thread switches can occur either inside of a single process or across processes.  A thread switch may be caused either by one thread asking another for information, or by a thread being preempted by another, higher priority thread becoming ready to run.",
@@ -290,7 +291,7 @@ public class LinuxSystemStats {
     initializeStats(factory);
   }
 
-  public StatisticsType getType(){
+  public StatisticsType getType() {
     return myType;
   }
 }

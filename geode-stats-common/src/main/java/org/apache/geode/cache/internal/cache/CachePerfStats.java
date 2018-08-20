@@ -7,6 +7,7 @@ import org.apache.geode.statistics.Statistics;
 public interface CachePerfStats {
   /**
    * Returns the current NanoTime or, if clock stats are disabled, zero.
+   *
    * @since GemFire 5.0
    */
   static long getStatTime() {

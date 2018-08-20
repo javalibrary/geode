@@ -20,19 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.i18n.LocalizedStrings;
 
 /**
  * An abstract standalone implementation of {@link StatisticsFactory}. It can be used in contexts
  * that do not have the GemFire product or in vm's that do not have a distributed system nor a
  * gemfire connection.
+ *
  * @since GemFire 7.0
  */
 public abstract class AbstractStatisticsFactory implements StatisticsFactory, StatisticsManager {
@@ -46,7 +46,8 @@ public abstract class AbstractStatisticsFactory implements StatisticsFactory, St
   private final StatisticsTypeFactory statisticsTypeFactory;
   private final long startTime;
 
-  public AbstractStatisticsFactory(StatisticsFactory statisticsFactory, long id, String name, long startTime) {
+  public AbstractStatisticsFactory(StatisticsFactory statisticsFactory, long id, String name,
+      long startTime) {
     this.id = id;
     this.name = name;
     this.startTime = startTime;
@@ -55,8 +56,7 @@ public abstract class AbstractStatisticsFactory implements StatisticsFactory, St
     this.statisticsTypeFactory = statisticsFactory;
   }
 
-  public void close() {
-  }
+  public void close() {}
 
   @Override
   public String getName() {
@@ -134,7 +134,7 @@ public abstract class AbstractStatisticsFactory implements StatisticsFactory, St
   }
 
   public Statistics createOsStatistics(StatisticsType type, String textId, long numericId,
-                                       int osStatFlags) {
+      int osStatFlags) {
     long myUniqueId;
     synchronized (statsListUniqueIdLock) {
       myUniqueId = statsListUniqueId++; // fix for bug 30597
@@ -289,37 +289,37 @@ public abstract class AbstractStatisticsFactory implements StatisticsFactory, St
 
   @Override
   public StatisticDescriptor createIntCounter(String name, String description, String units,
-                                              boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createIntCounter(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createLongCounter(String name, String description, String units,
-                                               boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createLongCounter(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createDoubleCounter(String name, String description, String units,
-                                                 boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createDoubleCounter(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createIntGauge(String name, String description, String units,
-                                            boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createIntGauge(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createLongGauge(String name, String description, String units,
-                                             boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createLongGauge(name, description, units, largerBetter);
   }
 
   @Override
   public StatisticDescriptor createDoubleGauge(String name, String description, String units,
-                                               boolean largerBetter) {
+      boolean largerBetter) {
     return statisticsTypeFactory.createDoubleGauge(name, description, units, largerBetter);
   }
 }

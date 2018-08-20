@@ -74,7 +74,6 @@ import org.apache.geode.distributed.internal.membership.InternalDistributedMembe
 import org.apache.geode.i18n.StringId;
 import org.apache.geode.internal.Assert;
 import org.apache.geode.internal.cache.BucketRegion.RawValue;
-import org.apache.geode.internal.cache.LocalRegion.RegionPerfStatsImpl;
 import org.apache.geode.internal.cache.PartitionedRegion.BucketLock;
 import org.apache.geode.internal.cache.PartitionedRegion.SizeEntry;
 import org.apache.geode.internal.cache.backup.BackupService;
@@ -189,6 +188,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Creates PartitionedRegionDataStore for dataStorage of PR and starts a PartitionService to
    * handle remote operations on this DataStore from other participating nodes.
+   *
    * @param pr PartitionedRegion associated with this DataStore.
    */
   PartitionedRegionDataStore(final PartitionedRegion pr) {
@@ -217,10 +217,11 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * This method creates a PartitionedRegionDataStore be invoking the PRDS Constructor.
+   *
    * @return @throws PartitionedRegionException
    */
   static PartitionedRegionDataStore createDataStore(Cache cache, PartitionedRegion pr,
-                                                    PartitionAttributes pa)
+      PartitionAttributes pa)
       throws PartitionedRegionException {
     PartitionedRegionDataStore prd = new PartitionedRegionDataStore(pr);
     return prd;
@@ -232,6 +233,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Test to determine if this data store is managing a bucket
+   *
    * @param bucketId the id of the bucket
    * @return true if the provided bucket is being managed
    */
@@ -277,13 +279,13 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   private boolean areAllColocatedPartitionedRegionsReady(int bucketId,
-                                                         List<PartitionedRegion> colocatedWithList) {
+      List<PartitionedRegion> colocatedWithList) {
     return colocatedWithList.stream().allMatch(
         partitionedRegion -> isColocatedPartitionedRegionInitialized(partitionedRegion, bucketId));
   }
 
   private boolean isColocatedPartitionedRegionInitialized(PartitionedRegion partitionedRegion,
-                                                          final int bucketId) {
+      final int bucketId) {
     if (!partitionedRegion.isInitialized()) {
       return false;
     }
@@ -304,13 +306,13 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    */
 
   protected CreateBucketResult grabFreeBucketRecursively(final int bucketId,
-                                                         final PartitionedRegion pr,
-                                                         final InternalDistributedMember moveSource,
-                                                         final boolean forceCreation,
-                                                         final boolean isRebalance,
-                                                         final boolean replaceOfflineData,
-                                                         final InternalDistributedMember creationRequestor,
-                                                         final boolean isDiskRecovery) {
+      final PartitionedRegion pr,
+      final InternalDistributedMember moveSource,
+      final boolean forceCreation,
+      final boolean isRebalance,
+      final boolean replaceOfflineData,
+      final InternalDistributedMember creationRequestor,
+      final boolean isDiskRecovery) {
     CreateBucketResult grab;
     DistributedMember dm = pr.getMyId();
     List<PartitionedRegion> colocatedWithList = ColocationHelper.getColocatedChildRegions(pr);
@@ -355,8 +357,9 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Attempts to map a bucket id to this node. Creates real storage for the bucket by adding a new
    * Region to bucket2Map. Bucket creation is done under the d-lock on b2n region.
+   *
    * @param possiblyFreeBucketId the identity of the bucket + @param mustBeNew boolean enforcing
-   * that the bucket must not already exist
+   *        that the bucket must not already exist
    * @param sender the member requesting the bucket
    * @param moveSource Where we are moving the bucket from, if this is a move.
    * @param forceCreation avoid any checks (with in reason) which might prevent bucket creation
@@ -364,11 +367,11 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * @return true if successful
    */
   CreateBucketResult grabFreeBucket(final int possiblyFreeBucketId, final DistributedMember sender,
-                                    final InternalDistributedMember moveSource,
-                                    final boolean forceCreation,
-                                    final boolean isRebalance, final boolean lockRedundancyLock,
-                                    boolean replaceOffineData,
-                                    InternalDistributedMember creationRequestor) {
+      final InternalDistributedMember moveSource,
+      final boolean forceCreation,
+      final boolean isRebalance, final boolean lockRedundancyLock,
+      boolean replaceOffineData,
+      InternalDistributedMember creationRequestor) {
 
     final boolean isDebugEnabled = logger.isDebugEnabled();
 
@@ -593,7 +596,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   public Object lockRedundancyLock(InternalDistributedMember moveSource, int bucketId,
-                                   boolean replaceOffineData) {
+      boolean replaceOffineData) {
     // TODO prperist - Make this thing easier to find!
     final PartitionedRegion.BucketLock bl = partitionedRegion.getRegionAdvisor()
         .getBucketAdvisor(bucketId).getProxyBucketRegion().getBucketLock();
@@ -639,6 +642,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Returns false if this region is colocated and parent bucket does not exist.
+   *
    * @return true if ok to make bucket
    */
   private boolean okToCreateChildBucket(int bucketId) {
@@ -680,6 +684,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * This method creates bucket regions, based on redundancy level. If redundancy level is: a) = 1
    * it creates a local region b) >1 it creates a distributed region
+   *
    * @return @throws CacheException
    */
   private BucketRegion createBucketRegion(int bucketId) {
@@ -777,7 +782,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
     if (Boolean.getBoolean(DistributionConfig.GEMFIRE_PREFIX + "PRDebug")) {
       logger.info(LocalizedMessage.create(
           LocalizedStrings.PartitionedRegionDataStore_CREATEBUCKETREGION_CREATING_BUCKETID_0_NAME_1,
-          new Object[]{this.partitionedRegion.bucketStringForLogs(bucketId), bucketRegionName}));
+          new Object[] {this.partitionedRegion.bucketStringForLogs(bucketId), bucketRegionName}));
     }
     try {
       final Bucket proxyBucket = this.partitionedRegion.getRegionAdvisor().getBucket(bucketId);
@@ -852,7 +857,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
     // Build index info thats used to create indexes on bucket regions.
     indexes = new ArrayList();
     Set indexSet = indexMap.entrySet();
-    for (Iterator it = indexSet.iterator(); it.hasNext(); ) {
+    for (Iterator it = indexSet.iterator(); it.hasNext();) {
       try {
         Map.Entry indexEntry = (Map.Entry) it.next();
         PartitionedIndex index = (PartitionedIndex) indexEntry.getValue();
@@ -920,23 +925,17 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
             event.getRegion().getFullPath(), event.getKey(), event.getDistributedMember());
       }
 
-      public void afterRegionInvalidate(RegionEvent event) {
-      }
+      public void afterRegionInvalidate(RegionEvent event) {}
 
-      public void afterRegionDestroy(RegionEvent event) {
-      }
+      public void afterRegionDestroy(RegionEvent event) {}
 
-      public void afterRegionClear(RegionEvent event) {
-      }
+      public void afterRegionClear(RegionEvent event) {}
 
-      public void afterRegionCreate(RegionEvent event) {
-      }
+      public void afterRegionCreate(RegionEvent event) {}
 
-      public void afterRegionLive(RegionEvent event) {
-      }
+      public void afterRegionLive(RegionEvent event) {}
 
-      public void close() {
-      }
+      public void close() {}
     };
   }
 
@@ -982,6 +981,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * is the current memory (MB) watermark for data in this PR.
    *
    * If eviction to disk is enabled, this does not reflect the size of entries on disk.
+   *
    * @return the total memory size in bytes for all the Map's values
    */
   public long currentAllocatedMemory() {
@@ -991,13 +991,14 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Checks if this PartitionedRegionDataStore has the capacity to handle the bucket creation
    * request. If so, creates the real storage for the bucket.
+   *
    * @param bucketId the bucket id
    * @param size the size in bytes of the bucket to create locally
    * @param forceCreation ignore local maximum buckets check
    * @return true if already managing the bucket or if the bucket has been created
    */
   public boolean handleManageBucketRequest(int bucketId, int size, InternalDistributedMember sender,
-                                           boolean forceCreation) {
+      boolean forceCreation) {
 
     // check maxMemory setting
     if (!this.partitionedRegion.isDataStore()) {
@@ -1047,6 +1048,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Determine if the ratio of buckets this VM should host is appropriate given its localMaxMemory
    * setting as compared to others
+   *
    * @return true if this data store can host another bucket
    */
   boolean canAccommodateAnotherBucket() {
@@ -1097,6 +1099,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Checks if this PartitionedRegionDataStore has the capacity to handle the rebalancing size.
+   *
    * @param size the size in bytes of the bucket to be rebalanced
    * @return true if size can be accommodated without exceeding ratioFull
    */
@@ -1110,6 +1113,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Handles rebalance by accepting new bucket contents and storing it.
+   *
    * @param bucketId the id of the bucket to rebalance
    * @param obj the contents of the bucket
    * @param regionName the name of the PR
@@ -1124,6 +1128,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * storage for the bucket and a bucket2Node Region mapping. These two operations are done as a
    * logical unit so that the node can immediately begin handling remote requests once the
    * bucket2Node mapping becomes visible.
+   *
    * @param bucketId the bucket id
    */
   boolean handleRemoteCreateBackupRegion(int bucketId) {
@@ -1132,6 +1137,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Return the size in bytes for a given bucket.
+   *
    * @return size in bytes
    */
   public long getBucketSize(int bucketId) {
@@ -1171,6 +1177,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * This method returns name of this Partitioned Region
+   *
    * @return Partitioned Region name
    */
   private String getName() {
@@ -1182,11 +1189,17 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   // ////////////////////////////////////
 
   /**
-   * Puts the object with the given key locally. <br> Step: <br> 1) It finds out the bucket region
-   * for the bucket id. <br> 2) If from step 1 it gets null, that means the bucket is re-mapped.
-   * <br> 3) If it finds the bucket region from step 1, it tries to put the key-value on the region.
-   * <br> 4) updateBucket2Size if bucket is on more than 1 node or else bucket listeners would take
+   * Puts the object with the given key locally. <br>
+   * Step: <br>
+   * 1) It finds out the bucket region
+   * for the bucket id. <br>
+   * 2) If from step 1 it gets null, that means the bucket is re-mapped.
+   * <br>
+   * 3) If it finds the bucket region from step 1, it tries to put the key-value on the region.
+   * <br>
+   * 4) updateBucket2Size if bucket is on more than 1 node or else bucket listeners would take
    * care of size update. <br>
+   *
    * @param bucketId the bucket id of the key
    * @param event the operation event
    * @param ifNew whether a create must be performed
@@ -1197,17 +1210,17 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * @throws PrimaryBucketException if the bucket in this data store is not the primary bucket
    */
   public boolean putLocally(final Integer bucketId, final EntryEventImpl event, boolean ifNew,
-                            boolean ifOld, Object expectedOldValue, boolean requireOldValue,
-                            final long lastModified)
+      boolean ifOld, Object expectedOldValue, boolean requireOldValue,
+      final long lastModified)
       throws PrimaryBucketException, ForceReattemptException {
     final BucketRegion br = getInitializedBucketForId(event.getKey(), bucketId);
     return putLocally(br, event, ifNew, ifOld, expectedOldValue, requireOldValue, lastModified);
   }
 
   public boolean putLocally(final BucketRegion bucketRegion, final EntryEventImpl event,
-                            boolean ifNew, boolean ifOld, Object expectedOldValue,
-                            boolean requireOldValue,
-                            final long lastModified)
+      boolean ifNew, boolean ifOld, Object expectedOldValue,
+      boolean requireOldValue,
+      final long lastModified)
       throws PrimaryBucketException, ForceReattemptException {
     boolean didPut = false; // false if entry put fails
 
@@ -1261,7 +1274,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
         }
       }
       if (logStr != null) {
-        Object[] logArgs = new Object[]{this.partitionedRegion.getFullPath(), logStr,
+        Object[] logArgs = new Object[] {this.partitionedRegion.getFullPath(), logStr,
             Long.valueOf(this.partitionedRegion.getLocalMaxMemory()),
             Long.valueOf(locBytes / PartitionedRegionHelper.BYTES_PER_MB)};
         if (this.exceededLocalMaxMemoryLimit) {
@@ -1275,6 +1288,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Checks whether there is room in this Map to accommodate more data.
+   *
    * @param bytes the size to check in bytes
    */
   boolean canAccommodateMoreBytesSafely(int bytes) {
@@ -1319,17 +1333,22 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   /**
-   * Handles the remote request to remove the key from this Map. <br> Step: <br> 1) Locates the
+   * Handles the remote request to remove the key from this Map. <br>
+   * Step: <br>
+   * 1) Locates the
    * bucket region. If it doesnt find the actual bucket, it means that this bucket is remapped to
-   * some other node and remappedBucketException is thrown <br> 2) Invokes destroy on that bucket
-   * region <br> 3) updateBucket2Size if bucket is on more than 1 node or else bucket listners would
+   * some other node and remappedBucketException is thrown <br>
+   * 2) Invokes destroy on that bucket
+   * region <br>
+   * 3) updateBucket2Size if bucket is on more than 1 node or else bucket listners would
    * take care of size update.
+   *
    * @param bucketId for the key
    * @param event the event causing this action
    * @param expectedOldValue if non-null, then only succeed if current value
    * @return the removed value
    * @throws EntryNotFoundException if entry is not found for the key or expectedOldValue is not
-   * null and current value is not equal to it
+   *         null and current value is not equal to it
    * @throws PrimaryBucketException if the locally managed bucket is not the primary
    * @throws ForceReattemptException if the bucket region is null
    */
@@ -1444,7 +1463,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
               } catch (Exception ex) {
                 logger.warn(LocalizedMessage.create(
                     LocalizedStrings.PartitionedRegion_PARTITIONEDREGION_0_CLEANUP_PROBLEM_DESTROYING_BUCKET_1,
-                    new Object[]{this.partitionedRegion.getFullPath(),
+                    new Object[] {this.partitionedRegion.getFullPath(),
                         Integer.valueOf(buk.getId())}),
                     ex);
               }
@@ -1528,6 +1547,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    *
    * This method is now also used by the PartitionManager. For the PartitionManager, it does remove
    * the primary bucket.
+   *
    * @param bucketId the id of the bucket to remove
    * @return true if the bucket was removed; false if unable to remove or if bucket is not hosted
    */
@@ -1678,6 +1698,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * This calls removeBucket on every colocated child that is directly colocated to this bucket's
    * PR. Those each in turn do the same to their child buckets and so on before returning.
+   *
    * @param bucketId the bucket to remove
    * @param forceRemovePrimary true if we should remove the bucket, even if it is primary.
    * @return true if bucket was removed from all children
@@ -1702,12 +1723,13 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Create a new backup of the bucket, allowing redundancy to be exceeded. All colocated child
    * buckets will also be created.
+   *
    * @param bucketId the bucket to create
    * @param isRebalance true if bucket creation is directed by rebalancing
    * @return true if the bucket and its colocated chain of children are created
    */
   public CreateBucketResult createRedundantBucket(int bucketId, boolean isRebalance,
-                                                  InternalDistributedMember moveSource) {
+      InternalDistributedMember moveSource) {
     // recurse down to create each tier of children after creating leader bucket
     return grabBucket(bucketId, moveSource, true, false, isRebalance, null, false);
   }
@@ -1717,12 +1739,13 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    *
    * If the bucket is the leader bucket then it will recursively create all colocated children and
    * then remove all colocated children as well from the <code>source</code> member.
+   *
    * @param bucketId the bucket to move
    * @param source the member to move the bucket from
    * @return true if bucket was successfully moved to this datastore
    */
   public boolean moveBucket(int bucketId, InternalDistributedMember source,
-                            final boolean isRebalance) {
+      final boolean isRebalance) {
 
     if (createRedundantBucket(bucketId, isRebalance, source) != CreateBucketResult.CREATED) {
       if (logger.isDebugEnabled()) {
@@ -1761,6 +1784,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Fetch a BucketRegion, but do not return until it is initialized
+   *
    * @param key optional for error reporting; if none, no key available.
    * @param bucketId the bucket to fetch
    * @return the region
@@ -1778,7 +1802,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
       ForceReattemptException fre = new BucketNotFoundException(
           LocalizedStrings.PartitionedRegionDataStore_BUCKET_ID_0_NOT_FOUND_ON_VM_1
               .toLocalizedString(
-                  new Object[]{this.partitionedRegion.bucketStringForLogs(bucketId.intValue()),
+                  new Object[] {this.partitionedRegion.bucketStringForLogs(bucketId.intValue()),
                       this.partitionedRegion.getMyId()}));
       if (key != null) {
         fre.setHash(key.hashCode());
@@ -1791,6 +1815,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Returns the local BucketRegion given an bucketId. Returns null if no BucketRegion exists.
+   *
    * @since GemFire 6.1.2.9
    */
   public BucketRegion getLocalBucketById(Integer bucketId) {
@@ -1814,6 +1839,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Test hook to return the per entry overhead for a bucket region. PRECONDITION: a bucket must
    * exist and be using LRU.
+   *
    * @since GemFire 6.1.2.9
    */
   public int getPerEntryLRUOverhead() {
@@ -1823,6 +1849,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Fetch a BucketRegion, but do not return until it is initialized and the primary is known.
+   *
    * @return the initialized region
    * @see #getInitializedBucketForId(Object, Integer)
    */
@@ -1835,6 +1862,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Checks if this instance contains a value for the key locally.
+   *
    * @param bucketId for the key
    * @param key the key, whose value needs to be checks
    * @return true if there is a non-null value for the given key
@@ -1885,6 +1913,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Checks if this instance contains a key.
+   *
    * @param bucketId the bucketId for the key
    * @param key the key to look for
    * @return true if there is an entry with the given key
@@ -1944,6 +1973,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Returns value corresponding to this key.
+   *
    * @param key the key to look for
    * @param requestingClient the client making the request, or null
    * @param clientEvent client's event (for returning version tag)
@@ -1954,9 +1984,9 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * @throws PRLocallyDestroyedException if the PartitionRegion is locally destroyed
    */
   public Object getLocally(int bucketId, final Object key, final Object aCallbackArgument,
-                           boolean disableCopyOnRead, boolean preferCD,
-                           ClientProxyMembershipID requestingClient,
-                           EntryEventImpl clientEvent, boolean returnTombstones)
+      boolean disableCopyOnRead, boolean preferCD,
+      ClientProxyMembershipID requestingClient,
+      EntryEventImpl clientEvent, boolean returnTombstones)
       throws PrimaryBucketException, ForceReattemptException, PRLocallyDestroyedException {
     return getLocally(bucketId, key, aCallbackArgument, disableCopyOnRead, preferCD,
         requestingClient, clientEvent, returnTombstones, false);
@@ -1964,22 +1994,23 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Returns value corresponding to this key.
+   *
    * @param key the key to look for
    * @param requestingClient the client making the request, or null
    * @param clientEvent client's event (for returning version tag)
    * @param returnTombstones whether tombstones should be returned
    * @param opScopeIsLocal if true then just check local storage for a value; if false then try to
-   * find the value if it is not local
+   *        find the value if it is not local
    * @return value from the bucket region
    * @throws ForceReattemptException if bucket region is null
    * @throws PrimaryBucketException if the locally managed bucket is not primary
    * @throws PRLocallyDestroyedException if the PartitionRegion is locally destroyed
    */
   public Object getLocally(int bucketId, final Object key, final Object aCallbackArgument,
-                           boolean disableCopyOnRead, boolean preferCD,
-                           ClientProxyMembershipID requestingClient,
-                           EntryEventImpl clientEvent, boolean returnTombstones,
-                           boolean opScopeIsLocal)
+      boolean disableCopyOnRead, boolean preferCD,
+      ClientProxyMembershipID requestingClient,
+      EntryEventImpl clientEvent, boolean returnTombstones,
+      boolean opScopeIsLocal)
       throws PrimaryBucketException, ForceReattemptException, PRLocallyDestroyedException {
     final BucketRegion bucketRegion = getInitializedBucketForId(key, Integer.valueOf(bucketId));
     // check for primary (when a loader is present) done deeper in the BucketRegion
@@ -2013,6 +2044,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Return a value from the bucket region, always serialized
+   *
    * @param keyInfo TODO
    * @param clientEvent a "client" event that will hold version information about the entry
    * @param returnTombstones TODO
@@ -2020,12 +2052,12 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * @throws ForceReattemptException if bucket region is null
    * @throws PrimaryBucketException if the locally managed bucket is not primary
    * @see #getLocally(int, Object, Object, boolean, boolean, ClientProxyMembershipID,
-   * EntryEventImpl, boolean)
+   *      EntryEventImpl, boolean)
    */
   public RawValue getSerializedLocally(KeyInfo keyInfo, boolean doNotLockEntry,
-                                       ClientProxyMembershipID requestingClient,
-                                       EntryEventImpl clientEvent,
-                                       boolean returnTombstones)
+      ClientProxyMembershipID requestingClient,
+      EntryEventImpl clientEvent,
+      boolean returnTombstones)
       throws PrimaryBucketException, ForceReattemptException {
     final BucketRegion bucketRegion =
         getInitializedBucketForId(keyInfo.getKey(), keyInfo.getBucketId());
@@ -2058,6 +2090,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Finds the local bucket corresponding to the given key and retrieves the key's Region.Entry
+   *
    * @param key the key to look for
    * @param access true if caller wants last accessed time updated
    * @param allowTombstones whether a tombstoned entry can be returned
@@ -2067,7 +2100,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * @throws PRLocallyDestroyedException if the PartitionRegion is locally destroyed
    */
   public EntrySnapshot getEntryLocally(int bucketId, final Object key, boolean access,
-                                       boolean allowTombstones)
+      boolean allowTombstones)
       throws EntryNotFoundException, PrimaryBucketException,
       ForceReattemptException, PRLocallyDestroyedException {
     final BucketRegion bucketRegion = getInitializedBucketForId(key, Integer.valueOf(bucketId));
@@ -2122,13 +2155,14 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Handle a remote request for keys for the provided bucketId
+   *
    * @param allowTombstones whether to return destroyed entries
    * @return The <code>Set</code> of keys for bucketId or {@link Collections#EMPTY_SET}if no keys
-   * are present
+   *         are present
    * @throws PRLocallyDestroyedException if the PartitionRegion is locally destroyed
    */
   public Set handleRemoteGetKeys(Integer bucketId, int interestType, Object interestArg,
-                                 boolean allowTombstones)
+      boolean allowTombstones)
       throws PRLocallyDestroyedException, ForceReattemptException {
     if (logger.isDebugEnabled()) {
       logger.debug("handleRemoteGetKeys: bucketId: {}{}{} with tombstones {}",
@@ -2168,9 +2202,10 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * Get the local keys for a given bucket. This operation should be as efficient as possible, by
    * avoiding making copies of the returned set. The returned set can and should reflect concurrent
    * changes (no ConcurrentModificationExceptions).
+   *
    * @param allowTombstones whether to include destroyed entries in the result
    * @return The <code>Set</code> of keys for bucketId or {@link Collections#EMPTY_SET} if no keys
-   * are present
+   *         are present
    * @throws PRLocallyDestroyedException if the PartitionRegion is locally destroyed
    */
   public Set getKeysLocally(Integer bucketId, boolean allowTombstones)
@@ -2220,12 +2255,19 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   /**
-   * Creates the entry with the given key locally. <br> Steps: <br> 1) It finds out the bucket
-   * region for the bucket id. <br> 2) If from step 1 it gets null, that means the bucket is
-   * remapped. <br> 3) If it finds the bucket region from step 1, it tries to creates the entry on
-   * the region. <br> 4) If entry already exists, for the key, step 3 would throw
-   * EntryExistsException or else it will create an entry <br> 5) updateBucket2Size if bucket is on
+   * Creates the entry with the given key locally. <br>
+   * Steps: <br>
+   * 1) It finds out the bucket
+   * region for the bucket id. <br>
+   * 2) If from step 1 it gets null, that means the bucket is
+   * remapped. <br>
+   * 3) If it finds the bucket region from step 1, it tries to creates the entry on
+   * the region. <br>
+   * 4) If entry already exists, for the key, step 3 would throw
+   * EntryExistsException or else it will create an entry <br>
+   * 5) updateBucket2Size if bucket is on
    * more than 1 node or else bucket listners would take care of size update. <br>
+   *
    * @param bucketRegion the bucket to do the create in
    * @param event the particulars of the operation
    * @param ifNew whether a new entry can be created
@@ -2235,8 +2277,8 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
    * @throws EntryExistsException if an entry with this key already exists
    */
   public boolean createLocally(final BucketRegion bucketRegion, final EntryEventImpl event,
-                               boolean ifNew, boolean ifOld, boolean requireOldValue,
-                               final long lastModified)
+      boolean ifNew, boolean ifOld, boolean requireOldValue,
+      final long lastModified)
       throws ForceReattemptException {
     boolean result = false;
     try {
@@ -2268,13 +2310,20 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   /**
-   * Handles the local request to invalidate the key from this region. <br> Steps: <br> 1) Locates
+   * Handles the local request to invalidate the key from this region. <br>
+   * Steps: <br>
+   * 1) Locates
    * the bucket region. If it doesnt find the actual bucket, it means that this bucket is remapped
-   * to some other node and remappedBucketException is thrown <br> 2) get the existing value for the
-   * key from bucket region <br> 3) if step 2 returns null, throw EntryNotFoundException <br> 4) if
+   * to some other node and remappedBucketException is thrown <br>
+   * 2) get the existing value for the
+   * key from bucket region <br>
+   * 3) if step 2 returns null, throw EntryNotFoundException <br>
+   * 4) if
    * step 2 returns non-null value, perform invalidate on the bucket region and use value from step
-   * 2 in step 5 <br> 5) updateBucket2Size if bucket is on more than 1 node or else bucket listners
+   * 2 in step 5 <br>
+   * 5) updateBucket2Size if bucket is on more than 1 node or else bucket listners
    * would take care of size update. <br>
+   *
    * @param bucketId the bucketId for the key
    * @param event the event that prompted this action
    * @throws ForceReattemptException if bucket region is null
@@ -2308,13 +2357,19 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * This method iterates over localBucket2RegionMap and returns collective size of the bucket
-   * regions. <br> Steps: <br> 1) Check if localBucket2RegionMap is empty. If it is, return 0.<br>
-   * 2) If localBucket2RegionMap is not empty, get keyset of all these bucket IDs. <br> 3) Get the
-   * nodeList for the bucket ID from Bucket2Node region. <br> 4) If first node from the node list is
-   * current node, increment the size counter. <br> 5) Step#4 takes care of the problem of
+   * regions. <br>
+   * Steps: <br>
+   * 1) Check if localBucket2RegionMap is empty. If it is, return 0.<br>
+   * 2) If localBucket2RegionMap is not empty, get keyset of all these bucket IDs. <br>
+   * 3) Get the
+   * nodeList for the bucket ID from Bucket2Node region. <br>
+   * 4) If first node from the node list is
+   * current node, increment the size counter. <br>
+   * 5) Step#4 takes care of the problem of
    * recounting the size of redundant buckets. <br>
+   *
    * @return the map of bucketIds and their associated sizes, or {@link Collections#EMPTY_MAP}when
-   * the size is zero
+   *         the size is zero
    */
   public Map getSizeLocally() {
     return getSizeLocally(false);
@@ -2334,7 +2389,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
     Map.Entry<Integer, BucketRegion> me;
     BucketRegion r;
     for (Iterator<Map.Entry<Integer, BucketRegion>> itr =
-         this.localBucket2RegionMap.entrySet().iterator(); itr.hasNext(); ) {
+        this.localBucket2RegionMap.entrySet().iterator(); itr.hasNext();) {
       me = itr.next();
       try {
         r = me.getValue();
@@ -2362,8 +2417,9 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * This method iterates over localBucket2RegionMap and returns collective size of the primary
    * bucket regions.
+   *
    * @return the map of bucketIds and their associated sizes, or {@link Collections#EMPTY_MAP}when
-   * the size is zero
+   *         the size is zero
    */
   public Map<Integer, SizeEntry> getSizeForLocalBuckets() {
     return getSizeLocallyForBuckets(this.localBucket2RegionMap.keySet());
@@ -2379,6 +2435,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * This calculates size of all the primary bucket regions for the list of bucketIds.
+   *
    * @return the size of all the primary bucket regions for the list of bucketIds.
    */
   public Map<Integer, SizeEntry> getSizeLocallyForBuckets(Collection<Integer> bucketIds) {
@@ -2390,7 +2447,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   private Map<Integer, SizeEntry> getSizeLocallyForPrimary(Collection<Integer> bucketIds,
-                                                           boolean estimate) {
+      boolean estimate) {
     Map<Integer, SizeEntry> mySizeMap;
     if (this.localBucket2RegionMap.isEmpty()) {
       return Collections.emptyMap();
@@ -2450,7 +2507,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   public void visitBuckets(final BucketVisitor bv) {
     if (this.localBucket2RegionMap.size() > 0) {
       Map.Entry me;
-      for (Iterator i = this.localBucket2RegionMap.entrySet().iterator(); i.hasNext(); ) {
+      for (Iterator i = this.localBucket2RegionMap.entrySet().iterator(); i.hasNext();) {
         me = (Map.Entry) i.next();
         Region r = (Region) me.getValue();
         // ConcurrentHashMap entrySet iterator does not guarantee an atomic snapshot
@@ -2468,9 +2525,9 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   private void visitBucket(final Integer bucketId, final LocalRegion bucket,
-                           final EntryVisitor ev) {
+      final EntryVisitor ev) {
     try {
-      for (Iterator ei = bucket.entrySet().iterator(); ei.hasNext(); ) {
+      for (Iterator ei = bucket.entrySet().iterator(); ei.hasNext();) {
         ev.visit(bucketId, (Region.Entry) ei.next());
       }
     } catch (CacheRuntimeException ignore) {
@@ -2494,7 +2551,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
       public void visit(Integer bucketId, Region buk) {
         try {
           ((LocalRegion) buk).waitForData();
-          for (Iterator ei = buk.entrySet().iterator(); ei.hasNext(); ) {
+          for (Iterator ei = buk.entrySet().iterator(); ei.hasNext();) {
             knock.visit(bucketId, (Region.Entry) ei.next());
           }
         } catch (CacheRuntimeException ignore) {
@@ -2506,6 +2563,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * <i>Test Method</i> Return the list of PartitionedRegion entries contained in this data store
+   *
    * @return a List of all entries gathered across all buckets in this data store
    */
   public List getEntries() {
@@ -2519,8 +2577,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
       }
 
       @Override
-      public void finishedVisiting() {
-      }
+      public void finishedVisiting() {}
     });
     return al;
   }
@@ -2528,6 +2585,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * <i>Test Method</i> Dump all the entries in all the buckets to the logger, validate that the
    * bucket-to-node meta region contains all bhe buckets managed by this data store
+   *
    * @param validateOnly only perform bucket-to-node validation
    */
   public void dumpEntries(final boolean validateOnly) {
@@ -2640,6 +2698,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * <i>Test Method</i> Dump the entries in this given bucket to the logger
+   *
    * @param bucketId the id of the bucket to dump
    * @param bucket the Region containing the bucket data
    */
@@ -2664,6 +2723,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Fetch the entries for the given bucket
+   *
    * @param bucketId the id of the bucket
    * @return a Map containing all the entries
    */
@@ -2685,6 +2745,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Return a set of local buckets. Iterators may include entries with null values (but non-null
    * keys).
+   *
    * @return an unmodifiable set of Map.Entry objects
    */
   public Set<Map.Entry<Integer, BucketRegion>> getAllLocalBuckets() {
@@ -2697,6 +2758,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Returns a set of local buckets.
+   *
    * @return an unmodifiable set of BucketRegion
    */
   public Set<BucketRegion> getAllLocalBucketRegions() {
@@ -2807,11 +2869,12 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   /**
    * Checks for RegionDestroyedException in case of remoteEvent & localDestroy OR isClosed throws a
    * ForceReattemptException
+   *
    * @param br the bucket that we are trying to operate on
    * @param isOriginRemote true the event we are processing has a remote origin.
    */
   public void checkRegionDestroyedOnBucket(final BucketRegion br, final boolean isOriginRemote,
-                                           RegionDestroyedException rde)
+      RegionDestroyedException rde)
       throws ForceReattemptException {
     if (isOriginRemote) {
       if (logger.isDebugEnabled()) {
@@ -2839,24 +2902,25 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Create a redundancy bucket on this member
+   *
    * @param bucketId the id of the bucket to create
    * @param moveSource the member id of where the bucket is being copied from, if this is a bucket
-   * move. Setting this field means that we are allowed to go over redundancy.
+   *        move. Setting this field means that we are allowed to go over redundancy.
    * @param forceCreation force the bucket creation, even if it would provide better balance if the
-   * bucket was placed on another node.
+   *        bucket was placed on another node.
    * @param replaceOffineData create the bucket, even if redundancy is satisfied when considering
-   * offline members.
+   *        offline members.
    * @param isRebalance true if this is a rebalance
    * @param creationRequestor the id of the member that is atomically creating this bucket on all
-   * members, if this is an atomic bucket creation.
+   *        members, if this is an atomic bucket creation.
    * @return the status of the bucket creation.
    */
   public CreateBucketResult grabBucket(final int bucketId,
-                                       final InternalDistributedMember moveSource,
-                                       final boolean forceCreation,
-                                       final boolean replaceOffineData, final boolean isRebalance,
-                                       final InternalDistributedMember creationRequestor,
-                                       final boolean isDiskRecovery) {
+      final InternalDistributedMember moveSource,
+      final boolean forceCreation,
+      final boolean replaceOffineData, final boolean isRebalance,
+      final InternalDistributedMember creationRequestor,
+      final boolean isDiskRecovery) {
     CreateBucketResult grab = grabFreeBucket(bucketId, partitionedRegion.getMyId(), moveSource,
         forceCreation, isRebalance, true, replaceOffineData, creationRequestor);
     if (!grab.nowExists()) {
@@ -2909,8 +2973,9 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
 
   /**
    * Checks consistency of bucket and meta data before attempting to grab the bucket.
+   *
    * @return false if bucket should not be grabbed, else true. TODO prpersist - move this to
-   * BucketRegion
+   *         BucketRegion
    */
   public boolean verifyBucketBeforeGrabbing(final int buckId) {
     // Consistency checks
@@ -2921,7 +2986,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
         Set owners = partitionedRegion.getRegionAdvisor().getBucketOwners(buckId);
         logger.info(LocalizedMessage.create(
             LocalizedStrings.PartitionedRegionDataStore_VERIFIED_NODELIST_FOR_BUCKETID_0_IS_1,
-            new Object[]{partitionedRegion.bucketStringForLogs(buckId),
+            new Object[] {partitionedRegion.bucketStringForLogs(buckId),
                 PartitionedRegionHelper.printCollection(owners)}));
         Assert.assertTrue(false,
             " This node " + partitionedRegion.getNode() + " is managing the bucket with bucketId= "
@@ -2954,11 +3019,11 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
   }
 
   public void executeOnDataStore(final Set localKeys, final Function function, final Object object,
-                                 final int prid, final Set<Integer> bucketSet,
-                                 final boolean isReExecute,
-                                 final PartitionedRegionFunctionStreamingMessage msg, long time,
-                                 ServerConnection servConn,
-                                 int transactionID) {
+      final int prid, final Set<Integer> bucketSet,
+      final boolean isReExecute,
+      final PartitionedRegionFunctionStreamingMessage msg, long time,
+      ServerConnection servConn,
+      int transactionID) {
 
     if (!areAllBucketsHosted(bucketSet)) {
       throw new BucketMovedException(
@@ -2972,7 +3037,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
     final RegionFunctionContextImpl prContext =
         new RegionFunctionContextImpl(getPartitionedRegion().getCache(), function.getId(),
             this.partitionedRegion, object, localKeys, ColocationHelper
-            .constructAndGetAllColocatedLocalDataSet(this.partitionedRegion, bucketSet),
+                .constructAndGetAllColocatedLocalDataSet(this.partitionedRegion, bucketSet),
             bucketSet, resultSender, isReExecute);
 
     FunctionStats stats = FunctionStatsImpl.getFunctionStats(function.getId(), dm.getSystem());
@@ -3036,7 +3101,7 @@ public class PartitionedRegionDataStore implements HasCachePerfStats {
     }
     synchronized (keysOfInterestLock) {
       boolean isRegister = event.isRegister();
-      for (Iterator i = event.getKeysOfInterest().iterator(); i.hasNext(); ) {
+      for (Iterator i = event.getKeysOfInterest().iterator(); i.hasNext();) {
         Object key = i.next();
         // Get the reference counter for this key
         AtomicInteger references = (AtomicInteger) this.keysOfInterest.get(key);

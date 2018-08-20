@@ -32,11 +32,11 @@ import org.junit.rules.TestName;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import org.apache.geode.internal.NanoTimer;
+import org.apache.geode.internal.io.MainWithChildrenRollingFileHandler;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.internal.NanoTimer;
-import org.apache.geode.internal.io.MainWithChildrenRollingFileHandler;
 import org.apache.geode.test.junit.categories.StatisticsTest;
 
 @Category({StatisticsTest.class})
@@ -110,8 +110,7 @@ public class FileSizeLimitIntegrationTest {
   }
 
   @After
-  public void tearDown() throws Exception {
-  }
+  public void tearDown() throws Exception {}
 
   @Test
   public void rollsWhenLimitIsReached() throws Exception { // TODO: add test to assert size is

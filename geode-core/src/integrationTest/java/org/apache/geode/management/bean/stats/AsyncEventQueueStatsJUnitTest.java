@@ -19,9 +19,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.cache.asyncqueue.internal.AsyncEventQueueStats;
 import org.apache.geode.management.internal.beans.AsyncEventQueueMBeanBridge;
+import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.test.junit.categories.JMXTest;
 
 @Category({JMXTest.class})

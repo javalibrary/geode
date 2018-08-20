@@ -46,23 +46,18 @@ public class OffHeapStorageStatsImpl implements OffHeapStorageStats, GFSStatsImp
     final String defragmentationsInProgressDesc =
         "Current number of defragment operations currently in progress.";
     final String defragmentationTimeDesc = "The total time spent defragmenting off-heap memory.";
-    final String
-        fragmentationDesc =
+    final String fragmentationDesc =
         "The percentage of off-heap free memory that is fragmented.  Updated every time a defragmentation is performed.";
-    final String
-        fragmentsDesc =
+    final String fragmentsDesc =
         "The number of fragments of free off-heap memory. Updated every time a defragmentation is done.";
     final String freeMemoryDesc =
         "The amount of off-heap memory, in bytes, that is not being used.";
-    final String
-        largestFragmentDesc =
+    final String largestFragmentDesc =
         "The largest fragment of memory found by the last defragmentation of off heap memory. Updated every time a defragmentation is done.";
     final String objectsDesc = "The number of objects stored in off-heap memory.";
-    final String
-        readsDesc =
+    final String readsDesc =
         "The total number of reads of off-heap memory. Only reads of a full object increment this statistic. If only a part of the object is read this statistic is not incremented.";
-    final String
-        maxMemoryDesc =
+    final String maxMemoryDesc =
         "The maximum amount of off-heap memory, in bytes. This is the amount of memory allocated at startup and does not change.";
 
     final String usedMemory = "usedMemory";
@@ -78,7 +73,7 @@ public class OffHeapStorageStatsImpl implements OffHeapStorageStats, GFSStatsImp
     final String maxMemory = "maxMemory";
 
     statsType = factory.createType(statsTypeName, statsTypeDescription,
-        new StatisticDescriptor[]{factory.createLongGauge(usedMemory, usedMemoryDesc, "bytes"),
+        new StatisticDescriptor[] {factory.createLongGauge(usedMemory, usedMemoryDesc, "bytes"),
             factory.createIntCounter(defragmentations, defragmentationDesc, "operations"),
             factory.createIntGauge(defragmentationsInProgress, defragmentationsInProgressDesc,
                 "operations"),

@@ -67,10 +67,11 @@ public class MemberLevelStatsJUnitTest extends MBeanStatsTestCase {
   private static long testStartTime = NanoTimer.getTime();
 
   public void init() {
-    cachePerfStats = StatsFactory.createCachePerfStatsImpl(system.getStatisticsFactory(),null);
+    cachePerfStats = StatsFactory.createCachePerfStatsImpl(system.getStatisticsFactory(), null);
     funcServiceStats = new FunctionServiceStats(system.getStatisticsFactory(), "FunctionExecution");
     long statId = OSProcess.getId();
-    distributionStats = StatsFactory.createDistributionStatsImpl(system.getStatisticsFactory(), String.valueOf(statId));
+    distributionStats = StatsFactory.createDistributionStatsImpl(system.getStatisticsFactory(),
+        String.valueOf(statId));
     DistributionStatsImpl.enableClockStats = true;
     dlockStats = StatsFactory.createDLockStatsImpl(system.getStatisticsFactory(), statId);
 
@@ -81,20 +82,23 @@ public class MemberLevelStatsJUnitTest extends MBeanStatsTestCase {
     bridge.addLockServiceStats(dlockStats);
 
 
-    VMStatsContract vmstats = system.getInternalDistributedSystemStats().getStatSampler().getVMStats();
+    VMStatsContract vmstats =
+        system.getInternalDistributedSystemStats().getStatSampler().getVMStats();
     assertTrue(vmstats instanceof VMStats50);
 
     bridge.addSystemStats();
     bridge.addVMStats();
 
     for (int i = 0; i < 4; i++) {
-      DiskStoreStats stats = StatsFactory.createDiskStoreStatsImpl(system.getStatisticsFactory(), name.getMethodName() + i);
+      DiskStoreStats stats = StatsFactory.createDiskStoreStatsImpl(system.getStatisticsFactory(),
+          name.getMethodName() + i);
       diskStatsList.add(stats);
       bridge.addDiskStoreStats(stats);
     }
 
     for (int i = 0; i < 4; i++) {
-      PartitionedRegionStats stats = StatsFactory.createPartitionedRegionStatsImpl(system.getStatisticsFactory(), name.getMethodName() + i);
+      PartitionedRegionStats stats = StatsFactory.createPartitionedRegionStatsImpl(
+          system.getStatisticsFactory(), name.getMethodName() + i);
       parRegionStatsList.add(stats);
       bridge.addPartionRegionStats(stats);
     }

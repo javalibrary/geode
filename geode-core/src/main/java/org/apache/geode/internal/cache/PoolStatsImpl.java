@@ -21,10 +21,10 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.distributed.internal.DistributionStats;
 
 /**
  * GemFire statistics about a Pool
+ *
  * @since GemFire 5.7
  */
 public class PoolStatsImpl implements PoolStats, GFSStatsImplementor {
@@ -77,7 +77,7 @@ public class PoolStatsImpl implements PoolStats, GFSStatsImplementor {
     String statName = "PoolStats";
 
     _type = factory.createType(statName, statName,
-        new StatisticDescriptor[]{
+        new StatisticDescriptor[] {
             factory.createIntGauge(INITIAL_CONTACTS, "Number of contacts initially by user",
                 "contacts"),
             factory.createIntGauge(KNOWN_LOCATORS, "Current number of locators discovered",

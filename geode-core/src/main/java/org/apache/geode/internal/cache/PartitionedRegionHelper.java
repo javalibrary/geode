@@ -261,7 +261,8 @@ public class PartitionedRegionHelper {
       RegionAttributes ra = factory.create();
       // Create anonymous stats holder for Partitioned Region meta data
       final HasCachePerfStats prMetaStatsHolder =
-          () -> StatsFactory.createCachePerfStatsImpl(cache.getDistributedSystem().getStatisticsFactory(), "partitionMetaData");
+          () -> StatsFactory.createCachePerfStatsImpl(
+              cache.getDistributedSystem().getStatisticsFactory(), "partitionMetaData");
 
       try {
         root = (DistributedRegion) cache.createVMRegion(PR_ROOT_REGION_NAME, ra,

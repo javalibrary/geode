@@ -21,9 +21,9 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.geode.CancelCriterion;
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.internal.logging.LogService;
+import org.apache.geode.statistics.Statistics;
 
 public class CallbackSampler {
   private static final Logger logger = LogService.getLogger();

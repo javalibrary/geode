@@ -33,15 +33,15 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 
-import org.apache.geode.statistics.StatisticDescriptor;
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.statistics.StatisticsFactory;
-import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.distributed.internal.DistributionConfig;
 import org.apache.geode.internal.ClassPathLoader;
 import org.apache.geode.internal.logging.LogService;
 import org.apache.geode.internal.statistics.VMStatsContract;
+import org.apache.geode.statistics.StatisticDescriptor;
+import org.apache.geode.statistics.Statistics;
+import org.apache.geode.statistics.StatisticsFactory;
+import org.apache.geode.statistics.StatisticsType;
 
 /**
  * Statistics related to a Java VM. This version is hardcoded to use 1.5 MXBean stats from
@@ -196,17 +196,21 @@ public class VMStats50 implements VMStatsContract {
     List<StatisticDescriptor> statisticDescriptors = new ArrayList<>();
     statisticDescriptors.add(factory.createIntGauge("pendingFinalization",
         "Number of objects that are pending finalization in the java VM.", "objects"));
-    statisticDescriptors.add(factory.createIntGauge("daemonThreads", "Current number of live daemon threads in this VM.",
-        "threads"));
+    statisticDescriptors.add(
+        factory.createIntGauge("daemonThreads", "Current number of live daemon threads in this VM.",
+            "threads"));
     statisticDescriptors.add(factory.createIntGauge("threads",
         "Current number of live threads (both daemon and non-daemon) in this VM.", "threads"));
     statisticDescriptors.add(
-        factory.createIntGauge("peakThreads", "High water mark of live threads in this VM.", "threads"));
+        factory.createIntGauge("peakThreads", "High water mark of live threads in this VM.",
+            "threads"));
     statisticDescriptors.add(factory.createLongCounter("threadStarts",
         "Total number of times a thread has been started since this vm started.", "threads"));
-    statisticDescriptors.add(factory.createIntGauge("cpus", "Number of cpus available to the java VM on its machine.",
-        "cpus", true));
-    statisticDescriptors.add(factory.createLongCounter("loadedClasses", "Total number of classes loaded since vm started.",
+    statisticDescriptors.add(
+        factory.createIntGauge("cpus", "Number of cpus available to the java VM on its machine.",
+            "cpus", true));
+    statisticDescriptors.add(factory.createLongCounter("loadedClasses",
+        "Total number of classes loaded since vm started.",
         "classes"));
     statisticDescriptors.add(factory.createLongCounter("unloadedClasses",
         "Total number of classes unloaded since vm started.", "classes", true));
@@ -219,11 +223,14 @@ public class VMStats50 implements VMStatsContract {
     statisticDescriptors.add(factory.createLongGauge("maxMemory",
         "The maximum amount of memory that the VM will attempt to use, measured in bytes.", "bytes",
         true));
-    statisticDescriptors.add(factory.createLongCounter("processCpuTime", "CPU timed used by the process in nanoseconds.",
-        "nanoseconds"));
+    statisticDescriptors.add(
+        factory.createLongCounter("processCpuTime", "CPU timed used by the process in nanoseconds.",
+            "nanoseconds"));
     if (unixBean != null) {
-      statisticDescriptors.add(factory.createLongGauge("fdLimit", "Maximum number of file descriptors", "fds", true));
-      statisticDescriptors.add(factory.createLongGauge("fdsOpen", "Current number of open file descriptors", "fds"));
+      statisticDescriptors.add(
+          factory.createLongGauge("fdLimit", "Maximum number of file descriptors", "fds", true));
+      statisticDescriptors.add(
+          factory.createLongGauge("fdsOpen", "Current number of open file descriptors", "fds"));
     }
     vmType = factory.createType("VMStats", "Stats available on a 1.5 java virtual machine.",
         statisticDescriptors.toArray(new StatisticDescriptor[statisticDescriptors.size()]));
@@ -300,7 +307,8 @@ public class VMStats50 implements VMStatsContract {
                 factory.createLongCounter("collectionUsageExceeded",
                     "Total number of times the garbage collector detected that memory usage in this pool exceeded the collectionUsageThreshold",
                     "exceptions"),
-                factory.createLongGauge("usageThreshold", "The usage threshold for this pool in bytes",
+                factory.createLongGauge("usageThreshold",
+                    "The usage threshold for this pool in bytes",
                     "bytes"),
                 factory.createLongCounter("usageExceeded",
                     "Total number of times that memory usage in this pool exceeded the usageThreshold",

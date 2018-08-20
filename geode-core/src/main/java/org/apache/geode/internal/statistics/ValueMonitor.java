@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.geode.internal.CopyOnWriteHashSet;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
-import org.apache.geode.internal.CopyOnWriteHashSet;
 
 /**
  * Adds coarser-grained monitoring of entire Statistics instances.

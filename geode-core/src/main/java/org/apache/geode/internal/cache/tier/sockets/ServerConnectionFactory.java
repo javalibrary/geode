@@ -20,7 +20,6 @@ import static org.apache.geode.internal.cache.tier.CommunicationMode.ProtobufCli
 import java.io.IOException;
 import java.net.Socket;
 
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.internal.cache.InternalCache;
 import org.apache.geode.internal.cache.client.protocol.ClientProtocolProcessor;
 import org.apache.geode.internal.cache.client.protocol.ClientProtocolService;
@@ -30,6 +29,7 @@ import org.apache.geode.internal.cache.client.protocol.exception.ServiceVersionN
 import org.apache.geode.internal.cache.tier.Acceptor;
 import org.apache.geode.internal.cache.tier.CachedRegionHelper;
 import org.apache.geode.internal.security.SecurityService;
+import org.apache.geode.statistics.StatisticsFactory;
 
 /**
  * Creates instances of ServerConnection based on the connection mode provided.
@@ -53,9 +53,9 @@ public class ServerConnectionFactory {
   }
 
   public ServerConnection makeServerConnection(Socket socket, InternalCache cache,
-                                               CachedRegionHelper helper, CacheServerStats stats, int hsTimeout, int socketBufferSize,
-                                               String communicationModeStr, byte communicationMode, Acceptor acceptor,
-                                               SecurityService securityService) throws IOException {
+      CachedRegionHelper helper, CacheServerStats stats, int hsTimeout, int socketBufferSize,
+      String communicationModeStr, byte communicationMode, Acceptor acceptor,
+      SecurityService securityService) throws IOException {
     if (ProtobufClientServerProtocol.getModeNumber() == communicationMode) {
       if (!Boolean.getBoolean("geode.feature-protobuf-protocol")) {
         throw new IOException("Server received unknown communication mode: " + communicationMode);
@@ -76,11 +76,12 @@ public class ServerConnectionFactory {
   }
 
   private ServerConnection createProtobufServerConnection(Socket socket, InternalCache cache,
-                                                          CachedRegionHelper helper, CacheServerStats stats, int hsTimeout, int socketBufferSize,
-                                                          String communicationModeStr, byte communicationMode, Acceptor acceptor,
-                                                          SecurityService securityService) throws IOException {
+      CachedRegionHelper helper, CacheServerStats stats, int hsTimeout, int socketBufferSize,
+      String communicationModeStr, byte communicationMode, Acceptor acceptor,
+      SecurityService securityService) throws IOException {
     ClientProtocolService service =
-        getClientProtocolService(cache.getDistributedSystem().getStatisticsFactory(), acceptor.getServerName());
+        getClientProtocolService(cache.getDistributedSystem().getStatisticsFactory(),
+            acceptor.getServerName());
 
     ClientProtocolProcessor processor = service.createProcessorForCache(cache, securityService);
 

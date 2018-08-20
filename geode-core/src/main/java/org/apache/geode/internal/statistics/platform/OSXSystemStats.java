@@ -15,12 +15,10 @@
 
 package org.apache.geode.internal.statistics.platform;
 
+import org.apache.geode.internal.Assert;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.Assert;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * <P>
@@ -38,7 +36,7 @@ public class OSXSystemStats {
 
   private void initializeStats(StatisticsFactory factory) {
     myType = factory.createType("OSXSystemStats", "Statistics on an OS X machine.",
-        new StatisticDescriptor[]{factory.createIntGauge("dummyStat",
+        new StatisticDescriptor[] {factory.createIntGauge("dummyStat",
             "Place holder statistic until Stats are implimented for the Mac OS X Platform.",
             "megabytes")});
   }

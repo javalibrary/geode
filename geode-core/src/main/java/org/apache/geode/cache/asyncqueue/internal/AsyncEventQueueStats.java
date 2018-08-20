@@ -14,7 +14,6 @@
  */
 package org.apache.geode.cache.asyncqueue.internal;
 
-import org.apache.geode.internal.cache.wan.GatewaySenderStats;
 import org.apache.geode.internal.cache.wan.GatewaySenderStatsImpl;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.StatisticsFactory;
@@ -47,7 +46,7 @@ public class AsyncEventQueueStats extends GatewaySenderStatsImpl {
   @Override
   public void initializeStats(StatisticsFactory factory) {
     type = factory.createType(typeName, "Stats for activity in the AsyncEventQueue",
-        new StatisticDescriptor[]{
+        new StatisticDescriptor[] {
             factory.createIntCounter(EVENTS_RECEIVED, "Number of events received by this queue.",
                 "operations"),
             factory.createIntCounter(EVENTS_QUEUED, "Number of events added to the event queue.",
@@ -161,11 +160,12 @@ public class AsyncEventQueueStats extends GatewaySenderStatsImpl {
 
   /**
    * Constructor.
+   *
    * @param factory The <code>StatisticsFactory</code> which creates the <code>Statistics</code>
-   * instance
+   *        instance
    * @param asyncQueueId The id of the <code>AsyncEventQueue</code> used to generate the name of
-   * the
-   * <code>Statistics</code>
+   *        the
+   *        <code>Statistics</code>
    */
   public AsyncEventQueueStats(StatisticsFactory factory, String asyncQueueId) {
     super();

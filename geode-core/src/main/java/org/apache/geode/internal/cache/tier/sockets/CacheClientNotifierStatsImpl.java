@@ -19,9 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.distributed.internal.DistributionStats;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * GemFire statistics about a {@link CacheClientNotifier}. These statistics are related to cache
@@ -73,43 +70,46 @@ public class CacheClientNotifierStatsImpl implements CacheClientNotifierStats, G
   public void initializeStats(StatisticsFactory factory) {
     String statName = "CacheClientNotifierStatistics";
 
-    _type = factory.createType(statName, statName, new StatisticDescriptor[] {factory.createIntCounter(EVENTS,
-        "Number of events processed by the cache client notifier.", "operations"),
+    _type = factory.createType(statName, statName,
+        new StatisticDescriptor[] {factory.createIntCounter(EVENTS,
+            "Number of events processed by the cache client notifier.", "operations"),
 
-        factory.createLongCounter(EVENT_PROCESSING_TIME,
-            "Total time spent by the cache client notifier processing events.", "nanoseconds"),
+            factory.createLongCounter(EVENT_PROCESSING_TIME,
+                "Total time spent by the cache client notifier processing events.", "nanoseconds"),
 
-        factory.createIntCounter(CLIENT_REGISTRATIONS,
-            "Number of clients that have registered for updates.", "operations"),
+            factory.createIntCounter(CLIENT_REGISTRATIONS,
+                "Number of clients that have registered for updates.", "operations"),
 
-        factory.createLongCounter(CLIENT_REGISTRATION_TIME,
-            "Total time spent doing client registrations.", "nanoseconds"),
+            factory.createLongCounter(CLIENT_REGISTRATION_TIME,
+                "Total time spent doing client registrations.", "nanoseconds"),
 
-        factory.createIntGauge("clientHealthMonitorRegister", "Number of client Register.", "registered"),
+            factory.createIntGauge("clientHealthMonitorRegister", "Number of client Register.",
+                "registered"),
 
-        factory.createIntGauge("clientHealthMonitorUnRegister", "Number of client UnRegister.",
-            "unregistered"),
+            factory.createIntGauge("clientHealthMonitorUnRegister", "Number of client UnRegister.",
+                "unregistered"),
 
-        factory.createIntCounter(DURABLE_RECONNECTION_COUNT,
-            "Number of times the same durable client connects to the server", "operations"),
+            factory.createIntCounter(DURABLE_RECONNECTION_COUNT,
+                "Number of times the same durable client connects to the server", "operations"),
 
-        factory.createIntCounter(QUEUE_DROPPED_COUNT,
-            "Number of times client queue for a particular durable client is dropped",
-            "operations"),
+            factory.createIntCounter(QUEUE_DROPPED_COUNT,
+                "Number of times client queue for a particular durable client is dropped",
+                "operations"),
 
-        factory.createIntCounter(EVENTS_ENQUEUED_WHILE_CLIENT_AWAY_COUNT,
-            "Number of events enqueued in queue for a durable client ", "operations"),
+            factory.createIntCounter(EVENTS_ENQUEUED_WHILE_CLIENT_AWAY_COUNT,
+                "Number of events enqueued in queue for a durable client ", "operations"),
 
-        factory.createLongCounter(CQ_PROCESSING_TIME,
-            "Total time spent by the cache client notifier processing cqs.", "nanoseconds"),
+            factory.createLongCounter(CQ_PROCESSING_TIME,
+                "Total time spent by the cache client notifier processing cqs.", "nanoseconds"),
 
-        factory.createLongGauge(COMPILED_QUERY_COUNT, "Number of compiled queries maintained.",
-            "maintained"),
+            factory.createLongGauge(COMPILED_QUERY_COUNT, "Number of compiled queries maintained.",
+                "maintained"),
 
-        factory.createLongCounter(COMPILED_QUERY_USED_COUNT, "Number of times compiled queries are used.",
-            "used"),
+            factory.createLongCounter(COMPILED_QUERY_USED_COUNT,
+                "Number of times compiled queries are used.",
+                "used"),
 
-    });
+        });
 
     // Initialize id fields
     _eventsId = _type.nameToId(EVENTS);

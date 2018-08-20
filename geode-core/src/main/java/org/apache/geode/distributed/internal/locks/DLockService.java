@@ -36,7 +36,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.geode.CancelCriterion;
 import org.apache.geode.CancelException;
 import org.apache.geode.InternalGemFireException;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.distributed.DistributedLockService;
 import org.apache.geode.distributed.DistributedSystem;
@@ -62,6 +61,7 @@ import org.apache.geode.internal.logging.log4j.LocalizedMessage;
 import org.apache.geode.internal.logging.log4j.LogMarker;
 import org.apache.geode.internal.util.StopWatch;
 import org.apache.geode.internal.util.concurrent.FutureResult;
+import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatsFactory;
 
 /**
@@ -2904,7 +2904,8 @@ public class DLockService extends DistributedLockService {
   }
 
   /** Get or create static dlock stats */
-  protected static synchronized DistributedLockStats getOrCreateStats(DistributedSystem distributedSystem) {
+  protected static synchronized DistributedLockStats getOrCreateStats(
+      DistributedSystem distributedSystem) {
     if (stats == DUMMY_STATS) {
       Assert.assertTrue(distributedSystem != null, "Need an instance of InternalDistributedSystem");
       StatisticsFactory statFactory = distributedSystem.getStatisticsFactory();

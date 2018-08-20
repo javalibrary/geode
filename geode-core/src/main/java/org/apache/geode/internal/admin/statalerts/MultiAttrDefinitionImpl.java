@@ -19,11 +19,11 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.apache.geode.DataSerializer;
+import org.apache.geode.internal.admin.StatAlert;
+import org.apache.geode.internal.admin.StatAlertDefinition;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
-import org.apache.geode.internal.admin.StatAlert;
-import org.apache.geode.internal.admin.StatAlertDefinition;
 
 /**
  * Implementation of {@link StatAlertDefinition} This provides the definition for multiple statistic

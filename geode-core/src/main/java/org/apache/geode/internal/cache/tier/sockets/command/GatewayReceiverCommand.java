@@ -25,7 +25,6 @@ import org.apache.geode.cache.operations.DestroyOperationContext;
 import org.apache.geode.cache.operations.PutOperationContext;
 import org.apache.geode.cache.wan.GatewayReceiver;
 import org.apache.geode.distributed.DistributedSystem;
-import org.apache.geode.distributed.internal.DistributionStats;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.i18n.StringId;
 import org.apache.geode.internal.Version;

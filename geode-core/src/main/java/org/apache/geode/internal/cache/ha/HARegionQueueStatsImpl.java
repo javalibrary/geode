@@ -106,7 +106,8 @@ public class HARegionQueueStatsImpl implements HARegionQueueStats, GFSStatsImple
   public void initializeStats(StatisticsFactory factory) {
     String statName = "ClientSubscriptionStats";
     _type = factory.createType(statName, statName, new StatisticDescriptor[] {
-        factory.createLongCounter(HARegionQueueStats.EVENTS_QUEUED, "Number of events added to queue.", "operations"),
+        factory.createLongCounter(HARegionQueueStats.EVENTS_QUEUED,
+            "Number of events added to queue.", "operations"),
 
         factory.createLongCounter(EVENTS_CONFLATED, "Number of events conflated for the queue.",
             "operations"),
@@ -117,7 +118,8 @@ public class HARegionQueueStatsImpl implements HARegionQueueStats, GFSStatsImple
         factory.createLongCounter(EVENTS_REMOVED, "Number of events removed from the queue.",
             "operations"),
 
-        factory.createLongCounter(EVENTS_TAKEN, "Number of events taken from the queue.", "operations"),
+        factory.createLongCounter(EVENTS_TAKEN, "Number of events taken from the queue.",
+            "operations"),
 
         factory.createLongCounter(EVENTS_EXPIRED, "Number of events expired from the queue.",
             "operations"),
@@ -125,7 +127,8 @@ public class HARegionQueueStatsImpl implements HARegionQueueStats, GFSStatsImple
         factory.createLongCounter(EVENTS_REMOVED_BY_QRM, "Number of events removed by QRM message.",
             "operations"),
 
-        factory.createIntCounter(THREAD_IDENTIFIERS, "Number of ThreadIdenfier objects for the queue.",
+        factory.createIntCounter(THREAD_IDENTIFIERS,
+            "Number of ThreadIdenfier objects for the queue.",
             "units"),
 
         factory.createLongCounter(EVENTS_DISPATCHED, "Number of events that have been dispatched.",
@@ -134,7 +137,8 @@ public class HARegionQueueStatsImpl implements HARegionQueueStats, GFSStatsImple
         factory.createLongCounter(NUM_VOID_REMOVALS, "Number of void removals from the queue.",
             "operations"),
 
-        factory.createLongCounter(NUM_SEQUENCE_VIOLATED, "Number of events that has violated sequence.",
+        factory.createLongCounter(NUM_SEQUENCE_VIOLATED,
+            "Number of events that has violated sequence.",
             "operations")});
 
     // Initialize id fields

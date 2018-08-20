@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.geode.DataSerializer;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.annotations.TestingOnly;
 import org.apache.geode.cache.AttributesMutator;
 import org.apache.geode.cache.CacheCallback;
@@ -93,6 +92,7 @@ import org.apache.geode.internal.logging.LogService;
 import org.apache.geode.internal.logging.log4j.LocalizedMessage;
 import org.apache.geode.internal.util.ArrayUtils;
 import org.apache.geode.pdx.internal.PeerTypeRegistration;
+import org.apache.geode.statistics.StatisticsFactory;
 
 /**
  * Takes care of RegionAttributes, AttributesMutator, and some no-brainer method implementations.

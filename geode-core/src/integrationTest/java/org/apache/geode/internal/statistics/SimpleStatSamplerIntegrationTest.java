@@ -34,10 +34,10 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
 import org.apache.geode.CancelCriterion;
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.internal.net.SocketCreator;
 import org.apache.geode.internal.stats50.VMStats50;
+import org.apache.geode.statistics.Statistics;
+import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.test.junit.categories.StatisticsTest;
 
 /**

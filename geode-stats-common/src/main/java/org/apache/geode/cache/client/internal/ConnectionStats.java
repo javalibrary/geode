@@ -1,8 +1,6 @@
 package org.apache.geode.cache.client.internal;
 
-import org.apache.geode.internal.cache.PoolStats;
 import org.apache.geode.internal.cache.tier.sockets.MessageStats;
-import org.apache.geode.statistics.StatisticsFactory;
 
 public interface ConnectionStats extends MessageStats {
 

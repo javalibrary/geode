@@ -50,7 +50,6 @@ import org.apache.geode.CancelCriterion;
 import org.apache.geode.CancelException;
 import org.apache.geode.InternalGemFireError;
 import org.apache.geode.InternalGemFireException;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.cache.AttributesFactory;
 import org.apache.geode.cache.CacheException;
@@ -103,6 +102,7 @@ import org.apache.geode.internal.util.concurrent.StoppableCondition;
 import org.apache.geode.internal.util.concurrent.StoppableReentrantLock;
 import org.apache.geode.internal.util.concurrent.StoppableReentrantReadWriteLock;
 import org.apache.geode.internal.util.concurrent.StoppableReentrantReadWriteLock.StoppableWriteLock;
+import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatsFactory;
 
 /**
@@ -374,7 +374,8 @@ public class HARegionQueue implements RegionQueue {
     createHARegion(processedRegionName, cache);
 
     initializeHARegionQueue(processedRegionName, this.region, haContainer, clientProxyId,
-        clientConflation, isPrimary, StatsFactory.createHARegionQueueStatsImpl(factory, processedRegionName),
+        clientConflation, isPrimary,
+        StatsFactory.createHARegionQueueStatsImpl(factory, processedRegionName),
         new StoppableReentrantReadWriteLock(cache.getCancelCriterion()),
         new StoppableReentrantReadWriteLock(region.getCancelCriterion()),
         this.region.getCancelCriterion(), true);

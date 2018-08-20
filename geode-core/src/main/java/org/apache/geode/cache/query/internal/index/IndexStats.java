@@ -19,9 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.cache.CachePerfStats;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * IndexStats tracks statistics about query index use.
@@ -58,7 +55,8 @@ public class IndexStats {
             factory.createLongCounter("numUpdates", numUpdatesDesc, "operations"),
             factory.createLongCounter("numUses", numUsesDesc, "operations"),
             factory.createLongCounter("updateTime", updateTimeDesc, "nanoseconds"),
-            factory.createLongCounter("useTime", "Total time spent using this index", "nanoseconds"),
+            factory.createLongCounter("useTime", "Total time spent using this index",
+                "nanoseconds"),
             factory.createIntGauge("updatesInProgress", "Current number of updates in progress.",
                 "updates"),
             factory.createIntGauge("usesInProgress", "Current number of uses in progress.", "uses"),

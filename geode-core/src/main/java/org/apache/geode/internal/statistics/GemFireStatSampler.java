@@ -28,8 +28,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.geode.CancelCriterion;
 import org.apache.geode.distributed.internal.DistributionConfig;
 import org.apache.geode.distributed.internal.DistributionManager;
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.distributed.internal.membership.InternalDistributedMember;
 import org.apache.geode.internal.GemFireVersion;
 import org.apache.geode.internal.OSProcess;
@@ -42,6 +40,7 @@ import org.apache.geode.internal.logging.log4j.LocalizedMessage;
 import org.apache.geode.internal.logging.log4j.LogMarker;
 import org.apache.geode.internal.statistics.platform.OsStatisticsFactory;
 import org.apache.geode.internal.statistics.platform.ProcessStats;
+import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 
 /**
@@ -73,9 +72,12 @@ public class GemFireStatSampler extends HostStatSampler {
 
   ////////////////////// Constructors //////////////////////
 
-  public GemFireStatSampler(long internalDistributedId,DistributionConfig distributionConfig, CancelCriterion cancelCriterion,
-                            InternalDistributedSystemStats internalDistributedSystemStats,DistributionManager distributionManager) {
-    super(cancelCriterion, new StatSamplerStats(internalDistributedSystemStats, internalDistributedId));
+  public GemFireStatSampler(long internalDistributedId, DistributionConfig distributionConfig,
+      CancelCriterion cancelCriterion,
+      InternalDistributedSystemStats internalDistributedSystemStats,
+      DistributionManager distributionManager) {
+    super(cancelCriterion,
+        new StatSamplerStats(internalDistributedSystemStats, internalDistributedId));
     this.distributionConfig = distributionConfig;
     this.distributionManager = distributionManager;
     this.internalDistributedSystemStats = internalDistributedSystemStats;
@@ -84,6 +86,7 @@ public class GemFireStatSampler extends HostStatSampler {
   /**
    * Returns the <code>ProcessStats</code> for this Java VM. Note that <code>null</code> will be
    * returned if operating statistics are disabled.
+   *
    * @since GemFire 3.5
    */
   public ProcessStats getProcessStats() {
@@ -106,8 +109,8 @@ public class GemFireStatSampler extends HostStatSampler {
       RemoteStatListenerImpl sl =
           RemoteStatListenerImpl.create(result, recipient, resourceId, statName, this);
       listeners.put(result, sl);
-      List<RemoteStatListenerImpl>
-          statListeners = recipientToListeners.computeIfAbsent(recipient, k -> new ArrayList<>());
+      List<RemoteStatListenerImpl> statListeners =
+          recipientToListeners.computeIfAbsent(recipient, k -> new ArrayList<>());
       statListeners.add(sl);
     }
     return result;
@@ -267,13 +270,15 @@ public class GemFireStatSampler extends HostStatSampler {
           logger.error(LogMarker.STATISTICS_MARKER, LocalizedMessage.create(
               LocalizedStrings.GemFireStatSampler_OS_STATISTICS_FAILED_TO_INITIALIZE_PROPERLY_SOME_STATS_MAY_BE_MISSING_SEE_BUGNOTE_37160));
         }
-        this.systemStats = HostStatHelper.newSystem(getStatisticsFactory(),getOsStatisticsFactory());
+        this.systemStats =
+            HostStatHelper.newSystem(getStatisticsFactory(), getOsStatisticsFactory());
         String statName = getStatisticsManager().getName();
         if (statName == null || statName.length() == 0) {
           statName = "javaApp" + getStatisticsManager().getId();
         }
         Statistics stats =
-            HostStatHelper.newProcess(getStatisticsFactory(),getOsStatisticsFactory(), id, statName + "-proc");
+            HostStatHelper.newProcess(getStatisticsFactory(), getOsStatisticsFactory(), id,
+                statName + "-proc");
         this.processStats = HostStatHelper.newProcessStats(stats);
       }
     }
@@ -456,8 +461,8 @@ public class GemFireStatSampler extends HostStatSampler {
     }
 
     static RemoteStatListenerImpl create(int listenerId, InternalDistributedMember recipient,
-                                         long resourceId, String statName,
-                                         HostStatSampler sampler) {
+        long resourceId, String statName,
+        HostStatSampler sampler) {
       RemoteStatListenerImpl result;
       Statistics stats = sampler.getStatisticsManager().findStatistics(resourceId);
       StatisticDescriptorImpl stat = (StatisticDescriptorImpl) stats.nameToDescriptor(statName);

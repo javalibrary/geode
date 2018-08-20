@@ -16,28 +16,22 @@ package org.apache.geode.internal.offheap;
 
 import java.lang.reflect.Method;
 
-import org.apache.geode.distributed.internal.DistributionStatsImpl;
-import org.apache.geode.statistics.StatisticDescriptor;
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.statistics.StatisticsFactory;
-import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
 import org.apache.geode.cache.CacheException;
 import org.apache.geode.distributed.DistributedSystem;
 import org.apache.geode.distributed.internal.DistributionConfig;
-import org.apache.geode.distributed.internal.DistributionStats;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.distributed.internal.InternalLocator;
 import org.apache.geode.internal.ClassPathLoader;
 import org.apache.geode.internal.i18n.LocalizedStrings;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
+import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatsFactory;
 
 /**
  * Enables off-heap storage by creating a MemoryAllocator.
+ *
  * @since Geode 1.0
  */
-//public class OffHeapStorage implements OffHeapStorageStats{
+// public class OffHeapStorage implements OffHeapStorageStats{
 public class OffHeapStorage {
   public static final String STAY_CONNECTED_ON_OUTOFOFFHEAPMEMORY_PROPERTY =
       DistributionConfig.GEMFIRE_PREFIX + "offheap.stayConnectedOnOutOfOffHeapMemory";
@@ -45,7 +39,7 @@ public class OffHeapStorage {
   private final OffHeapStorageStats stats;
 
   private OffHeapStorage(StatisticsFactory factory) {
-    this.stats = StatsFactory.createOffHeapStorageStatsImpl(factory,"offHeapMemoryStats");
+    this.stats = StatsFactory.createOffHeapStorageStatsImpl(factory, "offHeapMemoryStats");
   }
 
   public static long parseOffHeapMemorySize(String value) {
@@ -95,22 +89,21 @@ public class OffHeapStorage {
     } catch (ClassNotFoundException e) {
       throw new CacheException(
           LocalizedStrings.MEMSCALE_JVM_INCOMPATIBLE_WITH_OFF_HEAP.toLocalizedString("product"),
-          e) {
-      };
+          e) {};
     } catch (NoSuchMethodException e) {
       throw new CacheException(
           LocalizedStrings.MEMSCALE_JVM_INCOMPATIBLE_WITH_OFF_HEAP.toLocalizedString("product"),
-          e) {
-      };
+          e) {};
     }
   }
 
   /**
    * Constructs a MemoryAllocator for off-heap storage.
+   *
    * @return MemoryAllocator for off-heap storage
    */
   public static MemoryAllocator createOffHeapStorage(StatisticsFactory sf, long offHeapMemorySize,
-                                                     DistributedSystem system) {
+      DistributedSystem system) {
     if (offHeapMemorySize == 0 || Boolean.getBoolean(InternalLocator.FORCE_LOCATOR_DM_TYPE)) {
       // Checking the FORCE_LOCATOR_DM_TYPE is a quick hack to keep our locator from allocating off
       // heap memory.
@@ -134,9 +127,11 @@ public class OffHeapStorage {
     return basicCreateOffHeapStorage(sf, offHeapMemorySize, ooohml);
   }
 
-  static MemoryAllocator basicCreateOffHeapStorage(StatisticsFactory statisticsFactory, long offHeapMemorySize,
-                                                   OutOfOffHeapMemoryListener ooohml) {
-    final OffHeapStorageStats stats = StatsFactory.createOffHeapStorageStatsImpl(statisticsFactory,"offHeapStorageStats");
+  static MemoryAllocator basicCreateOffHeapStorage(StatisticsFactory statisticsFactory,
+      long offHeapMemorySize,
+      OutOfOffHeapMemoryListener ooohml) {
+    final OffHeapStorageStats stats =
+        StatsFactory.createOffHeapStorageStatsImpl(statisticsFactory, "offHeapStorageStats");
 
     // determine off-heap and slab sizes
     final long maxSlabSize = calcMaxSlabSize(offHeapMemorySize);

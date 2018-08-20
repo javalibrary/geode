@@ -19,8 +19,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.cache.Scope;
+import org.apache.geode.statistics.StatisticsFactory;
 
 /**
  * Unit testing for ComplexDiskRegion API's

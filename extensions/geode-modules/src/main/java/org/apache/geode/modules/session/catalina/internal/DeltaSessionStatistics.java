@@ -18,8 +18,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 public class DeltaSessionStatistics {
 
@@ -38,7 +36,7 @@ public class DeltaSessionStatistics {
   private void initializeStats(StatisticsFactory factory) {
     // Initialize type
     type = factory.createType(typeName, typeName,
-        new StatisticDescriptor[]{
+        new StatisticDescriptor[] {
             factory.createIntCounter(SESSIONS_CREATED, "The number of sessions created",
                 "operations"),
             factory.createIntCounter(SESSIONS_INVALIDATED,

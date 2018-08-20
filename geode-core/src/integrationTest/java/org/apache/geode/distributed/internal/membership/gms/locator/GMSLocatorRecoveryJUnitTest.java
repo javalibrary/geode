@@ -70,7 +70,7 @@ public class GMSLocatorRecoveryJUnitTest {
       this.tempStateFile.delete();
     }
     this.locator = new GMSLocator(null, null, false, false, StatsFactory.createLocatorStatsImpl(
-        (StatisticsFactory) new StatisticsTypeFactoryImpl(),"testLocator"), "");
+        (StatisticsFactory) new StatisticsTypeFactoryImpl(), "testLocator"), "");
     locator.setViewFile(tempStateFile);
     // System.out.println("temp state file: " + tempStateFile);
   }
@@ -180,8 +180,10 @@ public class GMSLocatorRecoveryJUnitTest {
       ((InternalLocator) l).getLocatorHandler().setMembershipManager(m1);
 
       GMSLocator l2 = new GMSLocator(SocketCreator.getLocalHost(),
-          m1.getLocalMember().getHost() + "[" + port + "]", true, true, StatsFactory.createLocatorStatsImpl(
-          (StatisticsFactory) new StatisticsTypeFactoryImpl(),"testLocator"), "");
+          m1.getLocalMember().getHost() + "[" + port + "]", true, true,
+          StatsFactory.createLocatorStatsImpl(
+              (StatisticsFactory) new StatisticsTypeFactoryImpl(), "testLocator"),
+          "");
       l2.setViewFile(new File("l2.dat"));
       l2.init(null);
 

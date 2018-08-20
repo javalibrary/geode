@@ -137,7 +137,8 @@ public class LocalManager extends Manager {
         // Create anonymous stats holder for Management Regions
         final HasCachePerfStats monitoringRegionStats = new HasCachePerfStats() {
           public CachePerfStats getCachePerfStats() {
-            return StatsFactory.createCachePerfStatsImpl(cache.getDistributedSystem().getStatisticsFactory(), "managementRegionStats");
+            return StatsFactory.createCachePerfStatsImpl(
+                cache.getDistributedSystem().getStatisticsFactory(), "managementRegionStats");
           }
         };
 
@@ -175,7 +176,8 @@ public class LocalManager extends Manager {
                   monitoringRegionAttrs, internalArgs));
           monitoringRegionCreated = true;
 
-        } catch (TimeoutException | RegionExistsException | IOException | ClassNotFoundException e) {
+        } catch (TimeoutException | RegionExistsException | IOException
+            | ClassNotFoundException e) {
           throw new ManagementException(e);
         }
 
@@ -184,7 +186,8 @@ public class LocalManager extends Manager {
               cache.createVMRegion(ManagementConstants.NOTIFICATION_REGION + "_" + appender,
                   notifRegionAttrs, internalArgs));
           notifRegionCreated = true;
-        } catch (TimeoutException | ClassNotFoundException | IOException | RegionExistsException e) {
+        } catch (TimeoutException | ClassNotFoundException | IOException
+            | RegionExistsException e) {
           throw new ManagementException(e);
         } finally {
           if (!notifRegionCreated && monitoringRegionCreated) {

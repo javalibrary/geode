@@ -1,12 +1,10 @@
 package org.apache.geode.statistics;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -14,8 +12,6 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
-import sun.security.jgss.GSSCaller;
-import sun.security.jgss.GSSToken;
 
 import org.apache.geode.cache.client.internal.ConnectionStats;
 import org.apache.geode.cache.query.internal.CqQueryVsdStats;
@@ -46,8 +42,7 @@ public class StatsFactory {
   private static StatsFactory statsFactory = new StatsFactory();
 
   private Class<? extends StatsImplementor> selectedStatsImplementor = null;
-  private Map<Class<?>, Class<? extends StatsImplementor>>
-      resolvedStatsImplForClass =
+  private Map<Class<?>, Class<? extends StatsImplementor>> resolvedStatsImplForClass =
       new HashMap<>();
   private List<ClassLoader> classLoadersList = new LinkedList<>();
   private Reflections reflections;
@@ -72,19 +67,19 @@ public class StatsFactory {
   }
 
   public static LocatorStats createLocatorStatsImpl(StatisticsFactory statisticsFactory,
-                                                    String locatorName) {
+      String locatorName) {
     return (LocatorStats) resolveInstanceFromClass(LocatorStats.class, statisticsFactory,
         locatorName);
   }
 
   public static DiskRegionStats createDiskRegionStatsImpl(StatisticsFactory statisticsFactory,
-                                                          String diskRegionName) {
+      String diskRegionName) {
     return (DiskRegionStats) resolveInstanceFromClass(DiskRegionStats.class, statisticsFactory,
         diskRegionName);
   }
 
   public static PoolStats createPoolStatsImpl(StatisticsFactory statisticsFactory,
-                                              String poolName) {
+      String poolName) {
     return (PoolStats) resolveInstanceFromClass(PoolStats.class, statisticsFactory, poolName);
   }
 
@@ -95,31 +90,31 @@ public class StatsFactory {
   }
 
   public static CachePerfStats createCachePerfStatsImpl(StatisticsFactory statisticsFactory,
-                                                        String name) {
+      String name) {
     return (CachePerfStats) resolveCachePerfInstanceFromClass(CachePerfStats.class,
         statisticsFactory, name);
   }
 
   public static GatewaySenderStats createGatewaySenderStatsImpl(StatisticsFactory statisticsFactory,
-                                                                String id) {
+      String id) {
     return (GatewaySenderStats) resolveInstanceFromClass(GatewaySenderStats.class,
         statisticsFactory, id);
   }
 
   public static DistributionStats createDistributionStatsImpl(StatisticsFactory statisticsFactory,
-                                                              String name) {
+      String name) {
     return (DistributionStats) resolveInstanceFromClass(DistributionStats.class, statisticsFactory,
         name);
   }
 
   public static HARegionQueueStats createHARegionQueueStatsImpl(StatisticsFactory factory,
-                                                                String regionName) {
+      String regionName) {
     return (HARegionQueueStats) resolveInstanceFromClass(HARegionQueueStats.class, factory,
         regionName);
   }
 
   public static FunctionStats createFunctionStatsImpl(StatisticsFactory statisticsFactory,
-                                                      String functionName) {
+      String functionName) {
     return (FunctionStats) resolveInstanceFromClass(FunctionStats.class, statisticsFactory,
         functionName);
   }
@@ -136,13 +131,13 @@ public class StatsFactory {
   }
 
   public static DiskDirectoryStats createDiskDirectoryStatsImpl(StatisticsFactory factory,
-                                                                String ownersName) {
+      String ownersName) {
     return (DiskDirectoryStats) resolveInstanceFromClass(DiskDirectoryStats.class, factory,
         ownersName);
   }
 
   public static ConnectionStats createConnectionStatsImpl(StatisticsFactory dummyStatisticsFactory,
-                                                          String statName, PoolStats poolStats) {
+      String statName, PoolStats poolStats) {
     return (ConnectionStats) resolveConnectionStatInstanceFromClass(ConnectionStats.class,
         dummyStatisticsFactory,
         statName, poolStats);
@@ -156,31 +151,30 @@ public class StatsFactory {
 
 
   private static StatsImplementor resolveInstanceFromClass(Class<?> interfaceClazz,
-                                                           StatisticsFactory statisticsFactory,
-                                                           String name) {
+      StatisticsFactory statisticsFactory,
+      String name) {
     resolveClassImplForClass(interfaceClazz);
     return statsFactory.createInstanceFromClass(interfaceClazz, statisticsFactory, name);
   }
 
   private static StatsImplementor resolveCachePerfInstanceFromClass(Class<?> interfaceClazz,
-                                                                    StatisticsFactory statisticsFactory,
-                                                                    String name) {
+      StatisticsFactory statisticsFactory,
+      String name) {
     resolveCachePerfClassImplForClass(interfaceClazz);
     return statsFactory.createInstanceFromClass(interfaceClazz, statisticsFactory, name);
   }
 
   private static StatsImplementor resolveConnectionStatInstanceFromClass(Class<?> interfaceClazz,
-                                                                         StatisticsFactory statisticsFactory,
-                                                                         String name,
-                                                                         PoolStats poolStats) {
+      StatisticsFactory statisticsFactory,
+      String name,
+      PoolStats poolStats) {
     resolveClassImplForClass(interfaceClazz);
     return statsFactory.createConnectionStatInstanceFromClass(statisticsFactory, name, poolStats);
   }
 
 
   private static void resolveClassImplForClass(Class<?> interfaceClazz) {
-    Class<? extends StatsImplementor>
-        resolvedLocatorClassImpl =
+    Class<? extends StatsImplementor> resolvedLocatorClassImpl =
         statsFactory.resolvedStatsImplForClass.get(interfaceClazz);
     if (resolvedLocatorClassImpl == null) {
       statsFactory.reflections.getSubTypesOf(interfaceClazz)
@@ -192,8 +186,7 @@ public class StatsFactory {
   }
 
   private static void resolveCachePerfClassImplForClass(Class<?> interfaceClazz) {
-    Class<? extends StatsImplementor>
-        resolvedLocatorClassImpl =
+    Class<? extends StatsImplementor> resolvedLocatorClassImpl =
         statsFactory.resolvedStatsImplForClass.get(interfaceClazz);
     if (resolvedLocatorClassImpl == null) {
       statsFactory.reflections.getSubTypesOf(interfaceClazz)
@@ -206,7 +199,7 @@ public class StatsFactory {
   }
 
   public static CqQueryVsdStats createCqQueryVsdStatsImpl(StatisticsFactory factory,
-                                                          String serverCqName) {
+      String serverCqName) {
     return (CqQueryVsdStats) resolveInstanceFromClass(CqQueryVsdStats.class, factory, serverCqName);
   }
 
@@ -215,15 +208,15 @@ public class StatsFactory {
   }
 
   public static DistributedLockStats createDLockStatsImpl(StatisticsFactory statisticsFactory,
-                                                          long statId) {
+      long statId) {
     return (DistributedLockStats) resolveInstanceFromClass(DistributedLockStats.class,
         statisticsFactory,
         String.valueOf(statId));
   }
 
   public static RegionPerfStats createRegionPerfStatsImpl(StatisticsFactory statisticsFactory,
-                                                          CachePerfStats cachePerfStats,
-                                                          String regionName) {
+      CachePerfStats cachePerfStats,
+      String regionName) {
     return (RegionPerfStats) resolveRegionPerfStatsInstanceFromClass(RegionPerfStats.class,
         statisticsFactory, cachePerfStats, regionName);
   }
@@ -238,19 +231,19 @@ public class StatsFactory {
   }
 
   public static EvictionStats createHeapLRUStatisticsImpl(StatisticsFactory statisticsFactory,
-                                                          String name) {
+      String name) {
     return (EvictionStats) resolveInstanceFromClass(HeapLRUEvictionStats.class, statisticsFactory,
         name);
   }
 
   public static EvictionStats createCountLRUStatisticsImpl(StatisticsFactory statisticsFactory,
-                                                           String name) {
+      String name) {
     return (EvictionStats) resolveInstanceFromClass(CountLRUEvictionStats.class, statisticsFactory,
         name);
   }
 
   public static EvictionStats createMemoryLRUStatisticsImpl(StatisticsFactory statisticsFactory,
-                                                            String name) {
+      String name) {
     return (EvictionStats) resolveInstanceFromClass(MemoryLRUEvictionStats.class, statisticsFactory,
         name);
   }
@@ -264,9 +257,9 @@ public class StatsFactory {
   }
 
   private StatsImplementor createRegionPerfStatsImplFromClass(Class<?> interfaceClazz,
-                                                              StatisticsFactory statisticsFactory,
-                                                              CachePerfStats cachePerfStats,
-                                                              String regionName) {
+      StatisticsFactory statisticsFactory,
+      CachePerfStats cachePerfStats,
+      String regionName) {
     Class<? extends StatsImplementor> resolvedLocatorClassImpl;
     try {
       resolvedLocatorClassImpl = resolvedStatsImplForClass.get(interfaceClazz);
@@ -276,7 +269,8 @@ public class StatsFactory {
       statsImplementor.initializeImplementor(statisticsFactory);
       statsImplementor.registerStatsImplementor(statisticsFactory);
       return statsImplementor;
-    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+        | InvocationTargetException e) {
       e.printStackTrace();
     }
     return null;
@@ -288,23 +282,23 @@ public class StatsFactory {
     Class<? extends StatsImplementor> resolvedLocatorClassImpl;
     try {
       resolvedLocatorClassImpl = resolvedStatsImplForClass.get(ConnectionStats.class);
-      StatsImplementor
-          statsImplementor =
+      StatsImplementor statsImplementor =
           resolvedLocatorClassImpl
               .getDeclaredConstructor(StatisticsFactory.class, String.class, PoolStats.class)
               .newInstance(statisticsFactory, locatorName, poolStats);
       statsImplementor.initializeImplementor(statisticsFactory);
       statsImplementor.registerStatsImplementor(statisticsFactory);
       return statsImplementor;
-    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+        | InvocationTargetException e) {
       e.printStackTrace();
     }
     return null;
   }
 
   private StatsImplementor createInstanceFromClass(Class<?> interfaceClazz,
-                                                   StatisticsFactory statisticsFactory,
-                                                   String name) {
+      StatisticsFactory statisticsFactory,
+      String name) {
     Class<? extends StatsImplementor> resolvedLocatorClassImpl;
     try {
       resolvedLocatorClassImpl = resolvedStatsImplForClass.get(interfaceClazz);
@@ -317,10 +311,10 @@ public class StatsFactory {
       statsImplementor.initializeImplementor(statisticsFactory);
       statsImplementor.registerStatsImplementor(statisticsFactory);
       return statsImplementor;
-    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+        | InvocationTargetException e) {
       e.printStackTrace();
     }
     return null;
   }
 }
-

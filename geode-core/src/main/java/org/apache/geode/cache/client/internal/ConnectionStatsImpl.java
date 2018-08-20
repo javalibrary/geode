@@ -14,15 +14,16 @@
  */
 package org.apache.geode.cache.client.internal;
 
+import org.apache.geode.internal.cache.PoolStatsImpl;
 import org.apache.geode.statistics.GFSStatsImplementor;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.internal.cache.PoolStatsImpl;
 
 /**
  * Stats for a client to server {@link Connection}
+ *
  * @since GemFire 5.7
  */
 public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor {
@@ -440,7 +441,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
   public void initializeStats(StatisticsFactory factory) {
     try {
       type = factory.createType("ClientStats", "Statistics about client to server communication",
-          new StatisticDescriptor[]{
+          new StatisticDescriptor[] {
               factory.createIntGauge("getsInProgress", "Current number of gets being executed",
                   "gets"),
               factory.createIntCounter("gets", "Total number of gets completed successfully",
@@ -944,13 +945,15 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
       sendType =
           factory.createType("ClientSendStats", "Statistics about client to server communication",
-              new StatisticDescriptor[]{
+              new StatisticDescriptor[] {
                   ///////////////////////////////////////////////////////////////////////
                   /*
-                   * factory.createIntGauge("opSendsInProgress", "Current number of op sends being executed",
+                   * factory.createIntGauge("opSendsInProgress",
+                   * "Current number of op sends being executed",
                    * "sends"), factory.createIntCounter("opSends",
                    * "Total number of op sends that have completed successfully", "sends"),
-                   * factory.createIntCounter("opSendFailures", "Total number of op sends that have failed",
+                   * factory.createIntCounter("opSendFailures",
+                   * "Total number of op sends that have failed",
                    * "sends"), factory.createLongCounter("opSendTime",
                    * "Total amount of time, in nanoseconds spent doing op sends", "nanoseconds"),
                    */
@@ -1733,7 +1736,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
       addPdxTypeId = type.nameToId("addPdxTypeSuccessful");
       addPdxTypeDurationId = type.nameToId("addPdxTypeTime");
 
-      opIds = new int[]{getId, putId, destroyId, destroyRegionId, clearId, containsKeyId, keySetId,
+      opIds = new int[] {getId, putId, destroyId, destroyRegionId, clearId, containsKeyId, keySetId,
           registerInterestId, unregisterInterestId, queryId, createCQId, stopCQId, closeCQId,
           gatewayBatchId, readyForEventsId, makePrimaryId, closeConId, primaryAckId, pingId,
           putAllId, removeAllId, getAllId, registerInstantiatorsId, executeFunctionId,
@@ -1751,7 +1754,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
   private final PoolStatsImpl poolStats;
 
   public ConnectionStatsImpl(StatisticsFactory factory, String name,
-                             PoolStatsImpl poolStats/* , GatewayStats gatewayStats */) {
+      PoolStatsImpl poolStats/* , GatewayStats gatewayStats */) {
     initializeStats(factory);
     this.stats = factory.createAtomicStatistics(type, "ClientStats-" + name);
     this.sendStats = factory.createAtomicStatistics(sendType, "ClientSendStats-" + name);
@@ -1763,6 +1766,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endGetSend} and {@link
    * #endGet}.
+   *
    * @return the start time of this get
    */
   @Override
@@ -1775,6 +1779,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the get has completed
+   *
    * @param startTime the value returned by {@link #startGet}.
    * @param failed true if the send of the get failed
    */
@@ -1785,13 +1790,14 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
   }
 
   private void endOperation(long startTime, boolean failed, int operationInProgressId,
-                            int operationFailedId, int operationId, int operationDurationId) {
+      int operationFailedId, int operationId, int operationDurationId) {
     endOperationWithTimeout(startTime, false, failed, operationInProgressId, 0, operationFailedId,
         operationId, operationDurationId);
   }
 
   /**
    * Records that the specified get has ended
+   *
    * @param startTime the value returned by {@link #startGet}.
    * @param timedOut true if get timed out
    * @param failed true if get failed
@@ -1818,6 +1824,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endPutSend} and {@link
    * #endPut}.
+   *
    * @return the start time of this put
    */
   @Override
@@ -1830,6 +1837,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the put has completed
+   *
    * @param startTime the value returned by {@link #startPut}.
    * @param failed true if the send of the put failed
    */
@@ -1841,6 +1849,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified put has ended
+   *
    * @param startTime the value returned by {@link #startPut}.
    * @param timedOut true if put timed out
    * @param failed true if put failed
@@ -1853,9 +1862,9 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
   }
 
   public void endOperationWithTimeout(long startTime, boolean timedOut, boolean failed,
-                                      int operationInProgressId, int operationTimedOutId,
-                                      int operationFailedId, int operationId,
-                                      int operationDurationId) {
+      int operationInProgressId, int operationTimedOutId,
+      int operationFailedId, int operationId,
+      int operationDurationId) {
     long duration = System.nanoTime() - startTime;
     endClientOp(duration, timedOut, failed);
     this.stats.incInt(operationInProgressId, -1);
@@ -1886,6 +1895,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endDestroySend} and
    * {@link #endDestroy}.
+   *
    * @return the start time of this destroy
    */
   @Override
@@ -1898,6 +1908,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the destroy has completed
+   *
    * @param startTime the value returned by {@link #startDestroy}.
    * @param failed true if the send of the destroy failed
    */
@@ -1909,6 +1920,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified destroy has ended
+   *
    * @param startTime the value returned by {@link #startDestroy}.
    * @param timedOut true if destroy timed out
    * @param failed true if destroy failed
@@ -1924,6 +1936,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endDestroyRegionSend} and
    * {@link #endDestroyRegion}.
+   *
    * @return the start time of this destroyRegion
    */
   @Override
@@ -1936,6 +1949,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the destroyRegion has completed
+   *
    * @param startTime the value returned by {@link #startDestroyRegion}.
    * @param failed true if the send of the destroyRegion failed
    */
@@ -1947,6 +1961,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified destroyRegion has ended
+   *
    * @param startTime the value returned by {@link #startDestroyRegion}.
    * @param timedOut true if destroyRegion timed out
    * @param failed true if destroyRegion failed
@@ -1963,6 +1978,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endClearSend} and {@link
    * #endClear}.
+   *
    * @return the start time of this clear
    */
   @Override
@@ -1975,6 +1991,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the clear has completed
+   *
    * @param startTime the value returned by {@link #startClear}.
    * @param failed true if the send of the clear failed
    */
@@ -1986,6 +2003,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified clear has ended
+   *
    * @param startTime the value returned by {@link #startClear}.
    * @param timedOut true if clear timed out
    * @param failed true if clear failed
@@ -2002,6 +2020,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endContainsKeySend} and
    * {@link #endContainsKey}.
+   *
    * @return the start time of this containsKey
    */
   @Override
@@ -2014,6 +2033,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the containsKey has completed
+   *
    * @param startTime the value returned by {@link #startContainsKey}.
    * @param failed true if the send of the containsKey failed
    */
@@ -2025,6 +2045,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified containsKey has ended
+   *
    * @param startTime the value returned by {@link #startContainsKey}.
    * @param timedOut true if containsKey timed out
    * @param failed true if containsKey failed
@@ -2041,6 +2062,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endKeySetSend} and {@link
    * #endKeySet}.
+   *
    * @return the start time of this keySet
    */
   @Override
@@ -2053,6 +2075,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the keySet has completed
+   *
    * @param startTime the value returned by {@link #startKeySet}.
    * @param failed true if the send of the keySet failed
    */
@@ -2064,6 +2087,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified keySet has ended
+   *
    * @param startTime the value returned by {@link #startKeySet}.
    * @param timedOut true if keySet timed out
    * @param failed true if keySet failed
@@ -2080,6 +2104,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endRegisterInterestSend}
    * and {@link #endRegisterInterest}.
+   *
    * @return the start time of this registerInterest
    */
   @Override
@@ -2092,6 +2117,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the registerInterest has completed
+   *
    * @param startTime the value returned by {@link #startRegisterInterest}.
    * @param failed true if the send of the registerInterest failed
    */
@@ -2103,6 +2129,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified registerInterest has ended
+   *
    * @param startTime the value returned by {@link #startRegisterInterest}.
    * @param timedOut true if registerInterest timed out
    * @param failed true if registerInterest failed
@@ -2119,6 +2146,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link
    * #endUnregisterInterestSend} and {@link #endUnregisterInterest}.
+   *
    * @return the start time of this unregisterInterest
    */
   @Override
@@ -2131,6 +2159,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the unregisterInterest has completed
+   *
    * @param startTime the value returned by {@link #startUnregisterInterest}.
    * @param failed true if the send of the unregisterInterest failed
    */
@@ -2142,6 +2171,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified unregisterInterest has ended
+   *
    * @param startTime the value returned by {@link #startUnregisterInterest}.
    * @param timedOut true if unregisterInterest timed out
    * @param failed true if unregisterInterest failed
@@ -2158,6 +2188,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endQuerySend} and {@link
    * #endQuery}.
+   *
    * @return the start time of this query
    */
   @Override
@@ -2170,6 +2201,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the query has completed
+   *
    * @param startTime the value returned by {@link #startQuery}.
    * @param failed true if the send of the query failed
    */
@@ -2181,6 +2213,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified query has ended
+   *
    * @param startTime the value returned by {@link #startQuery}.
    * @param timedOut true if query timed out
    * @param failed true if query failed
@@ -2197,6 +2230,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endCreateCQSend} and
    * {@link #endCreateCQ}.
+   *
    * @return the start time of this createCQ
    */
   @Override
@@ -2209,6 +2243,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the createCQ has completed
+   *
    * @param startTime the value returned by {@link #startCreateCQ}.
    * @param failed true if the send of the createCQ failed
    */
@@ -2220,6 +2255,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified createCQ has ended
+   *
    * @param startTime the value returned by {@link #startCreateCQ}.
    * @param timedOut true if createCQ timed out
    * @param failed true if createCQ failed
@@ -2235,6 +2271,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endStopCQSend} and {@link
    * #endStopCQ}.
+   *
    * @return the start time of this stopCQ
    */
   @Override
@@ -2247,6 +2284,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the stopCQ has completed
+   *
    * @param startTime the value returned by {@link #startStopCQ}.
    * @param failed true if the send of the stopCQ failed
    */
@@ -2258,6 +2296,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified stopCQ has ended
+   *
    * @param startTime the value returned by {@link #startStopCQ}.
    * @param timedOut true if stopCQ timed out
    * @param failed true if stopCQ failed
@@ -2274,6 +2313,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endCloseCQSend} and
    * {@link #endCloseCQ}.
+   *
    * @return the start time of this closeCQ
    */
   @Override
@@ -2286,6 +2326,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the closeCQ has completed
+   *
    * @param startTime the value returned by {@link #startCloseCQ}.
    * @param failed true if the send of the closeCQ failed
    */
@@ -2297,6 +2338,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified closeCQ has ended
+   *
    * @param startTime the value returned by {@link #startCloseCQ}.
    * @param timedOut true if closeCQ timed out
    * @param failed true if closeCQ failed
@@ -2312,6 +2354,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endStopCQSend} and {@link
    * #endStopCQ}.
+   *
    * @return the start time of this stopCQ
    */
   @Override
@@ -2324,6 +2367,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the stopCQ has completed
+   *
    * @param startTime the value returned by {@link #startStopCQ}.
    * @param failed true if the send of the stopCQ failed
    */
@@ -2335,6 +2379,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified stopCQ has ended
+   *
    * @param startTime the value returned by {@link #startStopCQ}.
    * @param timedOut true if stopCQ timed out
    * @param failed true if stopCQ failed
@@ -2351,6 +2396,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endGatewayBatchSend} and
    * {@link #endGatewayBatch}.
+   *
    * @return the start time of this gatewayBatch
    */
   @Override
@@ -2363,6 +2409,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the gatewayBatch has completed
+   *
    * @param startTime the value returned by {@link #startGatewayBatch}.
    * @param failed true if the send of the gatewayBatch failed
    */
@@ -2374,6 +2421,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified gatewayBatch has ended
+   *
    * @param startTime the value returned by {@link #startGatewayBatch}.
    * @param timedOut true if gatewayBatch timed out
    * @param failed true if gatewayBatch failed
@@ -2390,6 +2438,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endReadyForEventsSend}
    * and {@link #endReadyForEvents}.
+   *
    * @return the start time of this readyForEvents
    */
   @Override
@@ -2402,6 +2451,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the readyForEvents has completed
+   *
    * @param startTime the value returned by {@link #startReadyForEvents}.
    * @param failed true if the send of the readyForEvents failed
    */
@@ -2413,6 +2463,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified readyForEvents has ended
+   *
    * @param startTime the value returned by {@link #startReadyForEvents}.
    * @param timedOut true if readyForEvents timed out
    * @param failed true if readyForEvents failed
@@ -2429,6 +2480,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endMakePrimarySend} and
    * {@link #endMakePrimary}.
+   *
    * @return the start time of this makePrimary
    */
   @Override
@@ -2441,6 +2493,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the makePrimary has completed
+   *
    * @param startTime the value returned by {@link #startMakePrimary}.
    * @param failed true if the send of the makePrimary failed
    */
@@ -2452,6 +2505,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified makePrimary has ended
+   *
    * @param startTime the value returned by {@link #startMakePrimary}.
    * @param timedOut true if makePrimary timed out
    * @param failed true if makePrimary failed
@@ -2468,6 +2522,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endCloseConSend} and
    * {@link #endCloseCon}.
+   *
    * @return the start time of this closeCon
    */
   @Override
@@ -2480,6 +2535,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the closeCon has completed
+   *
    * @param startTime the value returned by {@link #startCloseCon}.
    * @param failed true if the send of the closeCon failed
    */
@@ -2491,6 +2547,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified closeCon has ended
+   *
    * @param startTime the value returned by {@link #startCloseCon}.
    * @param timedOut true if closeCon timed out
    * @param failed true if closeCon failed
@@ -2506,6 +2563,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endPrimaryAckSend} and
    * {@link #endPrimaryAck}.
+   *
    * @return the start time of this primaryAck
    */
   @Override
@@ -2518,6 +2576,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the primaryAck has completed
+   *
    * @param startTime the value returned by {@link #startPrimaryAck}.
    * @param failed true if the send of the primaryAck failed
    */
@@ -2529,6 +2588,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified primaryAck has ended
+   *
    * @param startTime the value returned by {@link #startPrimaryAck}.
    * @param timedOut true if primaryAck timed out
    * @param failed true if primaryAck failed
@@ -2545,6 +2605,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endPingSend} and {@link
    * #endPing}.
+   *
    * @return the start time of this ping
    */
   @Override
@@ -2557,6 +2618,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the ping has completed
+   *
    * @param startTime the value returned by {@link #startPing}.
    * @param failed true if the send of the ping failed
    */
@@ -2568,6 +2630,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified ping has ended
+   *
    * @param startTime the value returned by {@link #startPing}.
    * @param timedOut true if ping timed out
    * @param failed true if ping failed
@@ -2584,6 +2647,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link
    * #endRegisterInstantiatorsSend} and {@link #endRegisterInstantiators}.
+   *
    * @return the start time of this registerInstantiators
    */
   @Override
@@ -2604,6 +2668,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the registerInstantiators has completed
+   *
    * @param startTime the value returned by {@link #startRegisterInstantiators}.
    * @param failed true if the send of the registerInstantiators failed
    */
@@ -2623,6 +2688,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified registerInstantiators has ended
+   *
    * @param startTime the value returned by {@link #startRegisterInstantiators}.
    * @param timedOut true if registerInstantiators timed out
    * @param failed true if registerInstantiators failed
@@ -2646,6 +2712,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endPutAllSend} and {@link
    * #endPutAll}.
+   *
    * @return the start time of this putAll
    */
   @Override
@@ -2658,6 +2725,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the putAll has completed
+   *
    * @param startTime the value returned by {@link #startPutAll}.
    * @param failed true if the send of the putAll failed
    */
@@ -2669,6 +2737,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified putAll has ended
+   *
    * @param startTime the value returned by {@link #startPutAll}.
    * @param timedOut true if putAll timed out
    * @param failed true if putAll failed
@@ -2685,6 +2754,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endRemoveAllSend} and
    * {@link #endRemoveAll}.
+   *
    * @return the start time of this removeAll
    */
   @Override
@@ -2697,6 +2767,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the removeAll has completed
+   *
    * @param startTime the value returned by {@link #startRemoveAll}.
    * @param failed true if the send of the removeAll failed
    */
@@ -2708,6 +2779,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified removeAll has ended
+   *
    * @param startTime the value returned by {@link #startRemoveAll}.
    * @param timedOut true if removeAll timed out
    * @param failed true if removeAll failed
@@ -2723,6 +2795,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endGetAllSend} and {@link
    * #endGetAll}.
+   *
    * @return the start time of this getAll
    */
   @Override
@@ -2735,6 +2808,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the getAll has completed
+   *
    * @param startTime the value returned by {@link #startGetAll}.
    * @param failed true if the send of the getAll failed
    */
@@ -2746,6 +2820,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified getAll has ended
+   *
    * @param startTime the value returned by {@link #startGetAll}.
    * @param timedOut true if getAll timed out
    * @param failed true if getAll failed
@@ -2834,6 +2909,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link #endExecuteFunctionSend}
    * and {@link #endExecuteFunction}.
+   *
    * @return the start time of this ExecuteFunction
    */
   @Override
@@ -2845,6 +2921,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the executeFunction has completed
+   *
    * @param startTime the value returned by {@link #startExecuteFunction}.
    * @param failed true if the send of the executeFunction failed
    */
@@ -2864,6 +2941,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified executeFunction has ended
+   *
    * @param startTime the value returned by {@link #startExecuteFunction}.
    * @param timedOut true if executeFunction timed out
    * @param failed true if executeFunction failed
@@ -2904,6 +2982,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link
    * #endGetClientPRMetadataSend} and {@link #endGetClientPRMetadata}.
+   *
    * @return the start time of this ExecuteFunction
    */
   @Override
@@ -2916,6 +2995,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the GetClientPRMetadata has completed
+   *
    * @param startTime the value returned by {@link #startGetClientPRMetadata}.
    * @param failed true if the send of the GetClientPRMetadata failed
    */
@@ -2928,6 +3008,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified GetClientPRMetadata has ended
+   *
    * @param startTime the value returned by {@link #startGetClientPRMetadata}.
    * @param timedOut true if GetClientPRMetadata timed out
    * @param failed true if GetClientPRMetadata failed
@@ -2944,6 +3025,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
    * <p>
    * Note: for every call of this method the caller must also call {@link
    * #endGetClientPartitionAttributesSend} and {@link #endGetClientPartitionAttributes}.
+   *
    * @return the start time of this GetClientPartitionAttributes
    */
   @Override
@@ -2956,6 +3038,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the send part of the GetClientPartitionAttributes operation has completed
+   *
    * @param startTime the value returned by {@link #startGetClientPartitionAttributes}.
    * @param failed true if the send of the GetClientPartitionAttributes failed
    */
@@ -2968,6 +3051,7 @@ public class ConnectionStatsImpl implements ConnectionStats, GFSStatsImplementor
 
   /**
    * Records that the specified GetClientPartitionAttributes has ended
+   *
    * @param startTime the value returned by {@link #startGetClientPartitionAttributes}.
    * @param timedOut true if GetClientPartitionAttributes timed out
    * @param failed true if GetClientPartitionAttributes failed

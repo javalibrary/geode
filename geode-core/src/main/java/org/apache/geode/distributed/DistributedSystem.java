@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.geode.CancelCriterion;
 import org.apache.geode.LogWriter;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.CacheFactory;
 import org.apache.geode.cache.client.ClientCache;
@@ -44,6 +43,7 @@ import org.apache.geode.internal.ClassPathLoader;
 import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.internal.tcp.ConnectionTable;
 import org.apache.geode.internal.util.IOUtils;
+import org.apache.geode.statistics.StatisticsFactory;
 
 /**
  * A "connection" to a GemFire distributed system. A <code>DistributedSystem</code> is created by
@@ -77,8 +77,8 @@ import org.apache.geode.internal.util.IOUtils;
  *
  * @since GemFire 3.0
  */
-//public abstract class DistributedSystem implements StatisticsFactory {
-public abstract class DistributedSystem{
+// public abstract class DistributedSystem implements StatisticsFactory {
+public abstract class DistributedSystem {
 
   /**
    * The instances of <code>DistributedSystem</code> created in this VM. Presently only one connect

@@ -58,7 +58,8 @@ public class CacheServerStatsJUnitTest extends MBeanStatsTestCase {
     cacheServerStats.incProcessPutTime(startTime);
 
     ServerLoad load = new ServerLoad(1, 1, 1, 1);
-    cacheServerStats.setLoad(load.getConnectionLoad(),load.getLoadPerConnection(),load.getSubscriptionConnectionLoad(),load.getLoadPerSubscriptionConnection());
+    cacheServerStats.setLoad(load.getConnectionLoad(), load.getLoadPerConnection(),
+        load.getSubscriptionConnectionLoad(), load.getLoadPerSubscriptionConnection());
 
     sample();
 

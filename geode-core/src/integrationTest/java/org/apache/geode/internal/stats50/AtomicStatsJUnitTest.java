@@ -25,12 +25,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 
+import org.apache.geode.distributed.DistributedSystem;
+import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.distributed.DistributedSystem;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 public class AtomicStatsJUnitTest {
 
@@ -102,7 +102,8 @@ public class AtomicStatsJUnitTest {
       thread1.start();
       thread3.start();
       for (int i = 0; i < 5000; i++) {
-        Statistics stats = distributedSystem.getStatisticsFactory().createAtomicStatistics(type, "stats");
+        Statistics stats =
+            distributedSystem.getStatisticsFactory().createAtomicStatistics(type, "stats");
         statsRef.set(stats);
         beforeIncrement.await();
         afterIncrement.await();

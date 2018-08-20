@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.apache.geode.LogWriter;
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.cache.AttributesFactory;
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.DataPolicy;
@@ -43,6 +42,7 @@ import org.apache.geode.cache.EvictionAttributes;
 import org.apache.geode.cache.PartitionAttributesFactory;
 import org.apache.geode.cache.PartitionedRegionStorageException;
 import org.apache.geode.cache.RegionExistsException;
+import org.apache.geode.statistics.Statistics;
 
 public class PartitionedRegionStatsJUnitTest {
   private static final File DISK_DIR = new File("PRStatsTest");

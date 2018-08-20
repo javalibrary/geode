@@ -14,13 +14,13 @@
  */
 package org.apache.geode.cache.query.internal;
 
+import org.apache.geode.cache.query.CqEvent;
+import org.apache.geode.internal.cache.tier.MessageType;
 import org.apache.geode.statistics.GFSStatsImplementor;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.cache.query.CqEvent;
-import org.apache.geode.internal.cache.tier.MessageType;
 
 /**
  * This class tracks GemFire statistics related to a {@link org.apache.geode.cache.query.CqQuery}.
@@ -103,9 +103,11 @@ public abstract class CqQueryVsdStatsImpl implements CqQueryVsdStats, GFSStatsIm
             factory.createLongCounter(CQ_EVENTS,
                 "Total number of inserts, updates, and deletes done on this cq.", "operations"),
 
-            factory.createLongGauge(NUM_HA_QUEUED_CQ_EVENTS, "Number of events in this cq.", "events"),
+            factory.createLongGauge(NUM_HA_QUEUED_CQ_EVENTS, "Number of events in this cq.",
+                "events"),
 
-            factory.createLongCounter(CQ_LISTENER_INVOCATIONS, "Total number of CqListener invocations.",
+            factory.createLongCounter(CQ_LISTENER_INVOCATIONS,
+                "Total number of CqListener invocations.",
                 "operations"),
 
             factory.createLongGauge(QUEUED_CQ_LISTENER_EVENTS,

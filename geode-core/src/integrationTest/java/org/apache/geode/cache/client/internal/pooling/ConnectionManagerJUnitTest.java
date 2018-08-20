@@ -93,8 +93,10 @@ public class ConnectionManagerJUnitTest {
     properties.put(LOCATORS, "");
     distributedSystem = DistributedSystem.connect(properties);
     background = Executors.newSingleThreadScheduledExecutor();
-    poolStats = StatsFactory.createPoolStatsImpl(distributedSystem.getStatisticsFactory(), "connectionManagerJUnitTest");
-    endpointManager = new EndpointManagerImpl("pool", distributedSystem, distributedSystem.getCancelCriterion(), poolStats);
+    poolStats = StatsFactory.createPoolStatsImpl(distributedSystem.getStatisticsFactory(),
+        "connectionManagerJUnitTest");
+    endpointManager = new EndpointManagerImpl("pool", distributedSystem,
+        distributedSystem.getCancelCriterion(), poolStats);
     cancelCriterion = new CancelCriterion() {
 
       public String cancelInProgress() {

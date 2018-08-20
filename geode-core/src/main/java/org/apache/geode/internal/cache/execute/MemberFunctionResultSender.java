@@ -118,7 +118,8 @@ public class MemberFunctionResultSender implements InternalResultSender {
           // call a synchronized method as local node is also waiting to send lastResult
           lastResult(oneResult, rc, false, true, this.dm.getDistributionManagerId());
         }
-        FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem()).incResultsReceived();
+        FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem())
+            .incResultsReceived();
       }
     }
     FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem()).incResultsReturned();
@@ -176,7 +177,8 @@ public class MemberFunctionResultSender implements InternalResultSender {
       } else {
         reply.addResult(memberID, oneResult);
       }
-      FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem()).incResultsReceived();
+      FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem())
+          .incResultsReceived();
     }
     FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem()).incResultsReturned();
   }
@@ -206,10 +208,12 @@ public class MemberFunctionResultSender implements InternalResultSender {
         }
       } else {
         this.rc.addResult(this.dm.getDistributionManagerId(), oneResult);
-        FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem()).incResultsReceived();
+        FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem())
+            .incResultsReceived();
       }
       // incrementing result sent stats.
-      FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem()).incResultsReturned();
+      FunctionStatsImpl.getFunctionStats(function.getId(), this.dm.getSystem())
+          .incResultsReturned();
     }
   }
 

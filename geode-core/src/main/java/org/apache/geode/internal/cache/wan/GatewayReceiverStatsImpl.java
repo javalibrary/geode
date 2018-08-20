@@ -14,11 +14,10 @@
  */
 package org.apache.geode.internal.cache.wan;
 
-import org.apache.geode.statistics.GFSStatsImplementor;
-import org.apache.geode.statistics.StatisticDescriptor;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.internal.cache.tier.sockets.CacheServerStatsImpl;
+import org.apache.geode.statistics.StatisticDescriptor;
+import org.apache.geode.statistics.StatisticsFactory;
 
 public class GatewayReceiverStatsImpl extends CacheServerStatsImpl implements GatewayReceiverStats {
 
@@ -95,14 +94,16 @@ public class GatewayReceiverStatsImpl extends CacheServerStatsImpl implements Ga
   // ///////////////////// Constructors ///////////////////////
 
   public static GatewayReceiverStatsImpl createGatewayReceiverStats(String ownerName) {
-    StatisticsFactory statisticsFactory = InternalDistributedSystem.getAnyInstance().getStatisticsFactory();
+    StatisticsFactory statisticsFactory =
+        InternalDistributedSystem.getAnyInstance().getStatisticsFactory();
     StatisticDescriptor[] descriptors = new StatisticDescriptor[] {
         statisticsFactory.createIntCounter(DUPLICATE_BATCHES_RECEIVED,
             "number of batches which have already been seen by this GatewayReceiver",
             "nanoseconds"),
         statisticsFactory.createIntCounter(OUT_OF_ORDER_BATCHES_RECEIVED,
             "number of batches which are out of order on this GatewayReceiver", "operations"),
-        statisticsFactory.createIntCounter(EARLY_ACKS, "number of early acknowledgements sent to gatewaySenders",
+        statisticsFactory.createIntCounter(EARLY_ACKS,
+            "number of early acknowledgements sent to gatewaySenders",
             "operations"),
         statisticsFactory.createIntCounter(EVENTS_RECEIVED,
             "total number events across the batched received by this GatewayReceiver",
@@ -124,7 +125,7 @@ public class GatewayReceiverStatsImpl extends CacheServerStatsImpl implements Ga
   }
 
   public GatewayReceiverStatsImpl(StatisticsFactory f, String ownerName, String typeName,
-                                  StatisticDescriptor[] descriptiors) {
+      StatisticDescriptor[] descriptiors) {
     super(f, ownerName, typeName, descriptiors);
     // Initialize id fields
     // failoverBatchesReceivedId = statType.nameToId(FAILOVER_BATCHES_RECEIVED);

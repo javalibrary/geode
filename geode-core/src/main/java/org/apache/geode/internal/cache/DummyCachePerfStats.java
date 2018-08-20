@@ -14,8 +14,8 @@
  */
 package org.apache.geode.internal.cache;
 
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.distributed.internal.PoolStatHelper;
+import org.apache.geode.statistics.Statistics;
 
 /**
  * @since GemFire 5.7

@@ -18,9 +18,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.distributed.internal.DistributionStats;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * GemFire statistics about a {@link DiskStoreImpl}.
@@ -28,7 +25,7 @@ import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
  *
  * @since GemFire prPersistSprint2
  */
-public class DiskStoreStatsImpl implements DiskStoreStats{
+public class DiskStoreStatsImpl implements DiskStoreStats {
 
   private StatisticsType type;
 
@@ -173,10 +170,13 @@ public class DiskStoreStatsImpl implements DiskStoreStats{
                 "current number of oplog flushes that are in progress", "flushes"),
             factory.createLongCounter("compactTime",
                 "Total amount of time, in nanoseconds, spent compacting oplogs", "nanoseconds"),
-            factory.createIntCounter("compacts", "Total number of completed oplog compacts", "compacts"),
-            factory.createIntGauge("openOplogs", "Current number of oplogs this disk store has open",
+            factory.createIntCounter("compacts", "Total number of completed oplog compacts",
+                "compacts"),
+            factory.createIntGauge("openOplogs",
+                "Current number of oplogs this disk store has open",
                 "oplogs"),
-            factory.createIntGauge("compactableOplogs", "Current number of oplogs ready to be compacted",
+            factory.createIntGauge("compactableOplogs",
+                "Current number of oplogs ready to be compacted",
                 "oplogs"),
             factory.createIntGauge("inactiveOplogs",
                 "Current number of oplogs that are no longer being written but are not ready ready to compact",

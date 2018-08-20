@@ -18,10 +18,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.distributed.internal.DistributionStats;
-import org.apache.geode.internal.statistics.DummyStatisticsImpl;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 public class FunctionServiceStats {
 
@@ -126,7 +122,8 @@ public class FunctionServiceStats {
             factory.createLongCounter(FUNCTION_EXECUTIONS_COMPLETED_PROCESSING_TIME,
                 "Total time consumed for all completed invocations", "nanoseconds"),
 
-            factory.createIntGauge(FUNCTION_EXECUTIONS_RUNNING, "number of currently running invocations",
+            factory.createIntGauge(FUNCTION_EXECUTIONS_RUNNING,
+                "number of currently running invocations",
                 "operations"),
 
             factory.createIntCounter(RESULTS_SENT_TO_RESULTCOLLECTOR,

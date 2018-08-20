@@ -56,7 +56,8 @@ public abstract class MBeanStatsTestCase {
 
     this.system = (InternalDistributedSystem) DistributedSystem.connect(props);
     assertNotNull(this.system.getInternalDistributedSystemStats().getStatSampler());
-    assertNotNull(this.system.getInternalDistributedSystemStats().getStatSampler().waitForSampleCollector(TIMEOUT));
+    assertNotNull(this.system.getInternalDistributedSystemStats().getStatSampler()
+        .waitForSampleCollector(TIMEOUT));
 
     new CacheFactory().create();
 
@@ -78,7 +79,8 @@ public abstract class MBeanStatsTestCase {
   }
 
   protected void sample() throws InterruptedException {
-    this.system.getInternalDistributedSystemStats().getStatSampler().getSampleCollector().sample(NanoTimer.getTime());
+    this.system.getInternalDistributedSystemStats().getStatSampler().getSampleCollector()
+        .sample(NanoTimer.getTime());
     Thread.sleep(SLEEP);
   }
 

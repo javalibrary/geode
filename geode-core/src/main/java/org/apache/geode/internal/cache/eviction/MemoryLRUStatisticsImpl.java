@@ -19,8 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 public class MemoryLRUStatisticsImpl implements MemoryLRUEvictionStats, GFSStatsImplementor {
   private StatisticsType statType;
@@ -36,14 +34,13 @@ public class MemoryLRUStatisticsImpl implements MemoryLRUEvictionStats, GFSStats
     final String bytesAllowedDesc = "Number of total bytes allowed in this region.";
     final String byteCountDesc = "Number of bytes in region.";
     final String lruEvictionsDesc = "Number of total entry evictions triggered by LRU.";
-    final String
-        lruDestroysDesc =
+    final String lruDestroysDesc =
         "Number of entries destroyed in the region through both destroy cache operations and eviction.";
     final String lruEvaluationsDesc = "Number of entries evaluated during LRU operations.";
     final String lruGreedyReturnsDesc = "Number of non-LRU entries evicted during LRU operations";
 
     statType = factory.createType("MemLRUStatistics", "Statistics relates to memory based eviction",
-        new StatisticDescriptor[]{
+        new StatisticDescriptor[] {
             factory.createLongGauge("bytesAllowed", bytesAllowedDesc, "bytes"),
             factory.createLongGauge("byteCount", byteCountDesc, "bytes"),
             factory.createLongCounter("lruEvictions", lruEvictionsDesc, "entries"),

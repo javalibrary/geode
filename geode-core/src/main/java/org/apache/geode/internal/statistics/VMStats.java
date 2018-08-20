@@ -18,7 +18,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
 
 /**
  * Statistics related to a Java VM. Currently they all come from {@link java.lang.Runtime}.
@@ -29,11 +28,12 @@ public class VMStats implements VMStatsContract {
   private int freeMemoryId;
   private int totalMemoryId;
   private int maxMemoryId;
-  
+
   private void initializeStats(StatisticsFactory factory) {
     vmType = factory.createType("VMStats", "Stats available on any java virtual machine.",
         new StatisticDescriptor[] {
-            factory.createIntGauge("cpus", "Number of cpus available to the java VM on its machine.",
+            factory.createIntGauge("cpus",
+                "Number of cpus available to the java VM on its machine.",
                 "cpus", true),
             factory.createLongGauge("freeMemory",
                 "An approximation fo the total amount of memory currently available for future allocated objects, measured in bytes.",

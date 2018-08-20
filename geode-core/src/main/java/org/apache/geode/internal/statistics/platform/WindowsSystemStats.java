@@ -15,12 +15,10 @@
 
 package org.apache.geode.internal.statistics.platform;
 
+import org.apache.geode.internal.Assert;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.Assert;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * <P>
@@ -121,7 +119,8 @@ public class WindowsSystemStats {
             factory.createIntCounter("dgramsReceivedErrors",
                 "The number of received UDP datagrams that could not be delivered for reasons other than the lack of an application at the destination port",
                 "datagrams"),
-            factory.createIntCounter("dgramsSent", "The number of datagrams sent on the VM's machine",
+            factory.createIntCounter("dgramsSent",
+                "The number of datagrams sent on the VM's machine",
                 "datagrams/sec"),
 
             factory.createIntCounter("loopbackPackets",
@@ -248,7 +247,7 @@ public class WindowsSystemStats {
     initializeStats(factory);
   }
 
-  public StatisticsType getType(){
+  public StatisticsType getType() {
     return myType;
   }
 }

@@ -18,11 +18,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 
+import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.i18n.LocalizedStrings;
 
 /**
  * Gathers together a number of {@link StatisticDescriptor statistics} into one logical type.

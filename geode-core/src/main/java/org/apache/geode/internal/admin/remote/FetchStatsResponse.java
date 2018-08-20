@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.geode.DataSerializer;
-import org.apache.geode.statistics.Statistics;
 import org.apache.geode.distributed.internal.DistributionManager;
-import org.apache.geode.distributed.internal.InternalDistributedSystem.StatisticsVisitor;
 import org.apache.geode.distributed.internal.membership.InternalDistributedMember;
 
 /**

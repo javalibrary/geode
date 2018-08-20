@@ -15,12 +15,10 @@
 
 package org.apache.geode.internal.statistics.platform;
 
+import org.apache.geode.internal.Assert;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.Assert;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * <P>
@@ -136,7 +134,8 @@ public class SolarisSystemStats {
             factory.createIntGauge("cpuWaiting",
                 "The percentage of the total available time that has been spent waiting for io, paging, or swapping.",
                 "%"),
-            factory.createIntGauge("cpus", "The number of online cpus on the local machine.", "items"),
+            factory.createIntGauge("cpus", "The number of online cpus on the local machine.",
+                "items"),
             factory.createIntGauge("freeMemory",
                 "The number of megabytes of unused memory on the machine.", "megabytes", true),
             factory.createIntGauge("physicalMemory",
@@ -249,7 +248,8 @@ public class SolarisSystemStats {
             factory.createLongCounter("softwareLockFaults",
                 "The total number of faults caused by software locks held on memory pages.",
                 "operations", false),
-            factory.createLongCounter("systemCalls", "The total number system calls.", "operations"),
+            factory.createLongCounter("systemCalls", "The total number system calls.",
+                "operations"),
             factory.createLongCounter("systemMinorFaults",
                 "The total number of minor page faults in kernel code. Minor page faults do not require disk access.",
                 "operations", false),
@@ -269,13 +269,17 @@ public class SolarisSystemStats {
                 "packets"),
             factory.createLongCounter("inputPackets", "packets received (Solaris kstat 'ipackets')",
                 "packets"),
-            factory.createLongCounter("inputErrors", "input errors (Solaris kstat 'ierrors')", "errors",
+            factory.createLongCounter("inputErrors", "input errors (Solaris kstat 'ierrors')",
+                "errors",
                 false),
             factory.createLongCounter("outputPackets", "Solaris kstat 'opackets'", "packets"),
-            factory.createLongCounter("outputErrors", "output errors (Solaris kstat 'oerrors')", "errors",
+            factory.createLongCounter("outputErrors", "output errors (Solaris kstat 'oerrors')",
+                "errors",
                 false),
-            factory.createLongCounter("collisions", "Solaris kstat 'collisions'", "collisions", false),
-            factory.createLongCounter("inputBytes", "octets received (Solaris kstat 'rbytes')", "bytes"),
+            factory.createLongCounter("collisions", "Solaris kstat 'collisions'", "collisions",
+                false),
+            factory.createLongCounter("inputBytes", "octets received (Solaris kstat 'rbytes')",
+                "bytes"),
             factory.createLongCounter("outputBytes", "octats transmitted (Solaris kstat 'obytes')",
                 "bytes"),
             factory.createLongCounter("multicastInputPackets",

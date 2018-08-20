@@ -14,10 +14,10 @@
  */
 package org.apache.geode.internal.statistics;
 
+import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.internal.i18n.LocalizedStrings;
 
 /**
  * Describes an individual statistic whose value is updated by an application and may be archived by

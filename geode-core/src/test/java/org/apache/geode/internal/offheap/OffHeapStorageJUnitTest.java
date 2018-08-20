@@ -26,13 +26,13 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.RestoreSystemProperties;
 
 import org.apache.geode.OutOfOffHeapMemoryException;
-import org.apache.geode.distributed.internal.DistributionStatsImpl;
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.distributed.DistributedSystem;
 import org.apache.geode.distributed.internal.DistributionConfig;
+import org.apache.geode.distributed.internal.DistributionStatsImpl;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.distributed.internal.InternalLocator;
 import org.apache.geode.internal.statistics.LocalStatisticsFactory;
+import org.apache.geode.statistics.StatisticsFactory;
 
 public class OffHeapStorageJUnitTest {
 
@@ -227,7 +227,7 @@ public class OffHeapStorageJUnitTest {
       try {
         long start = stats.startDefragmentation();
         assertEquals(1, stats.getDefragmentationsInProgress());
-        while (System.nanoTime()== start) {
+        while (System.nanoTime() == start) {
           Thread.yield();
         }
         stats.endDefragmentation(start);

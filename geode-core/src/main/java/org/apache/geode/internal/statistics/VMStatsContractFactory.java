@@ -14,9 +14,9 @@
  */
 package org.apache.geode.internal.statistics;
 
-import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.SystemFailure;
 import org.apache.geode.internal.stats50.VMStats50;
+import org.apache.geode.statistics.StatisticsFactory;
 
 /**
  * Factory used to produce an instance of VMStatsContract.

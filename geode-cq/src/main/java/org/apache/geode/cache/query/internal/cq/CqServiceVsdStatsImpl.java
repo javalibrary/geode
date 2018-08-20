@@ -16,12 +16,6 @@ package org.apache.geode.cache.query.internal.cq;
 
 import org.apache.logging.log4j.Logger;
 
-import org.apache.geode.statistics.GFSStatsImplementor;
-import org.apache.geode.statistics.StatisticDescriptor;
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.statistics.StatisticsFactory;
-import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
 import org.apache.geode.cache.query.CqException;
 import org.apache.geode.cache.query.CqQuery;
 import org.apache.geode.cache.query.internal.DefaultQueryService;
@@ -29,12 +23,17 @@ import org.apache.geode.internal.NanoTimer;
 import org.apache.geode.internal.cache.FilterProfile;
 import org.apache.geode.internal.cache.InternalCache;
 import org.apache.geode.internal.logging.LogService;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
+import org.apache.geode.statistics.GFSStatsImplementor;
+import org.apache.geode.statistics.StatisticDescriptor;
+import org.apache.geode.statistics.Statistics;
+import org.apache.geode.statistics.StatisticsFactory;
+import org.apache.geode.statistics.StatisticsType;
 
 /**
  * This class tracks GemFire statistics related to CqService. Specifically the following statistics
  * are tracked: Number of CQs created Number of active CQs Number of CQs suspended or stopped Number
  * of CQs closed Number of CQs on a client
+ *
  * @since GemFire 5.5
  */
 public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImplementor {
@@ -152,7 +151,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
   public void initializeStats(StatisticsFactory factory) {
     String statName = "CqServiceStats";
     _type = factory.createType(statName, statName,
-        new StatisticDescriptor[]{
+        new StatisticDescriptor[] {
             factory.createLongCounter(CQS_CREATED, "Number of CQs created.", "operations"),
             factory.createLongCounter(CQS_ACTIVE, "Number of CQS actively executing.",
                 "operations"),
@@ -193,8 +192,9 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Constructor.
+   *
    * @param factory The <code>StatisticsFactory</code> which creates the <code>Statistics</code>
-   * instance
+   *        instance
    */
   CqServiceVsdStatsImpl(StatisticsFactory factory) {
     initializeStats(factory);
@@ -211,6 +211,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the current value of the "numCqsCreated" stat.
+   *
    * @return the current value of the "numCqsCreated" stat
    */
   @Override
@@ -228,6 +229,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the current value of the "numCqsActive" stat.
+   *
    * @return the current value of the "numCqsActive" stat
    */
   @Override
@@ -253,6 +255,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the current value of the "numCqsStopped" stat.
+   *
    * @return the current value of the "numCqsStopped" stat
    */
   @Override
@@ -278,6 +281,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the current value of the "numCqsClosed" stat.
+   *
    * @return the current value of the "numCqsClosed" stat
    */
   @Override
@@ -295,6 +299,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the current value of the "numCqsOnClient" stat.
+   *
    * @return the current value of the "numCqsOnClient" stat
    */
   @Override
@@ -320,6 +325,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the current value of the "numClientsWithCqs" stat.
+   *
    * @return the current value of the "numClientsWithCqs" stat
    */
   @Override
@@ -354,6 +360,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * End CQ Query Execution Time.
+   *
    * @param start long time value.
    */
   @Override
@@ -366,6 +373,7 @@ public class CqServiceVsdStatsImpl implements CqServiceVsdStats, GFSStatsImpleme
 
   /**
    * Returns the total time spent executing the CQ Queries.
+   *
    * @return long time spent.
    */
   @Override

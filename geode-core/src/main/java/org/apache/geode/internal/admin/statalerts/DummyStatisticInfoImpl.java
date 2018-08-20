@@ -18,9 +18,9 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.apache.geode.internal.admin.StatAlertsManager;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
-import org.apache.geode.internal.admin.StatAlertsManager;
 
 /**
  * Implementation {@link StatisticInfo} This does not contains associated statistics object

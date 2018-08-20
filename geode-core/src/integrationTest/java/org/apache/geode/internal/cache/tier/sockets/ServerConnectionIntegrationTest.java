@@ -124,9 +124,9 @@ public class ServerConnectionIntegrationTest {
      * client over a given <code>Socket</code>.
      */
     public TestServerConnection(Socket socket, InternalCache internalCache,
-                                CachedRegionHelper helper, CacheServerStatsImpl stats, int hsTimeout, int socketBufferSize,
-                                String communicationModeStr, byte communicationMode, Acceptor acceptor,
-                                SecurityService securityService) {
+        CachedRegionHelper helper, CacheServerStatsImpl stats, int hsTimeout, int socketBufferSize,
+        String communicationModeStr, byte communicationMode, Acceptor acceptor,
+        SecurityService securityService) {
       super(socket, internalCache, helper, stats, hsTimeout, socketBufferSize, communicationModeStr,
           communicationMode, acceptor, securityService);
 

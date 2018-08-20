@@ -37,10 +37,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.geode.CancelException;
 import org.apache.geode.DataSerializer;
 import org.apache.geode.InvalidDeltaException;
-import org.apache.geode.statistics.StatisticDescriptor;
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.statistics.StatisticsFactory;
-import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.cache.EntryNotFoundException;
 import org.apache.geode.cache.InterestResultPolicy;
 import org.apache.geode.cache.Operation;
@@ -56,7 +52,6 @@ import org.apache.geode.cache.query.internal.cq.CqService;
 import org.apache.geode.distributed.DistributedSystem;
 import org.apache.geode.distributed.internal.ClusterDistributionManager;
 import org.apache.geode.distributed.internal.DistributionConfig;
-import org.apache.geode.distributed.internal.DistributionStats;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.distributed.internal.InternalDistributedSystem.DisconnectListener;
 import org.apache.geode.distributed.internal.ServerLocation;
@@ -91,6 +86,10 @@ import org.apache.geode.internal.sequencelog.EntryLogger;
 import org.apache.geode.security.AuthenticationFailedException;
 import org.apache.geode.security.AuthenticationRequiredException;
 import org.apache.geode.security.GemFireSecurityException;
+import org.apache.geode.statistics.StatisticDescriptor;
+import org.apache.geode.statistics.Statistics;
+import org.apache.geode.statistics.StatisticsFactory;
+import org.apache.geode.statistics.StatisticsType;
 
 /**
  * {@code CacheClientUpdater} is a thread that processes update messages from a cache server and
@@ -1849,7 +1848,8 @@ public class CacheClientUpdater extends Thread implements ClientUpdater, Disconn
     private int receivedBytesId;
 
     private void initializeStats(StatisticsFactory factory) {
-      type = factory.createType("CacheClientUpdaterStats", "Statistics about incoming subscription data",
+      type = factory.createType("CacheClientUpdaterStats",
+          "Statistics about incoming subscription data",
           new StatisticDescriptor[] {
               factory.createLongCounter("receivedBytes",
                   "Total number of bytes received from the server.", "bytes"),

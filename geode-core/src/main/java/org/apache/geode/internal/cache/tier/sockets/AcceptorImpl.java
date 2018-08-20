@@ -86,7 +86,6 @@ import org.apache.geode.internal.cache.partitioned.AllBucketProfilesUpdateMessag
 import org.apache.geode.internal.cache.tier.Acceptor;
 import org.apache.geode.internal.cache.tier.CachedRegionHelper;
 import org.apache.geode.internal.cache.tier.CommunicationMode;
-import org.apache.geode.internal.cache.wan.GatewayReceiverStats;
 import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.internal.logging.LogService;
 import org.apache.geode.internal.logging.LoggingThreadGroup;
@@ -530,7 +529,7 @@ public class AcceptorImpl implements Acceptor, Runnable, CommBufferPool {
           LocalizedStrings.AcceptorImpl_CACHE_SERVER_CONNECTION_LISTENER_BOUND_TO_ADDRESS_0_WITH_BACKLOG_1,
           new Object[] {sockName, Integer.valueOf(backLog)}));
       if (isGatewayReceiver) {
-        this.stats = (CacheServerStats) StatsFactory.createGatewayReceiverStatsImpl(null,sockName);
+        this.stats = (CacheServerStats) StatsFactory.createGatewayReceiverStatsImpl(null, sockName);
       } else {
         this.stats = new CacheServerStatsImpl(sockName);
       }

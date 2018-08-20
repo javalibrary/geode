@@ -280,7 +280,8 @@ public class HeapMemoryMonitor implements NotificationListener, MemoryMonitor {
       }
 
       // Stop the stats listener
-      final GemFireStatSampler sampler = this.cache.getInternalDistributedSystem().getInternalDistributedSystemStats().getStatSampler();
+      final GemFireStatSampler sampler = this.cache.getInternalDistributedSystem()
+          .getInternalDistributedSystemStats().getStatSampler();
       if (sampler != null) {
         sampler.removeLocalStatListener(this.statListener);
       }
@@ -295,7 +296,8 @@ public class HeapMemoryMonitor implements NotificationListener, MemoryMonitor {
    * @return True of the listener was correctly started, false otherwise.
    */
   private boolean startCacheStatListener() {
-    final GemFireStatSampler sampler = this.cache.getInternalDistributedSystem().getInternalDistributedSystemStats().getStatSampler();
+    final GemFireStatSampler sampler = this.cache.getInternalDistributedSystem()
+        .getInternalDistributedSystemStats().getStatSampler();
     if (sampler == null) {
       return false;
     }
@@ -303,7 +305,8 @@ public class HeapMemoryMonitor implements NotificationListener, MemoryMonitor {
     try {
       sampler.waitForInitialization();
       String tenuredPoolName = getTenuredMemoryPoolMXBean().getName();
-      List list = this.cache.getInternalDistributedSystem().getInternalDistributedSystemStats().getStatsList();
+      List list = this.cache.getInternalDistributedSystem().getInternalDistributedSystemStats()
+          .getStatsList();
       for (Object o : list) {
         if (o instanceof StatisticsImpl) {
           StatisticsImpl statisticsImpl = (StatisticsImpl) o;
@@ -311,7 +314,8 @@ public class HeapMemoryMonitor implements NotificationListener, MemoryMonitor {
               && statisticsImpl.getType().getName().contains("PoolStats")) {
             sampler.addLocalStatListener(this.statListener, statisticsImpl, "currentUsedMemory");
             if (this.cache.getLoggerI18n().fineEnabled()) {
-              this.cache.getLoggerI18n().fine("Registered stat listener for " + statisticsImpl.getTextId());
+              this.cache.getLoggerI18n()
+                  .fine("Registered stat listener for " + statisticsImpl.getTextId());
             }
 
             return true;

@@ -15,14 +15,14 @@
 
 package org.apache.geode.internal.cache;
 
+import org.apache.geode.distributed.internal.PoolStatHelper;
+import org.apache.geode.distributed.internal.QueueStatHelper;
+import org.apache.geode.internal.NanoTimer;
 import org.apache.geode.statistics.GFSStatsImplementor;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.distributed.internal.PoolStatHelper;
-import org.apache.geode.distributed.internal.QueueStatHelper;
-import org.apache.geode.internal.NanoTimer;
 
 /**
  * CachePerfStats tracks statistics about GemFire cache performance.
@@ -165,42 +165,36 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
 
   private static final String loadsInProgressDesc =
       "Current number of threads in this cache doing a cache load.";
-  private static final String
-      loadsCompletedDesc =
+  private static final String loadsCompletedDesc =
       "Total number of times a load on this cache has completed (as a result of either a local get() or a remote netload).";
   private static final String loadTimeDesc = "Total time spent invoking loaders on this cache.";
   private static final String netloadsInProgressDesc =
       "Current number of threads doing a network load initiated by a get() in this cache.";
   private static final String netloadsCompletedDesc =
       "Total number of times a network load initiated on this cache has completed.";
-  private static final String
-      netloadTimeDesc =
+  private static final String netloadTimeDesc =
       "Total time spent doing network loads on this cache.";
   private static final String netsearchesInProgressDesc =
       "Current number of threads doing a network search initiated by a get() in this cache.";
   private static final String netsearchesCompletedDesc =
       "Total number of times network searches initiated by this cache have completed.";
-  private static final String
-      netsearchTimeDesc =
+  private static final String netsearchTimeDesc =
       "Total time spent doing network searches for cache values.";
   private static final String cacheWriterCallsInProgressDesc =
       "Current number of threads doing a cache writer call.";
   private static final String cacheWriterCallsCompletedDesc =
       "Total number of times a cache writer call has completed.";
-  private static final String
-      cacheWriterCallTimeDesc =
+  private static final String cacheWriterCallTimeDesc =
       "Total time spent doing cache writer calls.";
   private static final String cacheListenerCallsInProgressDesc =
       "Current number of threads doing a cache listener call.";
   private static final String cacheListenerCallsCompletedDesc =
       "Total number of times a cache listener call has completed.";
-  private static final String
-      cacheListenerCallTimeDesc =
+  private static final String cacheListenerCallTimeDesc =
       "Total time spent doing cache listener calls.";
   private static final String getInitialImagesInProgressDesc =
       "Current number of getInitialImage operations currently in progress.";
-  private static final String
-      getInitialImagesCompletedDesc =
+  private static final String getInitialImagesCompletedDesc =
       "Total number of times getInitialImages (both delta and full GII) initiated by this cache have completed.";
   private static final String deltaGetInitialImagesCompletedDesc =
       "Total number of times delta getInitialImages initiated by this cache have completed.";
@@ -209,81 +203,61 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
   private static final String getInitialImageKeysReceivedDesc =
       "Total number of keys received while doing getInitialImage operations.";
   private static final String regionsDesc = "The current number of regions in the cache.";
-  private static final String
-      partitionedRegionsDesc =
+  private static final String partitionedRegionsDesc =
       "The current number of partitioned regions in the cache.";
   private static final String destroysDesc =
       "The total number of times a cache object entry has been destroyed in this cache.";
   private static final String updatesDesc =
       "The total number of updates originating remotely that have been applied to this cache.";
   private static final String updateTimeDesc = "Total time spent performing an update.";
-  private static final String
-      invalidatesDesc =
+  private static final String invalidatesDesc =
       "The total number of times an existing cache object entry value in this cache has been invalidated";
   private static final String getsDesc =
       "The total number of times a successful get has been done on this cache.";
-  private static final String
-      createsDesc =
+  private static final String createsDesc =
       "The total number of times an entry is added to this cache.";
-  private static final String
-      putsDesc =
+  private static final String putsDesc =
       "The total number of times an entry is added or replaced in this cache as a result of a local operation (put(), create(), or get() which results in load, netsearch, or netloading a value). Note that this only counts puts done explicitly on this cache. It does not count updates pushed from other caches.";
-  private static final String
-      putTimeDesc =
+  private static final String putTimeDesc =
       "Total time spent adding or replacing an entry in this cache as a result of a local operation.  This includes synchronizing on the map, invoking cache callbacks, sending messages to other caches and waiting for responses (if required).";
-  private static final String
-      putallsDesc =
+  private static final String putallsDesc =
       "The total number of times a map is added or replaced in this cache as a result of a local operation. Note that this only counts putAlls done explicitly on this cache. It does not count updates pushed from other caches.";
-  private static final String
-      putallTimeDesc =
+  private static final String putallTimeDesc =
       "Total time spent replacing a map in this cache as a result of a local operation.  This includes synchronizing on the map, invoking cache callbacks, sending messages to other caches and waiting for responses (if required).";
-  private static final String
-      removeAllsDesc =
+  private static final String removeAllsDesc =
       "The total number of removeAll operations that originated in this cache. Note that this only counts removeAlls done explicitly on this cache. It does not count removes pushed from other caches.";
-  private static final String
-      removeAllTimeDesc =
+  private static final String removeAllTimeDesc =
       "Total time spent performing removeAlls that originated in this cache. This includes time spent waiting for the removeAll to be done in remote caches (if required).";
   private static final String getTimeDesc =
       "Total time spent doing get operations from this cache (including netsearch and netload)";
-  private static final String
-      eventQueueSizeDesc =
+  private static final String eventQueueSizeDesc =
       "The number of cache events waiting to be processed.";
   private static final String eventQueueThrottleTimeDesc =
       "The total amount of time, in nanoseconds, spent delayed by the event queue throttle.";
   private static final String eventQueueThrottleCountDesc =
       "The total number of times a thread was delayed in adding an event to the event queue.";
-  private static final String
-      eventThreadsDesc =
+  private static final String eventThreadsDesc =
       "The number of threads currently processing events.";
-  private static final String
-      missesDesc =
+  private static final String missesDesc =
       "Total number of times a get on the cache did not find a value already in local memory. The number of hits (i.e. gets that did not miss) can be calculated by subtracting misses from gets.";
-  private static final String
-      queryExecutionsDesc =
+  private static final String queryExecutionsDesc =
       "Total number of times some query has been executed";
   private static final String queryExecutionTimeDesc = "Total time spent executing queries";
-  private static final String
-      queryResultsHashCollisionsDesc =
+  private static final String queryResultsHashCollisionsDesc =
       "Total number of times an hash code collision occurred when inserting an object into an OQL result set or rehashing it";
-  private static final String
-      queryResultsHashCollisionProbeTimeDesc =
+  private static final String queryResultsHashCollisionProbeTimeDesc =
       "Total time spent probing the hashtable in an OQL result set due to hash code collisions, includes reads, writes, and rehashes";
   private static final String partitionedRegionOQLQueryRetriesDesc =
       "Total number of times an OQL Query on a Partitioned Region had to be retried";
-  private static final String
-      txSuccessLifeTimeDesc =
+  private static final String txSuccessLifeTimeDesc =
       "The total amount of time, in nanoseconds, spent in a transaction before a successful commit. The time measured starts at transaction begin and ends when commit is called.";
-  private static final String
-      txFailedLifeTimeDesc =
+  private static final String txFailedLifeTimeDesc =
       "The total amount of time, in nanoseconds, spent in a transaction before a failed commit. The time measured starts at transaction begin and ends when commit is called.";
-  private static final String
-      txRollbackLifeTimeDesc =
+  private static final String txRollbackLifeTimeDesc =
       "The total amount of time, in nanoseconds, spent in a transaction before an explicit rollback. The time measured starts at transaction begin and ends when rollback is called.";
-  private static final String
-      txCommitsDesc =
+  private static final String txCommitsDesc =
       "Total number times a transaction commit has succeeded.";
-  private static final String
-      txFailuresDesc =
+  private static final String txFailuresDesc =
       "Total number times a transaction commit has failed.";
   private static final String txRollbacksDesc =
       "Total number times a transaction has been explicitly rolled back.";
@@ -293,49 +267,39 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
       "The total amount of time, in nanoseconds, spent doing failed transaction commits.";
   private static final String txRollbackTimeDesc =
       "The total amount of time, in nanoseconds, spent doing explicit transaction rollbacks.";
-  private static final String
-      txCommitChangesDesc =
+  private static final String txCommitChangesDesc =
       "Total number of changes made by committed transactions.";
-  private static final String
-      txFailureChangesDesc =
+  private static final String txFailureChangesDesc =
       "Total number of changes lost by failed transactions.";
   private static final String txRollbackChangesDesc =
       "Total number of changes lost by explicit transaction rollbacks.";
-  private static final String
-      txConflictCheckTimeDesc =
+  private static final String txConflictCheckTimeDesc =
       "The total amount of time, in nanoseconds, spent doing conflict checks during transaction commit";
   private static final String reliableQueuedOpsDesc =
       "Current number of cache operations queued for distribution to required roles.";
   private static final String reliableQueueSizeDesc =
       "Current size in megabytes of disk used to queue for distribution to required roles.";
-  private static final String
-      reliableQueueMaxDesc =
+  private static final String reliableQueueMaxDesc =
       "Maximum size in megabytes allotted for disk usage to queue for distribution to required roles.";
-  private static final String
-      reliableRegionsDesc =
+  private static final String reliableRegionsDesc =
       "Current number of regions configured for reliability.";
   private static final String reliableRegionsMissingDesc =
       "Current number regions configured for reliability that are missing required roles.";
   private static final String reliableRegionsQueuingDesc =
       "Current number regions configured for reliability that are queuing for required roles.";
-  private static final String
-      reliableRegionsMissingFullAccessDesc =
+  private static final String reliableRegionsMissingFullAccessDesc =
       "Current number of regions configured for reliablity that are missing require roles with full access";
-  private static final String
-      reliableRegionsMissingLimitedAccessDesc =
+  private static final String reliableRegionsMissingLimitedAccessDesc =
       "Current number of regions configured for reliablity that are missing required roles with Limited access";
-  private static final String
-      reliableRegionsMissingNoAccessDesc =
+  private static final String reliableRegionsMissingNoAccessDesc =
       "Current number of regions configured for reliablity that are missing required roles with No access";
-  private static final String
-      clearsDesc =
+  private static final String clearsDesc =
       "The total number of times a clear has been done on this cache.";
   private static final String nonSingleHopsDesc =
       "Total number of times client request observed more than one hop during operation.";
   private static final String metaDataRefreshCountDesc =
       "Total number of times the meta data is refreshed due to hopping observed.";
-  private static final String
-      conflatedEventsDesc =
+  private static final String conflatedEventsDesc =
       "Number of events not delivered due to conflation.  Typically this means that the event arrived after a later event was already applied to the cache.";
   private static final String tombstoneCountDesc =
       "Number of destroyed entries that are retained for concurrent modification detection";
@@ -345,8 +309,7 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
       "Amount of memory consumed by destroyed entries in replicated or partitioned regions";
   private static final String tombstoneOverhead2Desc =
       "Amount of memory consumed by destroyed entries in non-replicated regions";
-  private static final String
-      clearTimeoutsDesc =
+  private static final String clearTimeoutsDesc =
       "Number of timeouts waiting for events concurrent to a clear() operation to be received and applied before performing the clear()";
   private static final String deltaUpdatesDesc =
       "The total number of times entries in this cache are updated through delta bytes.";
@@ -354,14 +317,11 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
       "Total time spent applying the received delta bytes to entries in this cache.";
   private static final String deltaFailedUpdatesDesc =
       "The total number of times entries in this cache failed to be updated through delta bytes.";
-  private static final String
-      deltasPreparedDesc =
+  private static final String deltasPreparedDesc =
       "The total number of times delta was prepared in this cache.";
-  private static final String
-      deltasPreparedTimeDesc =
+  private static final String deltasPreparedTimeDesc =
       "Total time spent preparing delta bytes in this cache.";
-  private static final String
-      deltasSentDesc =
+  private static final String deltasSentDesc =
       "The total number of times delta was sent to remote caches. This excludes deltas sent from server to client.";
   private static final String deltaFullValuesSentDesc =
       "The total number of times a full value was sent to a remote cache.";
@@ -369,54 +329,43 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
       "The total number of times a full value was requested by this cache.";
   private static final String importedEntriesCountDesc =
       "The total number of entries imported from a snapshot file.";
-  private static final String
-      importTimeDesc =
+  private static final String importTimeDesc =
       "The total time spent importing entries from a snapshot file.";
   private static final String exportedEntriesCountDesc =
       "The total number of entries exported into a snapshot file.";
-  private static final String
-      exportTimeDesc =
+  private static final String exportTimeDesc =
       "The total time spent exporting entries into a snapshot file.";
-  private static final String
-      compressionCompressTimeDesc =
+  private static final String compressionCompressTimeDesc =
       "The total time spent compressing data.";
-  private static final String
-      compressionDecompressTimeDesc =
+  private static final String compressionDecompressTimeDesc =
       "The total time spent decompressing data.";
-  private static final String
-      compressionCompressionsDesc =
+  private static final String compressionCompressionsDesc =
       "The total number of compression operations.";
-  private static final String
-      compressionDecompressionsDesc =
+  private static final String compressionDecompressionsDesc =
       "The total number of decompression operations.";
   private static final String compressionPreCompresssedBytesDesc =
       "The total number of bytes before compressing.";
   private static final String compressionPostCompressedBytesDesc =
       "The total number of bytes after compressing.";
-  private static final String
-      evictByCriteria_evictionsDesc =
+  private static final String evictByCriteria_evictionsDesc =
       "The total number of entries evicted";
   // total actual evictions (entries evicted)
-  private static final String
-      evictByCriteria_evictionTimeDesc =
+  private static final String evictByCriteria_evictionTimeDesc =
       "Time taken for eviction process";
   // total eviction time including product +user expr.
-  private static final String
-      evictByCriteria_evictionsInProgressDesc =
+  private static final String evictByCriteria_evictionsInProgressDesc =
       "Total number of evictions in progress";
-  private static final String
-      evictByCriteria_evaluationsDesc =
+  private static final String evictByCriteria_evaluationsDesc =
       "Total number of evaluations for eviction";
   // total eviction attempts
-  private static final String
-      evictByCriteria_evaluationTimeDesc =
+  private static final String evictByCriteria_evaluationTimeDesc =
       "Total time taken for evaluation of user expression during eviction";
-// time taken to evaluate user expression.
+  // time taken to evaluate user expression.
 
   void initializeStats(StatisticsFactory factory, String name) {
     type =
         factory.createType("CachePerfStats-" + name, "Statistics about GemFire cache performance",
-            new StatisticDescriptor[]{
+            new StatisticDescriptor[] {
                 factory.createIntGauge("loadsInProgress", loadsInProgressDesc, "operations"),
                 factory.createIntCounter("loadsCompleted", loadsCompletedDesc, "operations"),
                 factory.createLongCounter("loadTime", loadTimeDesc, "nanoseconds", false),
@@ -1516,6 +1465,7 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
   /**
    * Closes these stats so that they can not longer be used. The stats are closed when the cache is
    * closed.
+   *
    * @since GemFire 3.5
    */
   @Override
@@ -1525,6 +1475,7 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
 
   /**
    * Returns whether or not these stats have been closed
+   *
    * @since GemFire 3.5
    */
   @Override
@@ -1614,6 +1565,7 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
 
   /**
    * Returns the Statistics instance that stores the cache perf stats.
+   *
    * @since GemFire 3.5
    */
   @Override
@@ -1649,6 +1601,7 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
   /**
    * Returns a helper object so that the event pool can record its stats to the proper cache perf
    * stats.
+   *
    * @since GemFire 3.5
    */
   @Override
@@ -1829,11 +1782,11 @@ public class CachePerfStatsImpl implements CachePerfStats, GFSStatsImplementor {
 
   @Override
   public void incDecompressedEntryCount() {
-    stats.setLong(compressionDecompressionsId,1);
+    stats.setLong(compressionDecompressionsId, 1);
   }
 
   @Override
   public void incDecompressionTime(long startTime) {
-    stats.setLong(compressionDecompressTimeId,startTime);
+    stats.setLong(compressionDecompressTimeId, startTime);
   }
 }

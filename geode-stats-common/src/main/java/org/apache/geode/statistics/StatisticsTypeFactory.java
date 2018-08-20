@@ -80,6 +80,7 @@ import java.io.Reader;
  * StatisticsType type = f.createTypesFromXml(r)[0];
  * </pre>
  * <P>
+ *
  * @see <A href="package-summary.html#statistics">Package introduction</A>
  * @since GemFire 3.0
  */
@@ -133,7 +134,7 @@ public interface StatisticsTypeFactory {
    * <code>units</code>.
    */
   StatisticDescriptor createIntCounter(String name, String description, String units,
-                                       boolean largerBetter);
+      boolean largerBetter);
 
   /**
    * Creates and returns a long counter {@link StatisticDescriptor} with the given
@@ -141,7 +142,7 @@ public interface StatisticsTypeFactory {
    * <code>units</code>.
    */
   StatisticDescriptor createLongCounter(String name, String description, String units,
-                                        boolean largerBetter);
+      boolean largerBetter);
 
   /**
    * Creates and returns a double counter {@link StatisticDescriptor} with the given
@@ -149,21 +150,21 @@ public interface StatisticsTypeFactory {
    * <code>units</code>.
    */
   StatisticDescriptor createDoubleCounter(String name, String description, String units,
-                                          boolean largerBetter);
+      boolean largerBetter);
 
   /**
    * Creates and returns an int gauge {@link StatisticDescriptor} with the given <code>name</code>,
    * <code>description</code>, <code>largerBetter</code>, and <code>units</code>.
    */
   StatisticDescriptor createIntGauge(String name, String description, String units,
-                                     boolean largerBetter);
+      boolean largerBetter);
 
   /**
    * Creates and returns a long gauge {@link StatisticDescriptor} with the given <code>name</code>,
    * <code>description</code>, <code>largerBetter</code>, and <code>units</code>.
    */
   StatisticDescriptor createLongGauge(String name, String description, String units,
-                                      boolean largerBetter);
+      boolean largerBetter);
 
   /**
    * Creates and returns a double gauge {@link StatisticDescriptor} with the given
@@ -171,7 +172,7 @@ public interface StatisticsTypeFactory {
    * <code>units</code>.
    */
   StatisticDescriptor createDoubleGauge(String name, String description, String units,
-                                        boolean largerBetter);
+      boolean largerBetter);
 
 
   /**
@@ -184,8 +185,9 @@ public interface StatisticsTypeFactory {
   /**
    * Creates or finds and returns a {@link StatisticsType} with the given <code>name</code>,
    * <code>description</code>, and {@link StatisticDescriptor statistic descriptions}.
+   *
    * @throws IllegalArgumentException if a type with the given <code>name</code> already exists and
-   * it differs from the given parameters.
+   *         it differs from the given parameters.
    */
   StatisticsType createType(String name, String description, StatisticDescriptor[] stats);
 
@@ -198,15 +200,16 @@ public interface StatisticsTypeFactory {
   /**
    * Creates one or more {@link StatisticsType} from the contents of the given <code>reader</code>.
    * The created types can be found by calling {@link #findType}.
+   *
    * @param reader The source of the XML data which must comply with the
-   * <code>statisticsType.dtd</code>.
+   *        <code>statisticsType.dtd</code>.
    * @throws IllegalArgumentException if a type defined in the reader already exists
    * @throws IOException Something went wrong while reading from <code>reader</code>
    */
   StatisticsType[] createTypesFromXml(Reader reader) throws IOException;
 
   default Statistics createOsStatistics(StatisticsType type, String textId, long numericId,
-                                int osStatFlags) {
+      int osStatFlags) {
     return null;
   }
 }

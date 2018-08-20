@@ -76,7 +76,8 @@ public class DistributedSystemStatsJUnitTest {
 
     this.system = (InternalDistributedSystem) DistributedSystem.connect(props);
     assertNotNull(this.system.getInternalDistributedSystemStats().getStatSampler());
-    assertNotNull(this.system.getInternalDistributedSystemStats().getStatSampler().waitForSampleCollector(TIMEOUT));
+    assertNotNull(this.system.getInternalDistributedSystemStats().getStatSampler()
+        .waitForSampleCollector(TIMEOUT));
 
     this.cache = new CacheFactory().create();
 
@@ -120,7 +121,8 @@ public class DistributedSystemStatsJUnitTest {
   }
 
   protected void sample() throws InterruptedException {
-    this.system.getInternalDistributedSystemStats().getStatSampler().getSampleCollector().sample(NanoTimer.getTime());
+    this.system.getInternalDistributedSystemStats().getStatSampler().getSampleCollector()
+        .sample(NanoTimer.getTime());
     Thread.sleep(SLEEP);
   }
 

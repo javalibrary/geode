@@ -19,9 +19,6 @@ import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.distributed.internal.DistributionStats;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * Class <code>CacheClientProxyStats</code> tracks GemFire statistics related to a
@@ -90,9 +87,11 @@ public class CacheClientProxyStats implements MessageStats {
     String statName = "CacheClientProxyStatistics";
 
     _type = factory.createType(statName, statName, new StatisticDescriptor[] {
-        factory.createIntCounter(MESSAGES_RECEIVED, "Number of client messages received.", "operations"),
+        factory.createIntCounter(MESSAGES_RECEIVED, "Number of client messages received.",
+            "operations"),
 
-        factory.createIntCounter(MESSAGES_QUEUED, "Number of client messages added to the message queue.",
+        factory.createIntCounter(MESSAGES_QUEUED,
+            "Number of client messages added to the message queue.",
             "operations"),
 
         factory.createIntCounter(MESSAGES_FAILED_QUEUED,

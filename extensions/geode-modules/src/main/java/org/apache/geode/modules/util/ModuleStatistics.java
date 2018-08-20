@@ -14,13 +14,11 @@
  */
 package org.apache.geode.modules.util;
 
+import org.apache.geode.distributed.DistributedSystem;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.distributed.DistributedSystem;
-import org.apache.geode.internal.statistics.StatisticsTypeFactoryImpl;
 
 /**
  * Statistics for modules.
@@ -37,15 +35,17 @@ public class ModuleStatistics {
   private int hibernateEntityDestroyJobsScheduledId;
 
   private void initializeStats(StatisticsFactory factory) {
-    type = factory.createType("pluginStats", "statistics for hibernate plugin and hibernate L2 cache",
-        new StatisticDescriptor[] {
-            factory.createLongCounter("cacheHits", "number of times an entity was found in L2 cache",
-                "count"),
-            factory.createLongCounter("cacheMisses",
-                "number of times an entity was NOT found in l2 cache", "count"),
-            factory.createLongCounter("hibernateEntityDestroyJobsScheduled",
-                "number of entities scheduled for destroy because of version conflict with a remote member",
-                "jobs")});
+    type =
+        factory.createType("pluginStats", "statistics for hibernate plugin and hibernate L2 cache",
+            new StatisticDescriptor[] {
+                factory.createLongCounter("cacheHits",
+                    "number of times an entity was found in L2 cache",
+                    "count"),
+                factory.createLongCounter("cacheMisses",
+                    "number of times an entity was NOT found in l2 cache", "count"),
+                factory.createLongCounter("hibernateEntityDestroyJobsScheduled",
+                    "number of entities scheduled for destroy because of version conflict with a remote member",
+                    "jobs")});
 
     cacheHitsId = type.nameToId("cacheHits");
     cacheMissesId = type.nameToId("cacheMisses");

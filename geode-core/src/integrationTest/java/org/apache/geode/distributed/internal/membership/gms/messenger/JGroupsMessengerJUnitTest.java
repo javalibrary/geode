@@ -75,7 +75,6 @@ import org.apache.geode.distributed.internal.ClusterDistributionManager;
 import org.apache.geode.distributed.internal.DistributionConfigImpl;
 import org.apache.geode.distributed.internal.DistributionManager;
 import org.apache.geode.distributed.internal.DistributionMessage;
-import org.apache.geode.distributed.internal.DistributionStats;
 import org.apache.geode.distributed.internal.DistributionStatsImpl;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.distributed.internal.SerialAckedMessage;
@@ -169,7 +168,8 @@ public class JGroupsMessengerJUnitTest {
     DistributionManager dm = mock(DistributionManager.class);
     InternalDistributedSystem system =
         InternalDistributedSystem.newInstanceForTesting(dm, nonDefault);
-    when(services.getStatistics()).thenReturn(StatsFactory.createDistributionStatsImpl(system.getStatisticsFactory(), String.valueOf(statsId)));
+    when(services.getStatistics()).thenReturn(StatsFactory
+        .createDistributionStatsImpl(system.getStatisticsFactory(), String.valueOf(statsId)));
 
     messenger = new JGroupsMessenger();
     messenger.init(services);

@@ -14,14 +14,13 @@
  */
 package org.apache.geode.internal.cache.execute;
 
+import org.apache.geode.distributed.internal.DistributionConfig;
+import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.statistics.GFSStatsImplementor;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.Statistics;
 import org.apache.geode.statistics.StatisticsFactory;
 import org.apache.geode.statistics.StatisticsType;
-import org.apache.geode.distributed.internal.DistributionConfig;
-import org.apache.geode.distributed.internal.DistributionStats;
-import org.apache.geode.distributed.internal.InternalDistributedSystem;
 
 public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
@@ -147,12 +146,13 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the Function Stats for the given function
+   *
    * @param functionID represents the function for which we are returning the function Stats
    * @param distributedSystem represents the Distributed System
    * @return object of the FunctionStats
    */
   public static FunctionStats getFunctionStats(String functionID,
-                                                   InternalDistributedSystem distributedSystem) {
+      InternalDistributedSystem distributedSystem) {
     return distributedSystem.getInternalDistributedSystemStats().getFunctionStats(functionID);
   }
 
@@ -180,7 +180,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
     String statDescription = "This is the stats for the individual Function's Execution";
 
     _type = factory.createType(statName, statDescription,
-        new StatisticDescriptor[]{factory.createIntCounter(FUNCTION_EXECUTIONS_COMPLETED,
+        new StatisticDescriptor[] {factory.createIntCounter(FUNCTION_EXECUTIONS_COMPLETED,
             "Total number of completed function.execute() calls for given function", "operations"),
 
             factory.createLongCounter(FUNCTION_EXECUTIONS_COMPLETED_PROCESSING_TIME,
@@ -237,8 +237,9 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Constructor.
+   *
    * @param factory The <code>StatisticsFactory</code> which creates the <code>Statistics</code>
-   * instance
+   *        instance
    * @param name The name of the <code>Statistics</code>
    */
   public FunctionStatsImpl(StatisticsFactory factory, String name) {
@@ -259,6 +260,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the current value of the "Total number of completed function.execute() calls" stat.
+   *
    * @return the current value of the "function Executions completed" stat
    */
   @Override
@@ -277,6 +279,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the current value of the "Total time consumed for all completed invocations" stat.
+   *
    * @return the current value of the "functionExecutionCompleteProcessingTime" stat
    */
   @Override
@@ -286,6 +289,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the current value of the "number of currently running invocations" stat.
+   *
    * @return the current value of the "functionExecutionsRunning" stat
    */
   @Override
@@ -304,6 +308,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the current value of the "Total number of results sent to the ResultCollector" stat.
+   *
    * @return the current value of the "resultsReturned" stat
    */
   @Override
@@ -323,6 +328,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
   /**
    * Returns the current value of the "Total number of results received and passed to
    * ResultCollector" stat.
+   *
    * @return the current value of the "resultsReturned" stat
    */
   @Override
@@ -341,6 +347,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the current value of the "Total number of FunctionService...execute() calls" stat.
+   *
    * @return the current value of the "functionExecutionsCall" stat
    */
   @Override
@@ -360,6 +367,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
   /**
    * Returns the current value of the "Total time consumed for all completed execute() calls where
    * hasResult() returns true" stat.
+   *
    * @return the current value of the "functionExecutionHasResultCompleteProcessingTime" stat
    */
   @Override
@@ -370,6 +378,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
   /**
    * Returns the current value of the "A gauge indicating the number of currently active execute()
    * calls for functions where hasResult() returns true" stat.
+   *
    * @return the current value of the "functionExecutionHasResultRunning" stat
    */
   @Override
@@ -389,6 +398,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
   /**
    * Returns the current value of the "Total number of Exceptions Occurred while executing function"
    * stat.
+   *
    * @return the current value of the "functionExecutionHasResultRunning" stat
    */
   @Override
@@ -407,6 +417,7 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
 
   /**
    * Returns the current time (ns).
+   *
    * @return the current time (ns)
    */
   @Override
@@ -436,10 +447,11 @@ public class FunctionStatsImpl implements FunctionStats, GFSStatsImplementor {
   /**
    * Increments the "functionExecutionsCompleted" and "functionExecutionCompleteProcessingTime"
    * stats.
+   *
    * @param start The start of the functionExecution (which is decremented from the current time to
-   * determine the function Execution processing time).
+   *        determine the function Execution processing time).
    * @param haveResult haveResult=true then update the _functionExecutionHasResultRunningId and
-   * _functionExecutionHasResultCompleteProcessingTimeId
+   *        _functionExecutionHasResultCompleteProcessingTimeId
    */
   @Override
   public void endFunctionExecution(long start, boolean haveResult) {

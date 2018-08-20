@@ -30,8 +30,6 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.RestoreSystemProperties;
 import org.junit.experimental.categories.Category;
 
-import org.apache.geode.statistics.Statistics;
-import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.cache.AttributesFactory;
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.CacheFactory;
@@ -47,6 +45,8 @@ import org.apache.geode.distributed.DistributedSystem;
 import org.apache.geode.internal.AvailablePort;
 import org.apache.geode.internal.cache.EventID;
 import org.apache.geode.internal.cache.InternalCache;
+import org.apache.geode.statistics.Statistics;
+import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.test.junit.categories.ClientServerTest;
 
 /**
@@ -180,7 +180,8 @@ public class ClientHealthMonitorIntegrationTest {
     PORT = createServer();
     createProxyAndRegionForClient();
     StatisticsType statisticsType = this.system.getStatisticsFactory().findType("CacheServerStats");
-    final Statistics statistics = this.system.getStatisticsFactory().findStatisticsByType(statisticsType)[0];
+    final Statistics statistics =
+        this.system.getStatisticsFactory().findStatisticsByType(statisticsType)[0];
     assertEquals(0, statistics.getInt("currentClients"));
     assertEquals(0, statistics.getInt("currentClientConnections"));
     this.system.getLogWriter()

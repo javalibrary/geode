@@ -51,9 +51,11 @@ public class LuceneIndexStats {
 
   private void initializeStats(StatisticsFactory factory) {
     statsType = factory.createType(statsTypeName, statsTypeDescription, new StatisticDescriptor[] {
-        factory.createIntCounter("queryExecutions", "Number of lucene queries executed on this member",
+        factory.createIntCounter("queryExecutions",
+            "Number of lucene queries executed on this member",
             "operations"),
-        factory.createLongCounter("queryExecutionTime", "Amount of time spent executing lucene queries",
+        factory.createLongCounter("queryExecutionTime",
+            "Amount of time spent executing lucene queries",
             "nanoseconds"),
         factory.createIntGauge("queryExecutionsInProgress",
             "Number of query executions currently in progress", "operations"),
@@ -71,7 +73,8 @@ public class LuceneIndexStats {
             "Number of lucene index documents added/removed on this member", "operations"),
         factory.createLongCounter("updateTime",
             "Amount of time spent adding or removing documents from the index", "nanoseconds"),
-        factory.createIntGauge("updatesInProgress", "Number of index updates in progress", "operations"),
+        factory.createIntGauge("updatesInProgress", "Number of index updates in progress",
+            "operations"),
         factory.createIntCounter("failedEntries", "Number of entries failed to index", "entries"),
         factory.createIntCounter("commits", "Number of lucene index commits on this member",
             "operations"),

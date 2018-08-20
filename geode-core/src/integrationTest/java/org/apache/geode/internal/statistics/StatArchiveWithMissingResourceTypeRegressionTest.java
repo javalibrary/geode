@@ -64,8 +64,7 @@ public class StatArchiveWithMissingResourceTypeRegressionTest {
   }
 
   @After
-  public void tearDown() throws Exception {
-  }
+  public void tearDown() throws Exception {}
 
   @Test
   public void throwsIllegalStateExceptionWithMessage() throws Exception {

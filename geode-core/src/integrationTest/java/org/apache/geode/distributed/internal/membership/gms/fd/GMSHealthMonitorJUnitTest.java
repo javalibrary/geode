@@ -69,7 +69,6 @@ import org.apache.geode.distributed.internal.ClusterDistributionManager;
 import org.apache.geode.distributed.internal.DistributionConfig;
 import org.apache.geode.distributed.internal.DistributionConfigImpl;
 import org.apache.geode.distributed.internal.DistributionManager;
-import org.apache.geode.distributed.internal.DistributionStats;
 import org.apache.geode.distributed.internal.InternalDistributedSystem;
 import org.apache.geode.distributed.internal.membership.InternalDistributedMember;
 import org.apache.geode.distributed.internal.membership.NetView;
@@ -145,7 +144,8 @@ public class GMSHealthMonitorJUnitTest {
     when(services.getJoinLeave()).thenReturn(joinLeave);
     when(services.getCancelCriterion()).thenReturn(stopper);
     when(services.getManager()).thenReturn(manager);
-    when(services.getStatistics()).thenReturn(StatsFactory.createDistributionStatsImpl(system.getStatisticsFactory(), String.valueOf(statsId)));
+    when(services.getStatistics()).thenReturn(StatsFactory
+        .createDistributionStatsImpl(system.getStatisticsFactory(), String.valueOf(statsId)));
     when(stopper.isCancelInProgress()).thenReturn(false);
 
     if (mockMembers == null) {

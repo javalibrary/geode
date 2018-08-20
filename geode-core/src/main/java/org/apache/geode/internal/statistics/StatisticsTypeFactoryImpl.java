@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 
+import org.apache.geode.internal.i18n.LocalizedStrings;
 import org.apache.geode.statistics.StatisticDescriptor;
 import org.apache.geode.statistics.StatisticsType;
 import org.apache.geode.statistics.StatisticsTypeFactory;
-import org.apache.geode.internal.i18n.LocalizedStrings;
 
 /**
  * The implementation of {@link StatisticsTypeFactory}. Each VM can any have a single instance of
@@ -34,23 +34,23 @@ import org.apache.geode.internal.i18n.LocalizedStrings;
  *
  */
 public class StatisticsTypeFactoryImpl implements StatisticsTypeFactory {
-//   static fields
-//  private static final StatisticsTypeFactoryImpl singleton = new StatisticsTypeFactoryImpl();
+  // static fields
+  // private static final StatisticsTypeFactoryImpl singleton = new StatisticsTypeFactoryImpl();
 
   // static methods
   /**
    * Returns the single instance of this class.
    */
-//  public static StatisticsTypeFactory singleton() {
-//    return singleton;
-//  }
+  // public static StatisticsTypeFactory singleton() {
+  // return singleton;
+  // }
 
   protected void clear() {
     this.statTypes.clear();
   }
 
   // instance fields
-  private final HashMap<String,StatisticsType> statTypes = new HashMap<>();
+  private final HashMap<String, StatisticsType> statTypes = new HashMap<>();
 
   // instance methods
   /**

@@ -278,8 +278,9 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
   @Override
   public void initializeStats(StatisticsFactory factory) {
     type = factory.createType(typeName, "Stats for activity in the GatewaySender",
-        new StatisticDescriptor[]{
-            factory.createIntCounter(GatewaySenderStatsImpl.EVENTS_RECEIVED, "Number of events received by this Sender.",
+        new StatisticDescriptor[] {
+            factory.createIntCounter(GatewaySenderStatsImpl.EVENTS_RECEIVED,
+                "Number of events received by this Sender.",
                 "operations"),
             factory.createIntCounter(EVENTS_QUEUED, "Number of events added to the event queue.",
                 "operations"),
@@ -407,18 +408,18 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Constructor.
+   *
    * @param factory The <code>StatisticsFactory</code> which creates the <code>Statistics</code>
-   * instance
+   *        instance
    * @param gatewaySenderId The id of the <code>GatewaySender</code> used to generate the name of
-   * the <code>Statistics</code>
+   *        the <code>Statistics</code>
    */
   public GatewaySenderStatsImpl(StatisticsFactory factory, String gatewaySenderId) {
     initializeStats(factory);
     this.stats = factory.createAtomicStatistics(type, "gatewaySenderStats-" + gatewaySenderId);
   }
 
-  protected GatewaySenderStatsImpl() {
-  }
+  protected GatewaySenderStatsImpl() {}
 
   ///////////////////// Instance Methods /////////////////////
 
@@ -432,6 +433,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsReceived" stat.
+   *
    * @return the current value of the "eventsReceived" stat
    */
   @Override
@@ -449,6 +451,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsQueued" stat.
+   *
    * @return the current value of the "eventsQueued" stat
    */
   @Override
@@ -458,6 +461,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsNotQueuedConflated" stat.
+   *
    * @return the current value of the "eventsNotQueuedConflated" stat
    */
   @Override
@@ -467,6 +471,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsConflatedFromBatches" stat.
+   *
    * @return the current value of the "eventsConflatedFromBatches" stat
    */
   @Override
@@ -476,6 +481,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventQueueSize" stat.
+   *
    * @return the current value of the "eventQueueSize" stat
    */
   @Override
@@ -485,6 +491,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "secondaryEventQueueSize" stat.
+   *
    * @return the current value of the "secondaryEventQueueSize" stat
    */
   @Override
@@ -494,6 +501,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsProcessedByPQRM" stat.
+   *
    * @return the current value of the "eventsProcessedByPQRM" stat
    */
   @Override
@@ -503,6 +511,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "tempQueueSize" stat.
+   *
    * @return the current value of the "tempQueueSize" stat.
    */
   @Override
@@ -513,6 +522,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsDistributed" stat.
+   *
    * @return the current value of the "eventsDistributed" stat
    */
   @Override
@@ -522,6 +532,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "eventsExceedingAlertThreshold" stat.
+   *
    * @return the current value of the "eventsExceedingAlertThreshold" stat
    */
   @Override
@@ -539,6 +550,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "batchDistributionTime" stat.
+   *
    * @return the current value of the "batchDistributionTime" stat
    */
   @Override
@@ -548,6 +560,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the batchesDistributed" stat.
+   *
    * @return the current value of the batchesDistributed" stat
    */
   @Override
@@ -557,6 +570,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the batchesRedistributed" stat.
+   *
    * @return the current value of the batchesRedistributed" stat
    */
   @Override
@@ -566,6 +580,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the batchesResized" stat.
+   *
    * @return the current value of the batchesResized" stat
    */
   @Override
@@ -591,6 +606,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Sets the "eventQueueSize" stat.
+   *
    * @param size The size of the queue
    */
   @Override
@@ -600,6 +616,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Sets the "secondaryEventQueueSize" stat.
+   *
    * @param size The size of the secondary queue
    */
   @Override
@@ -609,6 +626,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Sets the "eventsProcessedByPQRM" stat.
+   *
    * @param size The total number of the events processed by queue removal message
    */
   @Override
@@ -618,6 +636,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Sets the "tempQueueSize" stat.
+   *
    * @param size The size of the temp queue
    */
   @Override
@@ -652,6 +671,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Increments the "eventQueueSize" stat by given delta.
+   *
    * @param delta an integer by which queue size to be increased
    */
   @Override
@@ -661,6 +681,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Increments the "secondaryEventQueueSize" stat by given delta.
+   *
    * @param delta an integer by which secondary event queue size to be increased
    */
   @Override
@@ -670,6 +691,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Increments the "eventsProcessedByPQRM" stat by given delta.
+   *
    * @param delta an integer by which events are processed by queue removal message
    */
   @Override
@@ -679,6 +701,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Increments the "tempQueueSize" stat by given delta.
+   *
    * @param delta an integer by which temp queue size to be increased
    */
   @Override
@@ -712,6 +735,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Decrements the "eventQueueSize" stat by given delta.
+   *
    * @param delta an integer by which queue size to be increased
    */
   @Override
@@ -721,6 +745,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Decrements the "secondaryEventQueueSize" stat by given delta.
+   *
    * @param delta an integer by which secondary queue size to be increased
    */
   @Override
@@ -730,6 +755,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Decrements the "tempQueueSize" stat by given delta.
+   *
    * @param delta an integer by which temp queue size to be increased
    */
   @Override
@@ -756,6 +782,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "unprocessedTokensAddedByPrimary" stat.
+   *
    * @return the current value of the "unprocessedTokensAddedByPrimary" stat
    */
   @Override
@@ -765,6 +792,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "unprocessedEventsAddedBySecondary" stat.
+   *
    * @return the current value of the "unprocessedEventsAddedBySecondary" stat
    */
   @Override
@@ -774,6 +802,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "unprocessedEventsRemovedByPrimary" stat.
+   *
    * @return the current value of the "unprocessedEventsRemovedByPrimary" stat
    */
   @Override
@@ -783,6 +812,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "unprocessedTokensRemovedBySecondary" stat.
+   *
    * @return the current value of the "unprocessedTokensRemovedBySecondary" stat
    */
   @Override
@@ -792,6 +822,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current value of the "unprocessedEventMapSize" stat.
+   *
    * @return the current value of the "unprocessedEventMapSize" stat
    */
   @Override
@@ -941,6 +972,7 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Returns the current time (ns).
+   *
    * @return the current time (ns)
    */
   @Override
@@ -950,8 +982,9 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Increments the "eventsDistributed" and "batchDistributionTime" stats.
+   *
    * @param start The start of the batch (which is decremented from the current time to determine
-   * the batch processing time).
+   *        the batch processing time).
    * @param numberOfEvents The number of events to add to the events distributed stat
    */
   @Override
@@ -971,8 +1004,9 @@ public class GatewaySenderStatsImpl implements GatewaySenderStats, GFSStatsImple
 
   /**
    * Increments the "eventsQueued" and "eventQueueTime" stats.
+   *
    * @param start The start of the put (which is decremented from the current time to determine the
-   * queue processing time).
+   *        queue processing time).
    */
   @Override
   public void endPut(long start) {
