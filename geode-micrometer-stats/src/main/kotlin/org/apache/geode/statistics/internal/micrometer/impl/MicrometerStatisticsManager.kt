@@ -14,13 +14,25 @@ import io.micrometer.core.instrument.binder.system.UptimeMetrics
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import io.micrometer.core.instrument.config.MeterFilter
 import io.micrometer.core.instrument.config.MeterFilterReply
+import io.micrometer.influx.InfluxConfig
+import io.micrometer.influx.InfluxMeterRegistry
+import io.micrometer.jmx.JmxConfig
+import io.micrometer.jmx.JmxMeterRegistry
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.pivotal.gemfire.micrometer.binder.LoadAvgMetrics
+import io.pivotal.gemfire.micrometer.binder.MemInfoMetrics
+import io.pivotal.gemfire.micrometer.binder.StatMetrics
+import io.pivotal.gemfire.micrometer.procOS.ProcOSLoadAvg
+import io.pivotal.gemfire.micrometer.procOS.ProcOSMemInfo
+import io.pivotal.gemfire.micrometer.procOS.ProcOSReaderFactory
+import io.pivotal.gemfire.micrometer.procOS.ProcOSStat
 import org.apache.geode.statistics.internal.micrometer.StatisticsManager
 import org.apache.geode.statistics.internal.micrometer.StatisticsMeterGroup
 import java.io.IOException
 import java.lang.management.ManagementFactory
 import java.net.InetSocketAddress
+import java.time.Duration
 
 object MicrometerStatisticsManager : StatisticsManager {
 
@@ -53,10 +65,10 @@ object MicrometerStatisticsManager : StatisticsManager {
         FileDescriptorMetrics().bindTo(meterRegistry)
         ProcessorMetrics().bindTo(meterRegistry)
         UptimeMetrics().bindTo(meterRegistry)
-//        val procOSReaderFactory = ProcOSReaderFactory()
-//        LoadAvgMetrics(procOSLoadAvg = ProcOSLoadAvg(procOSReaderFactory.getInstance(LoadAvgMetrics.LOAD_AVG)))
-//        MemInfoMetrics(procOSMemInfo = ProcOSMemInfo(procOSReaderFactory.getInstance(MemInfoMetrics.MEM_INFO)))
-//        StatMetrics(procOSStat = ProcOSStat(procOSReaderFactory.getInstance(StatMetrics.STAT)))
+        val procOSReaderFactory = ProcOSReaderFactory()
+        LoadAvgMetrics(procOSLoadAvg = ProcOSLoadAvg(procOSReaderFactory.getInstance(LoadAvgMetrics.LOAD_AVG))).bindTo(meterRegistry)
+        MemInfoMetrics(procOSMemInfo = ProcOSMemInfo(procOSReaderFactory.getInstance(MemInfoMetrics.MEM_INFO))).bindTo(meterRegistry)
+        StatMetrics(procOSStat = ProcOSStat(procOSReaderFactory.getInstance(StatMetrics.STAT))).bindTo(meterRegistry)
     }
 
     override fun registerMeterRegistry(meterRegistry: MeterRegistry) {
@@ -87,24 +99,29 @@ object MicrometerStatisticsManager : StatisticsManager {
 
     private fun createCompositeRegistry(): CompositeMeterRegistry {
         val compositeMeterRegistry = CompositeMeterRegistry(Clock.SYSTEM)
-//        compositeMeterRegistry.add(createInfluxDB())
+        compositeMeterRegistry.add(createInfluxDB())
         compositeMeterRegistry.add(createPrometheus())
-//        compositeMeterRegistry.add(createJMX())
+        compositeMeterRegistry.add(createJMX())
         return compositeMeterRegistry
     }
 
-//    private fun createJMX(): JmxMeterRegistry {
-//        return JmxMeterRegistry(JmxConfig { null }, Clock.SYSTEM)
-//    }
+    private fun createJMX(): JmxMeterRegistry {
+        val config = object : JmxConfig {
+            override fun step(): Duration = Duration.ofSeconds(10)
+            override fun get(k: String): String? = null
+            override fun domain(): String = "geodeMetrics"
+        }
+        return JmxMeterRegistry(config, Clock.SYSTEM)
+    }
 
-//    private fun createInfluxDB(): InfluxMeterRegistry {
-//        val config = object : InfluxConfig {
-//            override fun step(): Duration = Duration.ofSeconds(1)
-//            override fun db(): String = "mydb2"
-//            override fun get(k: String): String? = null
-//        }
-//        return InfluxMeterRegistry(config, Clock.SYSTEM)
-//    }
+    private fun createInfluxDB(): InfluxMeterRegistry {
+        val config = object : InfluxConfig {
+            override fun step(): Duration = Duration.ofSeconds(10)
+            override fun db(): String = "mydb3"
+            override fun get(k: String): String? = null
+        }
+        return InfluxMeterRegistry(config, Clock.SYSTEM)
+    }
 
     private fun createPrometheus(): PrometheusMeterRegistry {
         val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
