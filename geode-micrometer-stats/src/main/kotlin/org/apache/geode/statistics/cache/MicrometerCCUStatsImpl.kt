@@ -6,12 +6,6 @@ import org.apache.geode.statistics.internal.micrometer.impl.CounterStatisticMete
 import org.apache.geode.statistics.internal.micrometer.impl.GaugeStatisticMeter
 import org.apache.geode.statistics.internal.micrometer.impl.MicrometerMeterGroup
 
-/**
- * Stats for a CacheClientUpdater. Currently the only thing measured are incoming bytes on the
- * wire
- *
- * @since GemFire 5.7
- */
 class MicrometerCCUStatsImpl internal constructor(statisticsFactory: StatisticsFactory?, private val serverLocation: String) :
         CCUStats, MicrometerMeterGroup(statisticsFactory, "CacheClientUpdaterStats-$serverLocation") {
 
